@@ -49,7 +49,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     @Override
     public void onBindViewHolder(GalleryListViewHolder holder, final int position) {
-        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
 
         mListImageName = new ArrayList<>(mMapAlbumImagesNum.keySet());
         final String albumName = mListImageName.get(position);
@@ -59,6 +58,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         holder.mTextView.setText(albumName + " (" + images + ")");
 
         mImageLoader = ImageLoader.getInstance();
+
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
@@ -91,12 +91,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
     @Override
     public int getItemCount() {
         return mMapAlbumImagesNum.size();
-    }
-
-    @Override
-    public void onViewRecycled(GalleryListViewHolder holder){
-        super.onViewRecycled(holder);
-        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
     }
 
     class GalleryListViewHolder extends RecyclerView.ViewHolder{

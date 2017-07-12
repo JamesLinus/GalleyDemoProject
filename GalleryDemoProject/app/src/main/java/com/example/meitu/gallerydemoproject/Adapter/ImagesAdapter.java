@@ -1,6 +1,7 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +44,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     public void onBindViewHolder(ImageViewHolder holder, int position) {
 
         mImageLoader = ImageLoader.getInstance();
-       // if (!mImageLoader.isInited()) {
+        if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        //}
+        }
         mImageLoader.displayImage("file://" + mListURI.get(position),holder.mImageView);
-        //holder.mTextView.setText(mListURI.get(position));
     }
 
     @Override
@@ -55,13 +55,22 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         return mListURI.size();
     }
 
+    /**
+     * 若视图被复用 调用该函数时
+     * 将ImageView设置为默认图片，避免旧视图中的图片被加载导致视图混乱
+     * @param holder
+     */
+    @Override
+    public void onViewRecycled(ImageViewHolder holder){
+        super.onViewRecycled(holder);
+        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
+    }
+
     class ImageViewHolder extends RecyclerView.ViewHolder{
         ImageView mImageView;
-        //TextView mTextView;
         public ImageViewHolder(View itemView) {
             super(itemView);
             mImageView = (ImageView)itemView.findViewById(R.id.iv_recent_image);
-            //mTextView = (TextView)itemView;
         }
     }
 }
