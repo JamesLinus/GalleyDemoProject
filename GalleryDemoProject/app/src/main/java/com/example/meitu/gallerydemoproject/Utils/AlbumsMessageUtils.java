@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.LongSparseArray;
 
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
@@ -18,14 +19,14 @@ import java.util.Map;
  * Created by meitu on 2017/7/10.
  */
 
-public class MediaStoreUtils {
+public class AlbumsMessageUtils {
 
     private Context mContext;
     private ContentResolver mContentResolver;
 
     private Cursor cursor;
 
-    public MediaStoreUtils(Context context) {
+    public AlbumsMessageUtils(Context context) {
         mContext = context;
         mContentResolver = mContext.getContentResolver();
     }
@@ -142,7 +143,7 @@ public class MediaStoreUtils {
             String mURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            int date = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
 
             imageMessage.setId(id);
             imageMessage.setImageName(imageName);
@@ -150,7 +151,7 @@ public class MediaStoreUtils {
             imageMessage.setPath(mURI);
             imageMessage.setDate(date);
 
-//            Log.d("test", imageMessage.getDate()+"12");
+//            Log.d("test", imageMessage.getDate()+" 12");
 
         }
 

@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -67,8 +66,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaStoreUtils mediaStoreUtils = new MediaStoreUtils(mContext);
-                mediaStoreUtils.getImageMessage(imageURI);
+                Intent intent = new Intent(mContext, ImageMessageActivity.class);
+
+                String imageMessageKey = mContext.getString(R.string.image_message_key);
+                intent.putExtra(imageMessageKey, imageURI);
+                mContext.startActivity(intent);
 
 
             }

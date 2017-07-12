@@ -35,7 +35,8 @@
             android:layout_height="48dp"
             android:layout_weight="4"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="8dp"
+            android:gravity="center|left"
             android:text="@string/recent_image_name"
             android:textColor="@color/color_text_black"/>
     </LinearLayout>

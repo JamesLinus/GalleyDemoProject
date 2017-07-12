@@ -63,8 +63,8 @@ public class ImageMessage implements Serializable{
         return date;
     }
 
-    public void setDate(Integer date) {
-        if (null == date)return;
+    public void setDate(long date) {
+        if (0 == date)return;
         Date date1 = new Date(date);
         this.date = date1;
     }

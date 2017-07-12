@@ -9,14 +9,14 @@ import android.view.View;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
 import java.util.List;
 
 public class RecentImagesActivity extends AppCompatActivity {
     private static final String TAG = "RecentImagesActivity.activity";
 
-    private MediaStoreUtils mMediaStoreUtils;
+    private AlbumsMessageUtils mAlbumsMessageUtils;
     private List<String> mListURI;
 
     private View mBtnOthers;
@@ -47,12 +47,12 @@ public class RecentImagesActivity extends AppCompatActivity {
             }
         });
 
-        mMediaStoreUtils = new MediaStoreUtils(RecentImagesActivity.this);
+        mAlbumsMessageUtils = new AlbumsMessageUtils(RecentImagesActivity.this);
 
         mRvRecentImages = (RecyclerView)findViewById(R.id.rv_recent_images);
         mRvRecentImages.setLayoutManager(new GridLayoutManager(RecentImagesActivity.this, 3));
 
-        mListURI = mMediaStoreUtils.getRecentImagePath();
+        mListURI = mAlbumsMessageUtils.getRecentImagePath();
 
         mAdapterImages = new ImagesAdapter(RecentImagesActivity.this, mListURI);
         mRvRecentImages.setAdapter(mAdapterImages);

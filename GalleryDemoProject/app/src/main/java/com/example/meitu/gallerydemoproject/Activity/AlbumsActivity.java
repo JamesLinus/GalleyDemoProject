@@ -4,16 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.MotionEvent;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +20,7 @@ public class AlbumsActivity extends AppCompatActivity {
 
     private static final String TAG = "AlbumsActivity.activity";
 
-    private MediaStoreUtils mMediaStoreUtils;
+    private AlbumsMessageUtils mAlbumsMessageUtils;
     private Map<String, AlbumMessage> mMapAlbumsWithImages;
 
     private RecyclerView mRvAlbums;
@@ -48,8 +44,8 @@ public class AlbumsActivity extends AppCompatActivity {
         mRvAlbums = (RecyclerView)findViewById(R.id.rv_albums);
         mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
 
-        mMediaStoreUtils = new MediaStoreUtils(AlbumsActivity.this);
-        mMapAlbumsWithImages = mMediaStoreUtils.getGalleryNameAndCover();
+        mAlbumsMessageUtils = new AlbumsMessageUtils(AlbumsActivity.this);
+        mMapAlbumsWithImages = mAlbumsMessageUtils.getGalleryNameAndCover();
 
 
         mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mMapAlbumsWithImages);

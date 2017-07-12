@@ -27,6 +27,10 @@
         <activity android:name=".Activity.GalleyActivity">
 
         </activity>
+
+        <activity android:name=".Activity.ImageMessageActivity">
+
+        </activity>
     </application>
 
 </manifest>

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class GalleyActivity extends AppCompatActivity {
     private String mAlbumName;
 
 
-    private MediaStoreUtils mMediaStoreUtils;
+    private AlbumsMessageUtils mAlbumsMessageUtils;
 
     private RecyclerView mRvImages;
     private ImagesAdapter mAdapterImages;
@@ -51,7 +51,7 @@ public class GalleyActivity extends AppCompatActivity {
     }
 
     private void init(){
-        mMediaStoreUtils = new MediaStoreUtils(GalleyActivity.this);
+        mAlbumsMessageUtils = new AlbumsMessageUtils(GalleyActivity.this);
 
         mTvTitle = (TextView)findViewById(R.id.tv_title);
         mTvTitle.setText(mAlbumName);
@@ -66,7 +66,7 @@ public class GalleyActivity extends AppCompatActivity {
         mRvImages = (RecyclerView)findViewById(R.id.rv_images);
         mRvImages.setLayoutManager(new GridLayoutManager(GalleyActivity.this, 3));
 
-        mListURI = mMediaStoreUtils.getTargetImagePath(mAlbumName);
+        mListURI = mAlbumsMessageUtils.getTargetImagePath(mAlbumName);
 
         mAdapterImages = new ImagesAdapter(GalleyActivity.this, mListURI);
         mRvImages.setAdapter(mAdapterImages);
