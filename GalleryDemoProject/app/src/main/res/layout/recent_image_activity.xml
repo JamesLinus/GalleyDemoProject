@@ -26,8 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:background="@color/color_white"
-                android:text="@string/tool_bar_others_btn"/>
+                android:background="@color/btn_background_black"
+                android:text="@string/tool_bar_others_btn"
+                android:textColor="@color/color_text_white"/>
         </LinearLayout>
         <TextView
             android:id="@+id/tv_title"
@@ -38,7 +39,7 @@
             android:layout_marginLeft="8dp"
             android:gravity="center|left"
             android:text="@string/recent_image_name"
-            android:textColor="@color/color_text_black"/>
+            android:textColor="@color/color_text_white"/>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
