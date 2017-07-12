@@ -5,6 +5,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
+
+import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +31,9 @@ public class MediaStoreUtils {
         mContentResolver = mContext.getContentResolver();
     }
 
-    public Map<String, List<String>> getGalleryNameAndCover(){
-        Map<String, List<String>> mapAlbums = new HashMap<>();
-        List<String> listImages;
+    public Map<String, AlbumMessage> getGalleryNameAndCover(){
+        Map<String, AlbumMessage> mapAlbums = new HashMap<>();
+        AlbumMessage albumMessage;
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
         cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
@@ -42,14 +45,18 @@ public class MediaStoreUtils {
             String mURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
+            Log.d("test", mFile + " " + mURI);
             if (!mapAlbums.containsKey(mFile)){
-                listImages = new ArrayList<>();
-                listImages.add(mURI);
-                mapAlbums.put(mFile, listImages);
+                albumMessage = new AlbumMessage();
+                albumMessage.setAblumName(mFile);
+                albumMessage.setAblumSize(1);
+                albumMessage.setCover(mURI);
+                mapAlbums.put(mFile, albumMessage);
             }else {
-                listImages = mapAlbums.get(mFile);
-                listImages.add(mURI);
-                mapAlbums.put(mFile, listImages);
+                albumMessage = mapAlbums.get(mFile);
+                int size = albumMessage.getAblumSize();
+                albumMessage.setAblumSize(size+1);
+                mapAlbums.put(mFile, albumMessage);
             }
         }
 

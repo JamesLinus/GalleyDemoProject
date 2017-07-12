@@ -16,7 +16,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import java.util.List;
 
 /**
- * Created by meitu on 2017/7/11.
+ * @author Csm1
+ * 相册中图片的RecyclerView的Adapter
  */
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewHolder> {
@@ -25,9 +26,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     private List<String> mListURI;
 
     private ImageLoader mImageLoader;
-    private DisplayImageOptions mOptions;
 
 
+    /**
+     * 构造器
+     * @param context 传入Activity的context
+     * @param listURI 传入该相册图片的URI集合
+     */
     public ImagesAdapter(Context context, List listURI){
         mContext = context;
         mListURI = listURI;
@@ -40,8 +45,23 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         return new ImageViewHolder(view);
     }
 
+
+    /**
+     * 加载图片
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
+        String URI = new String();
+        URI = mListURI.get(position);
+//        if (null == holder.mImageView.getTag())holder.mImageView.setTag(URI);
+//        else {
+//            if (!holder.mImageView.getTag().equals(URI)){
+//                holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
+//            }
+//        }
+
 
         mImageLoader = ImageLoader.getInstance();
         if (!mImageLoader.isInited()) {

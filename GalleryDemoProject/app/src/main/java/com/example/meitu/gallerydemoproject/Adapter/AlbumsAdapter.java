@@ -2,7 +2,6 @@ package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
+import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -27,17 +27,15 @@ import java.util.Map;
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryListViewHolder> {
 
     private Context mContext;
-    private Map<String, Integer> mMapAlbumImagesNum;
-    private Map<String, String> mMapAblumWithCover;
-    private List<String> mListImageName;
+    private Map<String, AlbumMessage> mMapAlbums;
+    private List<String> mListAblumName;
 
     private ImageLoader mImageLoader;
-    private DisplayImageOptions mOptions;
 
-    public AlbumsAdapter(Context context, Map map, Map map2){
+    public AlbumsAdapter(Context context, Map map){
         mContext = context;
-        mMapAlbumImagesNum = map;
-        mMapAblumWithCover = map2;
+        mMapAlbums = map;
+        mListAblumName = new ArrayList<>(mMapAlbums.keySet());
     }
 
     @Override
@@ -50,23 +48,22 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
     @Override
     public void onBindViewHolder(GalleryListViewHolder holder, final int position) {
 
-        mListImageName = new ArrayList<>(mMapAlbumImagesNum.keySet());
-        final String albumName = mListImageName.get(position);
+        final String albumName = mListAblumName.get(position);
         String coverImage = new String();
-        int images = mMapAlbumImagesNum.get(albumName);
+        AlbumMessage images = mMapAlbums.get(albumName);
 
-        holder.mTextView.setText(albumName + " (" + images + ")");
+        holder.tvAblumName.setText(albumName + " (" + images.getAblumSize() + ")");
 
         mImageLoader = ImageLoader.getInstance();
 
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
-        coverImage = mMapAblumWithCover.get(albumName);
+        coverImage = images.getCover();
 
-        mImageLoader.displayImage("file://" + coverImage, holder.mImageView);
+        mImageLoader.displayImage("file://" + coverImage, holder.ivAblumCover);
 
-        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+        holder.tvAblumName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentGalley= new Intent(mContext, GalleyActivity.class);
@@ -76,13 +73,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
                 mContext.startActivity(intentGalley);
             }
         });
-        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+        holder.ivAblumCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentGalley= new Intent(mContext, GalleyActivity.class);
                 String albumName = mContext.getString(R.string.album_name);
 
-                intentGalley.putExtra(albumName, mListImageName.get(position));
+                intentGalley.putExtra(albumName, mListAblumName.get(position));
                 mContext.startActivity(intentGalley);
             }
         });
@@ -90,16 +87,17 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     @Override
     public int getItemCount() {
-        return mMapAlbumImagesNum.size();
+        return mMapAlbums.size();
     }
 
     class GalleryListViewHolder extends RecyclerView.ViewHolder{
-        ImageView mImageView;
-        TextView mTextView;
+        ImageView ivAblumCover;
+        TextView tvAblumName;
+        String ListAblumName;
         public GalleryListViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView) itemView.findViewById(R.id.iv_albums_first_image);
-            mTextView = (TextView)itemView.findViewById(R.id.tv_album_name);
+            ivAblumCover = (ImageView) itemView.findViewById(R.id.iv_albums_first_image);
+            tvAblumName = (TextView)itemView.findViewById(R.id.tv_album_name);
         }
     }
 }
