@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
@@ -15,27 +14,21 @@ import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
 import java.util.List;
 
 public class RecentImagesActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity.activity";
+    private static final String TAG = "RecentImagesActivity.activity";
 
     private MediaStoreUtils mMediaStoreUtils;
+    private List<String> mListURI;
 
     private View mBtnOthers;
 
-    private RecyclerView mRecyclerView;
-    private ImagesAdapter mImagesAdapter;
-
-    private List<String> mListURI;
-
+    private RecyclerView mRvRecentImages;
+    private ImagesAdapter mAdapterImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.recent_image_activity);
-
-
-
     }
 
     @Override
@@ -45,15 +38,7 @@ public class RecentImagesActivity extends AppCompatActivity {
     }
 
     private void init(){
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_recent_images);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(RecentImagesActivity.this, 3));
-
-        mMediaStoreUtils = new MediaStoreUtils(RecentImagesActivity.this);
-
-
-
         mBtnOthers = (View)findViewById(R.id.ll_btn);
-
         mBtnOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,14 +47,15 @@ public class RecentImagesActivity extends AppCompatActivity {
             }
         });
 
+        mMediaStoreUtils = new MediaStoreUtils(RecentImagesActivity.this);
+
+        mRvRecentImages = (RecyclerView)findViewById(R.id.rv_recent_images);
+        mRvRecentImages.setLayoutManager(new GridLayoutManager(RecentImagesActivity.this, 3));
+
         mListURI = mMediaStoreUtils.getRecentImagePath();
 
-        for (String s : mListURI){
-            Log.d(TAG, s);
-        }
-
-        mImagesAdapter = new ImagesAdapter(RecentImagesActivity.this, mListURI);
-        mRecyclerView.setAdapter(mImagesAdapter);
+        mAdapterImages = new ImagesAdapter(RecentImagesActivity.this, mListURI);
+        mRvRecentImages.setAdapter(mAdapterImages);
     }
 
 }

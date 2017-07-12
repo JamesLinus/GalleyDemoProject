@@ -1,5 +1,6 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,8 @@ import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,21 +20,21 @@ import java.util.Map;
 
 public class AlbumsActivity extends AppCompatActivity {
 
-    private static final String TAG = "GalleryListActivity.activity";
+    private static final String TAG = "AlbumsActivity.activity";
 
-    MediaStoreUtils mMediaStoreUtils;
-    Map<String,String> mGalleyNames;
+    private MediaStoreUtils mMediaStoreUtils;
+    private Map<String,List<String>> mListAlbums;
+    private Map<String, Integer> mListImagesNum;
 
-    RecyclerView mRecyclerView;
-    AlbumsAdapter mAlbumsAdapter;
+    private RecyclerView mRvAlbums;
+    private AlbumsAdapter mAdapterAlbums;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.albums_activity);
-//        init();
+
     }
 
     @Override
@@ -41,17 +44,21 @@ public class AlbumsActivity extends AppCompatActivity {
     }
 
     private void init(){
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_albums);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
+        mRvAlbums = (RecyclerView)findViewById(R.id.rv_albums);
+        mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
 
         mMediaStoreUtils = new MediaStoreUtils(AlbumsActivity.this);
-        mGalleyNames = mMediaStoreUtils.getGalleryNameAndFirst();
+        mListAlbums = mMediaStoreUtils.getGalleryNameAndCover();
 
-        mAlbumsAdapter = new AlbumsAdapter(AlbumsActivity.this, mGalleyNames);
+        mListImagesNum = new HashMap<>();
 
-        mRecyclerView.setAdapter(mAlbumsAdapter);
+        for (String s : mListAlbums.keySet()){
+            mListImagesNum.put(s, mListAlbums.get(s).size());
+        }
 
 
+        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mListAlbums, mListImagesNum);
+        mRvAlbums.setAdapter(mAdapterAlbums);
 
     }
 

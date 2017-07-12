@@ -28,8 +28,9 @@ public class MediaStoreUtils {
         mContentResolver = mContext.getContentResolver();
     }
 
-    public Map<String, String> getGalleryNameAndFirst(){
-        Map<String, String> mGallery = new HashMap<>();
+    public Map<String, List<String>> getGalleryNameAndCover(){
+        Map<String, List<String>> mapAlbums = new HashMap<>();
+        List<String> listImages;
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
         cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
@@ -41,8 +42,14 @@ public class MediaStoreUtils {
             String mURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            if (!mGallery.containsKey(mFile)){
-                mGallery.put(mFile, mURI);
+            if (!mapAlbums.containsKey(mFile)){
+                listImages = new ArrayList<>();
+                listImages.add(mURI);
+                mapAlbums.put(mFile, listImages);
+            }else {
+                listImages = mapAlbums.get(mFile);
+                listImages.add(mURI);
+                mapAlbums.put(mFile, listImages);
             }
         }
 
@@ -50,7 +57,7 @@ public class MediaStoreUtils {
 
         cursor = null;
 
-        return mGallery;
+        return mapAlbums;
     }
 
     public List<String> getTargetImagePath(String filePath){

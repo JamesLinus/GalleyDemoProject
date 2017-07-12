@@ -41,11 +41,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        //holder.mImageView.setImageDrawable();
+
         mImageLoader = ImageLoader.getInstance();
-        if (!mImageLoader.isInited()) {
+       // if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        }
+        //}
         mImageLoader.displayImage("file://" + mListURI.get(position),holder.mImageView);
         //holder.mTextView.setText(mListURI.get(position));
     }

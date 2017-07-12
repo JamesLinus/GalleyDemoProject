@@ -26,54 +26,61 @@ import java.util.Map;
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryListViewHolder> {
 
     private Context mContext;
-    private Map<String, String> mMapDatas;
-    private List<String> mListDatas;
+    private Map<String, List<String>> mMapDatas;
+    private Map<String, Integer> mMapImagesNum;
+    private List<String> mListImageName;
 
     private ImageLoader mImageLoader;
     private DisplayImageOptions mOptions;
 
-    public AlbumsAdapter(Context context, Map map){
+    public AlbumsAdapter(Context context, Map map, Map map2){
         mContext = context;
         mMapDatas = map;
+        mMapImagesNum = map2;
     }
 
     @Override
-    public GalleryListViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+    public GalleryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.album_item, parent, false);
-        final GalleryListViewHolder holder = new GalleryListViewHolder(view);
-
-        return holder;
+        return new GalleryListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(GalleryListViewHolder holder, final int position) {
-        mListDatas = new ArrayList<>(mMapDatas.keySet());
-        String key = mListDatas.get(position);
-        holder.mTextView.setText(key);
+        mListImageName = new ArrayList<>(mMapDatas.keySet());
+        String albumName = mListImageName.get(position);
+        List<String> mListImages = new ArrayList<>();
+        int images = mMapImagesNum.get(albumName);
+
+        holder.mTextView.setText(albumName + " (" + images + ")");
 
         mImageLoader = ImageLoader.getInstance();
-        mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        mImageLoader.displayImage("file://" + mMapDatas.get(key), holder.mImageView);
+        if (!mImageLoader.isInited()) {
+            mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+        }
+        mListImages = mMapDatas.get(albumName);
+
+        mImageLoader.displayImage("file://" + mListImages.get(0), holder.mImageView);
 
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mIntentGalley = new Intent(mContext, GalleyActivity.class);
-                String mStrGalleyName = mContext.getString(R.string.album_name);
+                Intent intentGalley= new Intent(mContext, GalleyActivity.class);
+                String keyAlbumName = mContext.getString(R.string.album_name);
 
-                mIntentGalley.putExtra(mStrGalleyName, mListDatas.get(position));
-                mContext.startActivity(mIntentGalley);
+                intentGalley.putExtra(keyAlbumName, mListImageName.get(position));
+                mContext.startActivity(intentGalley);
             }
         });
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mIntentGalley = new Intent(mContext, GalleyActivity.class);
-                String mStrGalleyName = mContext.getString(R.string.album_name);
+                Intent intentGalley= new Intent(mContext, GalleyActivity.class);
+                String albumName = mContext.getString(R.string.album_name);
 
-                mIntentGalley.putExtra(mStrGalleyName, mListDatas.get(position));
-                mContext.startActivity(mIntentGalley);
+                intentGalley.putExtra(albumName, mListImageName.get(position));
+                mContext.startActivity(intentGalley);
             }
         });
     }

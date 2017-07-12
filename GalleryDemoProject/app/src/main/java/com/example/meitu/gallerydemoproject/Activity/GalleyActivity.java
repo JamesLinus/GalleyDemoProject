@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,18 +20,17 @@ import java.util.List;
 public class GalleyActivity extends AppCompatActivity {
     private static final String TAG = "GalleyActivity.activity";
 
-    private String mGalleyNameKey;
-
-    private String mStrGalleyName;
+    private String mAlbumNameKey;
+    private String mAlbumName;
 
 
     private MediaStoreUtils mMediaStoreUtils;
 
-    private RecyclerView mRecyclerView;
-    private ImagesAdapter mGalleyAdapter;
+    private RecyclerView mRvImages;
+    private ImagesAdapter mAdapterImages;
 
     private View mBtnBack;
-    private TextView tvTitle;
+    private TextView mTvTitle;
 
     private List<String> mListURI;
 
@@ -41,12 +39,9 @@ public class GalleyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_activity);
-        mGalleyNameKey = getString(R.string.album_name);
 
-        mStrGalleyName = getIntent().getStringExtra(mGalleyNameKey);
-
-//        init();
-
+        mAlbumNameKey = getString(R.string.album_name);
+        mAlbumName = getIntent().getStringExtra(mAlbumNameKey);
     }
 
     @Override
@@ -58,14 +53,9 @@ public class GalleyActivity extends AppCompatActivity {
     private void init(){
         mMediaStoreUtils = new MediaStoreUtils(GalleyActivity.this);
 
-        tvTitle = (TextView)findViewById(R.id.tv_title);
-        tvTitle.setText(mStrGalleyName);
-
-        mRecyclerView = (RecyclerView)findViewById(R.id.rv_images);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(GalleyActivity.this, 3));
-
+        mTvTitle = (TextView)findViewById(R.id.tv_title);
+        mTvTitle.setText(mAlbumName);
         mBtnBack = (View)findViewById(R.id.ll_btn);
-
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,13 +63,12 @@ public class GalleyActivity extends AppCompatActivity {
             }
         });
 
-        mListURI = mMediaStoreUtils.getTargetImagePath(mStrGalleyName);
+        mRvImages = (RecyclerView)findViewById(R.id.rv_images);
+        mRvImages.setLayoutManager(new GridLayoutManager(GalleyActivity.this, 3));
 
-        for (String s : mListURI){
-            Log.d(TAG, s);
-        }
+        mListURI = mMediaStoreUtils.getTargetImagePath(mAlbumName);
 
-        mGalleyAdapter = new ImagesAdapter(GalleyActivity.this, mListURI);
-        mRecyclerView.setAdapter(mGalleyAdapter);
+        mAdapterImages = new ImagesAdapter(GalleyActivity.this, mListURI);
+        mRvImages.setAdapter(mAdapterImages);
     }
 }

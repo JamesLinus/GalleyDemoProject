@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Gallery</string>
 
-    <string name="tool_bar_others_btn">其他相册</string>
-    <string name="tool_bar_back_btn">返回</string>
+    <string name="tool_bar_others_btn">Others</string>
+    <string name="tool_bar_back_btn">Back</string>
 
     <string name="album_name">galleyname</string>
     <string name="albums_title">Albums</string>
+    <string name="recent_image_name">Recent</string>
 </resources>
