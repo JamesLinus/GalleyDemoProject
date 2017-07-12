@@ -15,5 +15,6 @@
         android:layout_gravity="center"
         android:src="@mipmap/ic_launcher"
         android:adjustViewBounds="false"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:transitionName="@string/big_image"/>
 </LinearLayout>

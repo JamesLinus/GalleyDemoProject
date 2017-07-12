@@ -3,6 +3,7 @@ package com.example.meitu.gallerydemoproject.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class GalleyActivity extends AppCompatActivity {
     private TextView mTvTitle;
 
     private List<String> mListURI;
+
+    private int lastOffset;
+    private int lastPosition;
 
 
     @Override
@@ -70,5 +74,41 @@ public class GalleyActivity extends AppCompatActivity {
 
         mAdapterImages = new ImagesAdapter(GalleyActivity.this, mListURI);
         mRvImages.setAdapter(mAdapterImages);
+
+        //监听RecyclerView滚动状态
+        mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(recyclerView.getLayoutManager() != null) {
+                    getPositionAndOffset();
+                }
+            }
+        });
+        scrollToPosition();
+    }
+
+    /**
+     * 记录RecyclerView当前位置
+     */
+    private void getPositionAndOffset() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mRvImages.getLayoutManager();
+        //获取可视的第一个view
+        View topView = layoutManager.getChildAt(0);
+        if(topView != null) {
+            //获取与该view的顶部的偏移量
+            lastOffset = topView.getTop();
+            //得到该View的数组位置
+            lastPosition = layoutManager.getPosition(topView);
+        }
+    }
+
+    /**
+     * 让RecyclerView滚动到指定位置
+     */
+    private void scrollToPosition() {
+        if(mRvImages.getLayoutManager() != null && lastPosition >= 0) {
+            ((LinearLayoutManager) mRvImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
+        }
     }
 }

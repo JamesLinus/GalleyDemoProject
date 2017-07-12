@@ -1,8 +1,20 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +22,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.Activity.ImageActivity;
-import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
 import com.example.meitu.gallerydemoproject.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 
 import java.util.List;
 
@@ -42,7 +55,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     @Override
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mLayoutInflater = LayoutInflater.from(mContext);
-        View view = mLayoutInflater.inflate(R.layout.recent_image_item, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.image_item, parent, false);
         return new ImageViewHolder(view);
     }
 
@@ -52,11 +65,22 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
      * @param position
      */
     @Override
-    public void onBindViewHolder(ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageViewHolder holder, int position) {
         final String imageURI;
         imageURI = mListURI.get(position);
 
-        //TODO 视图复用差错的修复
+        //TODO 视图复用差错的修复;
+
+        String tag= (String) holder.mImageView.getTag();
+        if (!imageURI.equals(tag)){
+            holder.mImageView.setTag(imageURI);
+            //设置图片
+        }
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                .build();
 
         mImageLoader = ImageLoader.getInstance();
         if (!mImageLoader.isInited()) {
@@ -64,15 +88,21 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         }
         mImageLoader.displayImage("file://" + imageURI, holder.mImageView);
 
+
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ImageActivity.class);
-
                 String imageMessageKey = mContext.getString(R.string.image_message_key);
                 intent.putExtra(imageMessageKey, imageURI);
-                mContext.startActivity(intent);
 
+                View sharedView = holder.mImageView;
+
+                String translation = mContext.getString(R.string.big_image);
+                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, sharedView, translation);
+
+                mContext.startActivity(intent, transitionActivityOptions.toBundle());
 
             }
         });
@@ -93,6 +123,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         super.onViewRecycled(holder);
         holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
     }
+
 
     class ImageViewHolder extends RecyclerView.ViewHolder{
         ImageView mImageView;
