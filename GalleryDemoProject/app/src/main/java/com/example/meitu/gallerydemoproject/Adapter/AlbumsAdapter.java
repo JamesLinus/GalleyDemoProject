@@ -42,6 +42,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
     public GalleryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.album_item, parent, false);
+
         return new GalleryListViewHolder(view);
     }
 
@@ -50,36 +51,24 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
         final String albumName = mListAblumName.get(position);
         String coverImage = new String();
-        AlbumMessage images = mMapAlbums.get(albumName);
+        AlbumMessage album = mMapAlbums.get(albumName);
 
-        holder.tvAblumName.setText(albumName + " (" + images.getAblumSize() + ")");
+        holder.tvAblumName.setText(albumName + " (" + album.getAblumSize() + ")");
 
         mImageLoader = ImageLoader.getInstance();
-
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
-        coverImage = images.getCover();
-
+        coverImage = album.getCover();
         mImageLoader.displayImage("file://" + coverImage, holder.ivAblumCover);
 
-        holder.tvAblumName.setOnClickListener(new View.OnClickListener() {
+        holder.vParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentGalley= new Intent(mContext, GalleyActivity.class);
                 String keyAlbumName = mContext.getString(R.string.album_name);
 
-                intentGalley.putExtra(keyAlbumName, albumName);
-                mContext.startActivity(intentGalley);
-            }
-        });
-        holder.ivAblumCover.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent intentGalley= new Intent(mContext, GalleyActivity.class);
-                String albumName = mContext.getString(R.string.album_name);
-
-                intentGalley.putExtra(albumName, mListAblumName.get(position));
+                intentGalley.putExtra(keyAlbumName, albumName);
                 mContext.startActivity(intentGalley);
             }
         });
@@ -93,11 +82,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
     class GalleryListViewHolder extends RecyclerView.ViewHolder{
         ImageView ivAblumCover;
         TextView tvAblumName;
-        String ListAblumName;
+        View vParent;
         public GalleryListViewHolder(View itemView) {
             super(itemView);
             ivAblumCover = (ImageView) itemView.findViewById(R.id.iv_albums_first_image);
             tvAblumName = (TextView)itemView.findViewById(R.id.tv_album_name);
+            vParent = (View)itemView.findViewById(R.id.ll_album_item);
         }
     }
 }

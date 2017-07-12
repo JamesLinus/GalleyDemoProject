@@ -1,6 +1,5 @@
 package com.example.meitu.gallerydemoproject.Utils;
 
-import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,12 +7,12 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by meitu on 2017/7/10.
@@ -40,23 +39,23 @@ public class MediaStoreUtils {
                 null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
-            String mFile = cursor.getString(
+            String albumName = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
-            String mURI = cursor.getString(
+            String coverURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            Log.d("test", mFile + " " + mURI);
-            if (!mapAlbums.containsKey(mFile)){
+//            Log.d("test", albumName + " " + coverURI);
+            if (!mapAlbums.containsKey(albumName)){
                 albumMessage = new AlbumMessage();
-                albumMessage.setAblumName(mFile);
+                albumMessage.setAblumName(albumName);
                 albumMessage.setAblumSize(1);
-                albumMessage.setCover(mURI);
-                mapAlbums.put(mFile, albumMessage);
+                albumMessage.setCover(coverURI);
+                mapAlbums.put(albumName, albumMessage);
             }else {
-                albumMessage = mapAlbums.get(mFile);
+                albumMessage = mapAlbums.get(albumName);
                 int size = albumMessage.getAblumSize();
                 albumMessage.setAblumSize(size+1);
-                mapAlbums.put(mFile, albumMessage);
+                mapAlbums.put(albumName, albumMessage);
             }
         }
 
@@ -116,7 +115,52 @@ public class MediaStoreUtils {
         return mRecentImage;
     }
 
+    public ImageMessage getImageMessage(String uri){
+        ImageMessage imageMessage = new ImageMessage();
 
+        String[] projection = {
+                        MediaStore.Images.ImageColumns._ID,
+                        MediaStore.Images.ImageColumns.DISPLAY_NAME,
+                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                        MediaStore.Images.ImageColumns.DATA,
+                        MediaStore.Images.ImageColumns.DATE_TAKEN};
+
+        String selection = MediaStore.Images.ImageColumns.DATA +  "=?";
+        String[] selectionArgs = {uri};
+
+        cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+
+        while (cursor.moveToNext()){
+            String id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID));
+
+            String imageName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+
+            String mFile = cursor.getString(
+                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
+
+            String mURI = cursor.getString(
+                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+
+            int date = cursor.getInt(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+
+            imageMessage.setId(id);
+            imageMessage.setImageName(imageName);
+            imageMessage.setFile(mFile);
+            imageMessage.setPath(mURI);
+            imageMessage.setDate(date);
+
+//            Log.d("test", imageMessage.getDate()+"12");
+
+        }
+
+        cursor.close();
+
+        cursor = null;
+
+
+        return imageMessage;
+    }
 
 
 

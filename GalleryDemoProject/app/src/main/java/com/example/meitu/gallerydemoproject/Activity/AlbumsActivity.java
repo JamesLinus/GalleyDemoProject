@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
@@ -25,8 +26,6 @@ public class AlbumsActivity extends AppCompatActivity {
 
     private MediaStoreUtils mMediaStoreUtils;
     private Map<String, AlbumMessage> mMapAlbumsWithImages;
-//    private Map<String, Integer> mMapAlbumImagesNum;
-//    private Map<String, String> mMapAblumWithCover;
 
     private RecyclerView mRvAlbums;
     private AlbumsAdapter mAdapterAlbums;
@@ -51,18 +50,6 @@ public class AlbumsActivity extends AppCompatActivity {
 
         mMediaStoreUtils = new MediaStoreUtils(AlbumsActivity.this);
         mMapAlbumsWithImages = mMediaStoreUtils.getGalleryNameAndCover();
-
-//        mMapAlbumImagesNum = new HashMap<>();
-//        mMapAblumWithCover = new HashMap<>();
-//
-//        for (String s : mMapAlbumsWithImages.keySet()){
-//            mMapAlbumImagesNum.put(s, mMapAlbumsWithImages.get(s).size());
-//            mMapAblumWithCover.put(s, mMapAlbumsWithImages.get(s).get(0));
-//        }
-        for (String s : mMapAlbumsWithImages.keySet()){
-            Log.d(TAG, s);
-        }
-
 
 
         mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mMapAlbumsWithImages);

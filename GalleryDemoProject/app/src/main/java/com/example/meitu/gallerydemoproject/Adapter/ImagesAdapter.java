@@ -1,6 +1,7 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.R;
+import com.example.meitu.gallerydemoproject.Utils.MediaStoreUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -27,7 +29,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
 
     private ImageLoader mImageLoader;
 
-
     /**
      * 构造器
      * @param context 传入Activity的context
@@ -45,7 +46,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         return new ImageViewHolder(view);
     }
 
-
     /**
      * 加载图片
      * @param holder
@@ -53,21 +53,26 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
      */
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        String URI = new String();
-        URI = mListURI.get(position);
-//        if (null == holder.mImageView.getTag())holder.mImageView.setTag(URI);
-//        else {
-//            if (!holder.mImageView.getTag().equals(URI)){
-//                holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
-//            }
-//        }
+        final String imageURI;
+        imageURI = mListURI.get(position);
 
+        //TODO 视图复用差错的修复
 
         mImageLoader = ImageLoader.getInstance();
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
-        mImageLoader.displayImage("file://" + mListURI.get(position),holder.mImageView);
+        mImageLoader.displayImage("file://" + imageURI, holder.mImageView);
+
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MediaStoreUtils mediaStoreUtils = new MediaStoreUtils(mContext);
+                mediaStoreUtils.getImageMessage(imageURI);
+
+
+            }
+        });
     }
 
     @Override
