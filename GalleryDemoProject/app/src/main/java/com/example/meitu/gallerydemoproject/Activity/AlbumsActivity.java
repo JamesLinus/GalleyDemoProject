@@ -1,6 +1,5 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +22,9 @@ public class AlbumsActivity extends AppCompatActivity {
     private static final String TAG = "AlbumsActivity.activity";
 
     private MediaStoreUtils mMediaStoreUtils;
-    private Map<String,List<String>> mListAlbums;
-    private Map<String, Integer> mListImagesNum;
+    private Map<String,List<String>> mMapAlbumsWithImages;
+    private Map<String, Integer> mMapAlbumImagesNum;
+    private Map<String, String> mMapAblumWithCover;
 
     private RecyclerView mRvAlbums;
     private AlbumsAdapter mAdapterAlbums;
@@ -48,16 +48,18 @@ public class AlbumsActivity extends AppCompatActivity {
         mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
 
         mMediaStoreUtils = new MediaStoreUtils(AlbumsActivity.this);
-        mListAlbums = mMediaStoreUtils.getGalleryNameAndCover();
+        mMapAlbumsWithImages = mMediaStoreUtils.getGalleryNameAndCover();
 
-        mListImagesNum = new HashMap<>();
+        mMapAlbumImagesNum = new HashMap<>();
+        mMapAblumWithCover = new HashMap<>();
 
-        for (String s : mListAlbums.keySet()){
-            mListImagesNum.put(s, mListAlbums.get(s).size());
+        for (String s : mMapAlbumsWithImages.keySet()){
+            mMapAlbumImagesNum.put(s, mMapAlbumsWithImages.get(s).size());
+            mMapAblumWithCover.put(s, mMapAlbumsWithImages.get(s).get(0));
         }
 
 
-        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mListAlbums, mListImagesNum);
+        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mMapAlbumImagesNum, mMapAblumWithCover);
         mRvAlbums.setAdapter(mAdapterAlbums);
 
     }

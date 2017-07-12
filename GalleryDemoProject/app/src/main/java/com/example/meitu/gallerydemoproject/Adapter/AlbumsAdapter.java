@@ -2,6 +2,7 @@ package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +27,8 @@ import java.util.Map;
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryListViewHolder> {
 
     private Context mContext;
-    private Map<String, List<String>> mMapDatas;
-    private Map<String, Integer> mMapImagesNum;
+    private Map<String, Integer> mMapAlbumImagesNum;
+    private Map<String, String> mMapAblumWithCover;
     private List<String> mListImageName;
 
     private ImageLoader mImageLoader;
@@ -35,8 +36,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     public AlbumsAdapter(Context context, Map map, Map map2){
         mContext = context;
-        mMapDatas = map;
-        mMapImagesNum = map2;
+        mMapAlbumImagesNum = map;
+        mMapAblumWithCover = map2;
     }
 
     @Override
@@ -48,10 +49,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     @Override
     public void onBindViewHolder(GalleryListViewHolder holder, final int position) {
-        mListImageName = new ArrayList<>(mMapDatas.keySet());
-        String albumName = mListImageName.get(position);
-        List<String> mListImages = new ArrayList<>();
-        int images = mMapImagesNum.get(albumName);
+        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
+
+        mListImageName = new ArrayList<>(mMapAlbumImagesNum.keySet());
+        final String albumName = mListImageName.get(position);
+        String coverImage = new String();
+        int images = mMapAlbumImagesNum.get(albumName);
 
         holder.mTextView.setText(albumName + " (" + images + ")");
 
@@ -59,9 +62,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
-        mListImages = mMapDatas.get(albumName);
+        coverImage = mMapAblumWithCover.get(albumName);
 
-        mImageLoader.displayImage("file://" + mListImages.get(0), holder.mImageView);
+        mImageLoader.displayImage("file://" + coverImage, holder.mImageView);
 
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +72,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
                 Intent intentGalley= new Intent(mContext, GalleyActivity.class);
                 String keyAlbumName = mContext.getString(R.string.album_name);
 
-                intentGalley.putExtra(keyAlbumName, mListImageName.get(position));
+                intentGalley.putExtra(keyAlbumName, albumName);
                 mContext.startActivity(intentGalley);
             }
         });
@@ -87,7 +90,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     @Override
     public int getItemCount() {
-        return mMapDatas.size();
+        return mMapAlbumImagesNum.size();
+    }
+
+    @Override
+    public void onViewRecycled(GalleryListViewHolder holder){
+        super.onViewRecycled(holder);
+        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
     }
 
     class GalleryListViewHolder extends RecyclerView.ViewHolder{
