@@ -2,6 +2,7 @@ package com.example.meitu.gallerydemoproject.Fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,14 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.meitu.gallerydemoproject.Activity.AlbumsActivity;
 import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
+import com.example.meitu.gallerydemoproject.Activity.RecentImagesActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
 import java.util.List;
 
-public class GalleyFragment extends Fragment {
+public class RecentImagesFragment extends Fragment {
 
     private static final String ALBUM_NAME = "album_name";
 
@@ -26,10 +29,10 @@ public class GalleyFragment extends Fragment {
 
     private AlbumsMessageUtils mAlbumsMessageUtils;
 
-    private RecyclerView mRvImages;
+    private RecyclerView mRvRecentImages;
     private ImagesAdapter mAdapterImages;
 
-    private View mBtnBack;
+    private View mBtnOthers;
     private TextView mTvTitle;
 
     private List<String> mListURI;
@@ -37,11 +40,8 @@ public class GalleyFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
-    public static GalleyFragment newInstance(String albumName) {
-        GalleyFragment fragment = new GalleyFragment();
-        Bundle args = new Bundle();
-        args.putString(ALBUM_NAME, albumName);
-        fragment.setArguments(args);
+    public static RecentImagesFragment newInstance() {
+        RecentImagesFragment fragment = new RecentImagesFragment();
         return fragment;
     }
 
@@ -56,19 +56,22 @@ public class GalleyFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.galley_fragment, container, false);
+        View view = inflater.inflate(R.layout.recent_image_fragment, container, false);
 
         mTvTitle = (TextView)view.findViewById(R.id.tv_title);
         mTvTitle.setText(mAlbumName);
-        mBtnBack = (View)view.findViewById(R.id.ll_btn);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mBtnOthers = (View)view.findViewById(R.id.ll_btn);
+        mBtnOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
+                Intent mIntentGalleryList = new Intent(getActivity(), AlbumsActivity.class);
+                startActivity(mIntentGalleryList);
             }
         });
 
-        mRvImages = (RecyclerView)view.findViewById(R.id.rv_images);
+        mRvRecentImages = (RecyclerView)view.findViewById(R.id.rv_recent_images);
+        mRvRecentImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+
         return view;
     }
 
@@ -90,17 +93,17 @@ public class GalleyFragment extends Fragment {
     }
 
     private void init(){
+
         mAlbumsMessageUtils = new AlbumsMessageUtils(getActivity());
 
-        mRvImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-        mListURI = mAlbumsMessageUtils.getTargetImagePath(mAlbumName);
+        mListURI = mAlbumsMessageUtils.getRecentImagePath();
 
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
-        mRvImages.setAdapter(mAdapterImages);
+        mRvRecentImages.setAdapter(mAdapterImages);
 
         //监听RecyclerView滚动状态
-        mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mRvRecentImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -116,7 +119,7 @@ public class GalleyFragment extends Fragment {
      * 记录RecyclerView当前位置
      */
     private void getPositionAndOffset() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) mRvImages.getLayoutManager();
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mRvRecentImages.getLayoutManager();
         //获取可视的第一个view
         View topView = layoutManager.getChildAt(0);
         if(topView != null) {
@@ -131,8 +134,8 @@ public class GalleyFragment extends Fragment {
      * 让RecyclerView滚动到指定位置
      */
     private void scrollToPosition() {
-        if(mRvImages.getLayoutManager() != null && lastPosition >= 0) {
-            ((LinearLayoutManager) mRvImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
+        if(mRvRecentImages.getLayoutManager() != null && lastPosition >= 0) {
+            ((LinearLayoutManager) mRvRecentImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
         }
     }
 }
