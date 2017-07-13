@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.AlbumsActivity"
+        <activity android:name=".Activity.AlbumsListActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
         </activity>
@@ -33,10 +33,6 @@
 
         <activity android:name=".Activity.ImageMessageActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
-        <activity android:name=".Activity.ImageActivity">
-
         </activity>
         
         <activity android:name=".Activity.ImagePagerActivity">

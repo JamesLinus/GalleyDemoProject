@@ -31,7 +31,7 @@ public class ImagePagerActivity extends AppCompatActivity {
         setContentView(R.layout.image_pager_activity);
 
         String imagesListKey = getString(R.string.images_list_key);
-        String mAlbumName = getString(R.string.album_name);
+        String mAlbumName = getString(R.string.album_name_key);
 
         mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
         imageUri = getIntent().getStringExtra(mAlbumName);

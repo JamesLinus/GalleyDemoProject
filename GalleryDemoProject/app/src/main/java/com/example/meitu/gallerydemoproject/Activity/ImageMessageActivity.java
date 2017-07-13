@@ -38,9 +38,8 @@ public class ImageMessageActivity extends AppCompatActivity {
     }
 
     private void init(){
-        AlbumsMessageUtils albumsMessageUtils = new AlbumsMessageUtils(ImageMessageActivity.this);
 
-        mImageMessage = albumsMessageUtils.getImageMessage(imageUri);
+        mImageMessage = AlbumsMessageUtils.getImageMessage(ImageMessageActivity.this, imageUri);
 
         mTvImageMessageId = (TextView)findViewById(R.id.tv_image_id);
         mTvImageMessageName = (TextView)findViewById(R.id.tv_image_name);

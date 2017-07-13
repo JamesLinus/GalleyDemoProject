@@ -19,11 +19,9 @@ import java.util.Map;
  * Created by meitu on 2017/7/10.
  */
 
-public class AlbumsActivity extends AppCompatActivity {
+public class AlbumsListActivity extends AppCompatActivity {
 
     private static final String TAG = "AlbumsActivity.activity";
-
-    private AlbumsMessageUtils mAlbumsMessageUtils;
 
     /**键值对保存 相册名和相册信息 */
     private Map<String, AlbumMessage> mMapAlbumsMessage;
@@ -47,10 +45,9 @@ public class AlbumsActivity extends AppCompatActivity {
 
     private void init(){
         mRvAlbums = (RecyclerView)findViewById(R.id.rv_albums);
-        mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
+        mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsListActivity.this));
 
-        mAlbumsMessageUtils = new AlbumsMessageUtils(AlbumsActivity.this);
-        mMapAlbumsMessage = mAlbumsMessageUtils.getGalleryNameAndCover();
+        mMapAlbumsMessage = AlbumsMessageUtils.getGalleryNameAndCover(AlbumsListActivity.this);
         List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
 
         for (AlbumMessage s: albumMessages){
@@ -58,7 +55,7 @@ public class AlbumsActivity extends AppCompatActivity {
         }
 
 
-        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, albumMessages);
+        mAdapterAlbums = new AlbumsAdapter(AlbumsListActivity.this, albumMessages);
         mRvAlbums.setAdapter(mAdapterAlbums);
 
     }

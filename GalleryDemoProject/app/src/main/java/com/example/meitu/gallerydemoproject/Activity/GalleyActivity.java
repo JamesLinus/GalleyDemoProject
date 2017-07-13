@@ -25,8 +25,8 @@ public class GalleyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_activity);
 
-        String mAlbumNameKey = getString(R.string.album_name);
-        mAlbumName = getIntent().getStringExtra(mAlbumNameKey);
+        String albumNameKey = getString(R.string.album_name_key);
+        mAlbumName = getIntent().getStringExtra(albumNameKey);
 
         mGalleyFragment = GalleyFragment.newInstance(mAlbumName);
 

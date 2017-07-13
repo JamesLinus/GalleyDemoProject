@@ -21,22 +21,15 @@ import java.util.Map;
 
 public class AlbumsMessageUtils {
 
-    private Context mContext;
-    private ContentResolver mContentResolver;
 
-    private Cursor cursor;
-
-    public AlbumsMessageUtils(Context context) {
-        mContext = context;
-        mContentResolver = mContext.getContentResolver();
-    }
-
-    public Map<String, AlbumMessage> getGalleryNameAndCover(){
+    public static Map<String, AlbumMessage> getGalleryNameAndCover(Context context){
         Map<String, AlbumMessage> mapAlbums = new HashMap<>();
         AlbumMessage albumMessage;
+        Cursor cursor;
+        ContentResolver contentResolver = context.getContentResolver();
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
-        cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
                 null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
@@ -66,15 +59,17 @@ public class AlbumsMessageUtils {
         return mapAlbums;
     }
 
-    public List<String> getTargetImagePath(String filePath){
+    public static List<String> getTargetImagePath(Context context, String filePath){
+        ContentResolver contentResolver = context.getContentResolver();
         List<String> mImages = new ArrayList<>();
+        Cursor cursor;
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
 
         String selection = MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME +  "=?";
         String[] selectionArgs = {filePath};
 
-        cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
                 selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
@@ -95,10 +90,13 @@ public class AlbumsMessageUtils {
         return mImages;
     }
 
-    public List<String> getRecentImagePath(){
+    public static List<String> getRecentImagePath(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
         List<String> mRecentImage = new ArrayList<>();
+        Cursor cursor;
+
         String[] projection = { MediaStore.Images.ImageColumns.DATA };
-        Cursor cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         int i = 100;
         while ((cursor.moveToNext())&&((i--)>0)){
@@ -115,8 +113,10 @@ public class AlbumsMessageUtils {
         return mRecentImage;
     }
 
-    public ImageMessage getImageMessage(String uri){
+    public static ImageMessage getImageMessage(Context context, String uri){
+        ContentResolver contentResolver = context.getContentResolver();
         ImageMessage imageMessage = new ImageMessage();
+        Cursor cursor;
 
         String[] projection = {
                         MediaStore.Images.ImageColumns._ID,
@@ -128,7 +128,7 @@ public class AlbumsMessageUtils {
         String selection = MediaStore.Images.ImageColumns.DATA +  "=?";
         String[] selectionArgs = {uri};
 
-        cursor = mContentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
                 selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
@@ -149,9 +149,6 @@ public class AlbumsMessageUtils {
             imageMessage.setFile(mFile);
             imageMessage.setPath(mURI);
             imageMessage.setDate(date);
-
-//            Log.d("test", imageMessage.getDate()+" 12");
-
         }
 
         cursor.close();

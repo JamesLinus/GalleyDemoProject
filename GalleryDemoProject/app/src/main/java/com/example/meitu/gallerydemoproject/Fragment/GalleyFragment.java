@@ -89,9 +89,8 @@ public class GalleyFragment extends Fragment {
     }
 
     private void init(){
-        mAlbumsMessageUtils = new AlbumsMessageUtils(getActivity());
 
-        mListURI = mAlbumsMessageUtils.getTargetImagePath(mAlbumName);
+        mListURI = mAlbumsMessageUtils.getTargetImagePath(getActivity(), mAlbumName);
 
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);

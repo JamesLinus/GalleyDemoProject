@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.meitu.gallerydemoproject.Activity.AlbumsActivity;
+import com.example.meitu.gallerydemoproject.Activity.AlbumsListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
@@ -52,7 +52,7 @@ public class RecentImagesFragment extends Fragment {
         mBtnOthers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mIntentGalleryList = new Intent(getActivity(), AlbumsActivity.class);
+                Intent mIntentGalleryList = new Intent(getActivity(), AlbumsListActivity.class);
                 startActivity(mIntentGalleryList);
             }
         });
@@ -82,8 +82,7 @@ public class RecentImagesFragment extends Fragment {
 
     private void init(){
 
-        mAlbumsMessageUtils = new AlbumsMessageUtils(getActivity());
-        mListURI = mAlbumsMessageUtils.getRecentImagePath();
+        mListURI = AlbumsMessageUtils.getRecentImagePath(getActivity());
 
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvRecentImages.setAdapter(mAdapterImages);

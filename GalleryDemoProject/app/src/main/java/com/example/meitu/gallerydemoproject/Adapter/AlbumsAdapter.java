@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
+import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -51,19 +53,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
         holder.tvAblumName.setText(albumName + " (" + albumSize + ")");
 
-        mImageLoader = ImageLoader.getInstance();
-        if (!mImageLoader.isInited()) {
-            mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        }
-        mImageLoader.displayImage("file://" + coverImage, holder.ivAblumCover);
+        LoadImageUtil.loadImage(mContext, holder.ivAblumCover, coverImage);
 
         holder.vContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String keyAlbumName = mContext.getString(R.string.album_name);
+                String albumNameKey = mContext.getString(R.string.album_name_key);
 
                 Intent intentGalley= new Intent(mContext, GalleyActivity.class);
-                intentGalley.putExtra(keyAlbumName, albumName);
+                intentGalley.putExtra(albumNameKey, albumName);
                 mContext.startActivity(intentGalley);
             }
         });

@@ -1,20 +1,11 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +14,7 @@ import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
 import com.example.meitu.gallerydemoproject.R;
+import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -77,17 +69,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
 //            //设置图片
 //        }
 
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheOnDisk(true)
-                .cacheInMemory(true)
-                .build();
-
-        mImageLoader = ImageLoader.getInstance();
-        if (!mImageLoader.isInited()) {
-            mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
-        }
-        mImageLoader.displayImage("file://" + imageURI, holder.mImageView, options);
-
+        LoadImageUtil.loadImage(mContext, holder.mImageView, imageURI);
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -95,7 +77,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
             public void onClick(View v) {
 
                 Intent intent = new Intent(mContext, ImagePagerActivity.class);
-                String imageUriKey = mContext.getString(R.string.album_name);
+                String imageUriKey = mContext.getString(R.string.album_name_key);
                 String imagesListKey = mContext.getString(R.string.images_list_key);
 
                 intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListURI);

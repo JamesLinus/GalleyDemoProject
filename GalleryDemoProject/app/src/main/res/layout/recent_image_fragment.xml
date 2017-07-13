@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
             android:gravity="center|left"
-            android:text="@string/recent_image_name"
+            android:text="@string/recent_album_name"
             android:textColor="@color/color_text_white"/>
     </LinearLayout>
 

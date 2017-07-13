@@ -9,16 +9,27 @@ import java.util.Date;
 
 public class ImageMessage implements Serializable{
 
+    private String id;
     private String imageName;
     private String path;
     private String file;
     private Date date;
 
     public ImageMessage() {
+        this.id = id = "";
         this.imageName = "";
         this.path = "";
         this.file = "";
         this.date = new Date();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        if (null == id)return;
+        this.id = id;
     }
 
     public String getImageName() {

@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="center"
-        android:src="@mipmap/ic_launcher_round"
-        android:transitionName="@string/big_image"/>
+        android:src="@mipmap/ic_launcher_round"/>
 
 
 </LinearLayout>
