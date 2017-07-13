@@ -2,7 +2,6 @@ package com.example.meitu.gallerydemoproject.Activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -24,8 +23,6 @@ public class ImagePagerActivity extends AppCompatActivity {
     private List<String> mImageUris;
     private String imageUri;
 
-    private String mAlbumName;
-
     private FragmentManager mFragmentManager;
 
     @Override
@@ -39,7 +36,11 @@ public class ImagePagerActivity extends AppCompatActivity {
         mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
         imageUri = getIntent().getStringExtra(mAlbumName);
 
+        init();
+        setCurrentItem();
+    }
 
+    private void init(){
         mViewPager = (ViewPager)findViewById(R.id.images_pager_view);
 
         mFragmentManager = getSupportFragmentManager();
@@ -56,7 +57,10 @@ public class ImagePagerActivity extends AppCompatActivity {
                 return mImageUris.size();
             }
         });
+    }
 
+
+    private void setCurrentItem(){
         /**找出当前ViewPage */
         for (int i = 0 ; i < mImageUris.size() ; i++){
             if (mImageUris.get(i).equals(imageUri)){
@@ -64,7 +68,6 @@ public class ImagePagerActivity extends AppCompatActivity {
                 break;
             }
         }
-
     }
 
     @Override

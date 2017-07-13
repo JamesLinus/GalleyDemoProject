@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +24,9 @@ public class AlbumsActivity extends AppCompatActivity {
     private static final String TAG = "AlbumsActivity.activity";
 
     private AlbumsMessageUtils mAlbumsMessageUtils;
-    private Map<String, AlbumMessage> mMapAlbumsWithImages;
+
+    /**键值对保存 相册名和相册信息 */
+    private Map<String, AlbumMessage> mMapAlbumsMessage;
 
     private RecyclerView mRvAlbums;
     private AlbumsAdapter mAdapterAlbums;
@@ -45,10 +50,15 @@ public class AlbumsActivity extends AppCompatActivity {
         mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsActivity.this));
 
         mAlbumsMessageUtils = new AlbumsMessageUtils(AlbumsActivity.this);
-        mMapAlbumsWithImages = mAlbumsMessageUtils.getGalleryNameAndCover();
+        mMapAlbumsMessage = mAlbumsMessageUtils.getGalleryNameAndCover();
+        List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
+
+        for (AlbumMessage s: albumMessages){
+            Log.d(TAG, s.getAblumName());
+        }
 
 
-        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, mMapAlbumsWithImages);
+        mAdapterAlbums = new AlbumsAdapter(AlbumsActivity.this, albumMessages);
         mRvAlbums.setAdapter(mAdapterAlbums);
 
     }

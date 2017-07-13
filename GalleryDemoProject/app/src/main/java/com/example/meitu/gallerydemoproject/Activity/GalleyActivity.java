@@ -1,22 +1,11 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.TextView;
-
-import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Fragment.GalleyFragment;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
-
-import java.util.List;
 
 /**
  * Created by meitu on 2017/7/11.
@@ -25,7 +14,6 @@ import java.util.List;
 public class GalleyActivity extends AppCompatActivity {
     private static final String TAG = "GalleyActivity.activity";
 
-    private String mAlbumNameKey;
     private String mAlbumName;
 
     private FragmentManager mFragmentManager;
@@ -37,7 +25,7 @@ public class GalleyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_activity);
 
-        mAlbumNameKey = getString(R.string.album_name);
+        String mAlbumNameKey = getString(R.string.album_name);
         mAlbumName = getIntent().getStringExtra(mAlbumNameKey);
 
         mGalleyFragment = GalleyFragment.newInstance(mAlbumName);
@@ -52,12 +40,6 @@ public class GalleyActivity extends AppCompatActivity {
                 .commit();
 
     }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event){
         switch (keyCode){
@@ -69,7 +51,6 @@ public class GalleyActivity extends AppCompatActivity {
                 break;
             }
         }
-
         return super.onKeyDown(keyCode, event);
     }
 

@@ -86,7 +86,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
         }
-        mImageLoader.displayImage("file://" + imageURI, holder.mImageView);
+        mImageLoader.displayImage("file://" + imageURI, holder.mImageView, options);
 
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
@@ -94,21 +94,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
             @Override
             public void onClick(View v) {
 
-
                 Intent intent = new Intent(mContext, ImagePagerActivity.class);
                 String imageUriKey = mContext.getString(R.string.album_name);
                 String imagesListKey = mContext.getString(R.string.images_list_key);
 
-                Bundle args = new Bundle();
                 intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListURI);
                 intent.putExtra(imageUriKey, imageURI);
-
-//                View sharedView = holder.mImageView;
-
-//                String translation = mContext.getString(R.string.big_image);
-//                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, sharedView, translation);
-//
-//                mContext.startActivity(intent, transitionActivityOptions.toBundle());
 
                 mContext.startActivity(intent);
                 ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

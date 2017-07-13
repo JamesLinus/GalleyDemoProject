@@ -10,11 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.meitu.gallerydemoproject.Activity.AlbumsActivity;
-import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
-import com.example.meitu.gallerydemoproject.Activity.RecentImagesActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
@@ -87,8 +83,6 @@ public class RecentImagesFragment extends Fragment {
     private void init(){
 
         mAlbumsMessageUtils = new AlbumsMessageUtils(getActivity());
-
-
         mListURI = mAlbumsMessageUtils.getRecentImagePath();
 
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);

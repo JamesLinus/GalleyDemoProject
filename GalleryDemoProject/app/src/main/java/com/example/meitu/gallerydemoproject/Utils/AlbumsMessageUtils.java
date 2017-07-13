@@ -45,7 +45,6 @@ public class AlbumsMessageUtils {
             String coverURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-//            Log.d("test", albumName + " " + coverURI);
             if (!mapAlbums.containsKey(albumName)){
                 albumMessage = new AlbumMessage();
                 albumMessage.setAblumName(albumName);

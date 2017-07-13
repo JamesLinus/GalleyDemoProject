@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
@@ -69,6 +67,7 @@ public class GalleyFragment extends Fragment {
         });
 
         mRvImages = (RecyclerView)view.findViewById(R.id.rv_images);
+        mRvImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         return view;
     }
 
@@ -91,8 +90,6 @@ public class GalleyFragment extends Fragment {
 
     private void init(){
         mAlbumsMessageUtils = new AlbumsMessageUtils(getActivity());
-
-        mRvImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
         mListURI = mAlbumsMessageUtils.getTargetImagePath(mAlbumName);
 
