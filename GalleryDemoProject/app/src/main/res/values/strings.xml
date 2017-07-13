@@ -9,6 +9,7 @@
     <string name="recent_image_name">Recent</string>
     <string name="image_message_title">Message</string>
     <string name="image_message_key">image_message</string>
+    <string name="images_list_key">images_list</string>
 
     <string name="image_message_id">ID:      </string>
     <string name="image_message_name">图片名:  </string>

@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Activity.ImageActivity;
 import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;

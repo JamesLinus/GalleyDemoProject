@@ -21,13 +21,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.meitu.gallerydemoproject.Activity.ImageActivity;
+import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
 import com.example.meitu.gallerydemoproject.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.display.BitmapDisplayer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,16 +95,23 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
             public void onClick(View v) {
 
 
-                Intent intent = new Intent(mContext, ImageActivity.class);
-                String imageMessageKey = mContext.getString(R.string.image_message_key);
-                intent.putExtra(imageMessageKey, imageURI);
+                Intent intent = new Intent(mContext, ImagePagerActivity.class);
+                String imageUriKey = mContext.getString(R.string.album_name);
+                String imagesListKey = mContext.getString(R.string.images_list_key);
 
-                View sharedView = holder.mImageView;
+                Bundle args = new Bundle();
+                intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListURI);
+                intent.putExtra(imageUriKey, imageURI);
 
-                String translation = mContext.getString(R.string.big_image);
-                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, sharedView, translation);
+//                View sharedView = holder.mImageView;
 
-                mContext.startActivity(intent, transitionActivityOptions.toBundle());
+//                String translation = mContext.getString(R.string.big_image);
+//                ActivityOptions transitionActivityOptions = ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, sharedView, translation);
+//
+//                mContext.startActivity(intent, transitionActivityOptions.toBundle());
+
+                mContext.startActivity(intent);
+                ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
             }
         });

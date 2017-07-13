@@ -38,6 +38,10 @@
         <activity android:name=".Activity.ImageActivity">
 
         </activity>
+        
+        <activity android:name=".Activity.ImagePagerActivity">
+
+        </activity>
     </application>
 
 </manifest>
