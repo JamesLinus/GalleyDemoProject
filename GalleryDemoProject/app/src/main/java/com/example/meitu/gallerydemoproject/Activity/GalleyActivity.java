@@ -1,7 +1,8 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
-import android.app.FragmentManager;
+
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -42,7 +43,7 @@ public class GalleyActivity extends AppCompatActivity {
         mGalleyFragment = GalleyFragment.newInstance(mAlbumName);
 
 
-        mFragmentManager = getFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
         mFragmentManager.popBackStack();
         mFragmentManager.beginTransaction()

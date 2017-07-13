@@ -1,8 +1,9 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
-import android.app.FragmentManager;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +34,7 @@ public class RecentImagesActivity extends AppCompatActivity {
         mRecentImagesFragment = RecentImagesFragment.newInstance();
 
 
-        mFragmentManager = getFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
         mFragmentManager.popBackStack();
         mFragmentManager.beginTransaction()
