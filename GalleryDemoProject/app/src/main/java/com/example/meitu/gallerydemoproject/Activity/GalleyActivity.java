@@ -1,5 +1,6 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
+import com.example.meitu.gallerydemoproject.Fragment.GalleyFragment;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
 
@@ -24,19 +26,8 @@ public class GalleyActivity extends AppCompatActivity {
     private String mAlbumNameKey;
     private String mAlbumName;
 
-
-    private AlbumsMessageUtils mAlbumsMessageUtils;
-
-    private RecyclerView mRvImages;
-    private ImagesAdapter mAdapterImages;
-
-    private View mBtnBack;
-    private TextView mTvTitle;
-
-    private List<String> mListURI;
-
-    private int lastOffset;
-    private int lastPosition;
+    private FragmentManager mFragmentManager;
+    private GalleyFragment mGalleyFragment;
 
 
     @Override
@@ -46,69 +37,24 @@ public class GalleyActivity extends AppCompatActivity {
 
         mAlbumNameKey = getString(R.string.album_name);
         mAlbumName = getIntent().getStringExtra(mAlbumNameKey);
+
+        mGalleyFragment = GalleyFragment.newInstance(mAlbumName);
+
+
+        mFragmentManager = getFragmentManager();
+        mFragmentManager.findFragmentById(R.id.frame_container);
+        mFragmentManager.popBackStack();
+        mFragmentManager.beginTransaction()
+                .add(R.id.frame_container, mGalleyFragment)
+                .addToBackStack("Images")
+                .commit();
+
     }
 
     @Override
-    protected void onResume(){
-        super.onResume();
-        init();
+    protected void onStart(){
+        super.onStart();
     }
 
-    private void init(){
-        mAlbumsMessageUtils = new AlbumsMessageUtils(GalleyActivity.this);
 
-        mTvTitle = (TextView)findViewById(R.id.tv_title);
-        mTvTitle.setText(mAlbumName);
-        mBtnBack = (View)findViewById(R.id.ll_btn);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        mRvImages = (RecyclerView)findViewById(R.id.rv_images);
-        mRvImages.setLayoutManager(new GridLayoutManager(GalleyActivity.this, 3));
-
-        mListURI = mAlbumsMessageUtils.getTargetImagePath(mAlbumName);
-
-        mAdapterImages = new ImagesAdapter(GalleyActivity.this, mListURI);
-        mRvImages.setAdapter(mAdapterImages);
-
-        //监听RecyclerView滚动状态
-        mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(recyclerView.getLayoutManager() != null) {
-                    getPositionAndOffset();
-                }
-            }
-        });
-        scrollToPosition();
-    }
-
-    /**
-     * 记录RecyclerView当前位置
-     */
-    private void getPositionAndOffset() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) mRvImages.getLayoutManager();
-        //获取可视的第一个view
-        View topView = layoutManager.getChildAt(0);
-        if(topView != null) {
-            //获取与该view的顶部的偏移量
-            lastOffset = topView.getTop();
-            //得到该View的数组位置
-            lastPosition = layoutManager.getPosition(topView);
-        }
-    }
-
-    /**
-     * 让RecyclerView滚动到指定位置
-     */
-    private void scrollToPosition() {
-        if(mRvImages.getLayoutManager() != null && lastPosition >= 0) {
-            ((LinearLayoutManager) mRvImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
-        }
-    }
 }

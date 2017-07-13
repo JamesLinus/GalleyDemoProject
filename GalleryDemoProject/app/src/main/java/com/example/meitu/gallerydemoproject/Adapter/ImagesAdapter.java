@@ -71,11 +71,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
 
         //TODO 视图复用差错的修复;
 
-        String tag= (String) holder.mImageView.getTag();
-        if (!imageURI.equals(tag)){
-            holder.mImageView.setTag(imageURI);
-            //设置图片
-        }
+//        String tag= (String) holder.mImageView.getTag();
+//        if (!imageURI.equals(tag)){
+//            holder.mImageView.setTag(imageURI);
+//            //设置图片
+//        }
 
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true)
