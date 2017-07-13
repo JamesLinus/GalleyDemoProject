@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
@@ -44,6 +45,21 @@ public class RecentImagesActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:{
+                finish();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
 }

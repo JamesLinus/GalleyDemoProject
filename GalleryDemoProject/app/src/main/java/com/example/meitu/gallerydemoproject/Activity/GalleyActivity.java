@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -56,5 +57,19 @@ public class GalleyActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:{
+                finish();
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

@@ -23,17 +23,12 @@ import java.util.List;
 
 public class RecentImagesFragment extends Fragment {
 
-    private static final String ALBUM_NAME = "album_name";
-
-    private String mAlbumName;
-
     private AlbumsMessageUtils mAlbumsMessageUtils;
 
     private RecyclerView mRvRecentImages;
     private ImagesAdapter mAdapterImages;
 
     private View mBtnOthers;
-    private TextView mTvTitle;
 
     private List<String> mListURI;
 
@@ -50,7 +45,6 @@ public class RecentImagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mAlbumName = getArguments().getString(ALBUM_NAME);
         }
     }
 
@@ -58,8 +52,6 @@ public class RecentImagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_image_fragment, container, false);
 
-        mTvTitle = (TextView)view.findViewById(R.id.tv_title);
-        mTvTitle.setText(mAlbumName);
         mBtnOthers = (View)view.findViewById(R.id.ll_btn);
         mBtnOthers.setOnClickListener(new View.OnClickListener() {
             @Override

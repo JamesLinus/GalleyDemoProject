@@ -93,6 +93,8 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
+
+
                 Intent intent = new Intent(mContext, ImageActivity.class);
                 String imageMessageKey = mContext.getString(R.string.image_message_key);
                 intent.putExtra(imageMessageKey, imageURI);
