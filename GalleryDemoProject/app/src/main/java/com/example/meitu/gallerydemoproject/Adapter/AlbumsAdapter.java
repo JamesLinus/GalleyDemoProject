@@ -1,5 +1,6 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Activity.GalleyActivity;
+import com.example.meitu.gallerydemoproject.Activity.AlbumActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.List;
 
@@ -27,8 +25,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
     private Context mContext;
     private List<AlbumMessage> mMapAlbumsMessage;
-
-    private ImageLoader mImageLoader;
 
     public AlbumsAdapter(Context context, List albumMessages){
         mContext = context;
@@ -49,7 +45,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         AlbumMessage albumMessage = mMapAlbumsMessage.get(position);
         final String albumName = albumMessage.getAblumName();
         String coverImage = albumMessage.getCover();
-        int albumSize = albumMessage.getAblumSize();
+        int albumSize = albumMessage.getAlbumSize();
 
         holder.tvAblumName.setText(albumName + " (" + albumSize + ")");
 
@@ -60,9 +56,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
             public void onClick(View v) {
                 String albumNameKey = mContext.getString(R.string.album_name_key);
 
-                Intent intentGalley= new Intent(mContext, GalleyActivity.class);
+                Intent intentGalley= new Intent(mContext, AlbumActivity.class);
                 intentGalley.putExtra(albumNameKey, albumName);
                 mContext.startActivity(intentGalley);
+                ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
     }

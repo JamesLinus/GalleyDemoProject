@@ -4,7 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by meitu on 2017/7/12.
+ * 图片信息
+ * id 图片id
+ * imageName 图片名称
+ * path 图片的地址
+ * album 图片所在的相册名
+ * date 图片创建的日期
  */
 
 public class ImageMessage implements Serializable{
@@ -12,14 +17,14 @@ public class ImageMessage implements Serializable{
     private String id;
     private String imageName;
     private String path;
-    private String file;
+    private String album;
     private Date date;
 
     public ImageMessage() {
-        this.id = id = "";
+        this.id = "";
         this.imageName = "";
         this.path = "";
-        this.file = "";
+        this.album = "";
         this.date = new Date();
     }
 
@@ -50,17 +55,17 @@ public class ImageMessage implements Serializable{
         this.path = path;
     }
 
-    public String getFile() {
-        return file;
+    public String getAlbum() {
+        return album;
     }
 
-    public void setFile(String file) {
-        if (null == file)return;
-        this.file = file;
+    public void setAlbum(String album) {
+        if (null == album)return;
+        this.album = album;
     }
 
     public Date getDate() {
-        return date;
+        return (Date)date.clone();
     }
 
     public void setDate(long date) {

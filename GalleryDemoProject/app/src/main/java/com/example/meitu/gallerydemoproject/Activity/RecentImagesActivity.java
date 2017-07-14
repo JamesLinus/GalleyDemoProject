@@ -21,7 +21,6 @@ public class RecentImagesActivity extends AppCompatActivity {
 
         mRecentImagesFragment = RecentImagesFragment.newInstance();
 
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
         mFragmentManager.popBackStack();
@@ -29,11 +28,6 @@ public class RecentImagesActivity extends AppCompatActivity {
                 .add(R.id.frame_container, mRecentImagesFragment)
                 .addToBackStack("RecnetImages")
                 .commit();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
     }
 
     @Override

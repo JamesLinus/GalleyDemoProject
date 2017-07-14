@@ -1,17 +1,20 @@
 package com.example.meitu.gallerydemoproject.Beans;
 
 /**
- * Created by meitu on 2017/7/12.
+ * 相册信息
+ * @author csm
+ * mAlbumName 相册名
+ * mAlbumSize 图片数
+ * mCover 封面uri;
  */
-
 public class AlbumMessage {
     private String mAblumName;
-    private int mAblumSize;
+    private int mAlbumSize;
     private String mCover;
 
     public AlbumMessage() {
         mAblumName = "";
-        mAblumSize = 0;
+        mAlbumSize = 0;
         mCover = "";
     }
 
@@ -23,12 +26,12 @@ public class AlbumMessage {
         mAblumName = ablumName;
     }
 
-    public int getAblumSize() {
-        return mAblumSize;
+    public int getAlbumSize() {
+        return mAlbumSize;
     }
 
-    public void setAblumSize(int ablumSize) {
-        mAblumSize = ablumSize;
+    public void setAlbumSize(int albumSize) {
+        mAlbumSize = albumSize;
     }
 
     public String getCover() {

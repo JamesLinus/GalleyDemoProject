@@ -32,8 +32,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     private Context mContext;
     private List<String> mListURI;
 
-    private ImageLoader mImageLoader;
-
     /**
      * 构造器
      * @param context 传入Activity的context

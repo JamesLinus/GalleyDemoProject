@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
 import com.example.meitu.gallerydemoproject.R;
+import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -27,8 +28,6 @@ public class ImageFragment extends Fragment {
     private ImageView mIvImage;
 
     private String imageURI;
-
-    private ImageLoader mImageLoader;
 
     public static ImageFragment newInstance(String imageURI) {
         ImageFragment fragment = new ImageFragment();
@@ -62,11 +61,7 @@ public class ImageFragment extends Fragment {
     }
 
     private void init(){
-        mImageLoader = ImageLoader.getInstance();
-        if (!mImageLoader.isInited()) {
-            mImageLoader.init(ImageLoaderConfiguration.createDefault(getActivity()));
-        }
-        mImageLoader.displayImage("file://" + imageURI, mIvImage);
+        LoadImageUtil.loadImage(getActivity(), mIvImage, imageURI);
     }
 
     @Override
@@ -82,6 +77,7 @@ public class ImageFragment extends Fragment {
                 String imageMessageKey = getString(R.string.image_message_key);
                 intent.putExtra(imageMessageKey, imageURI);
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             }
             default:{

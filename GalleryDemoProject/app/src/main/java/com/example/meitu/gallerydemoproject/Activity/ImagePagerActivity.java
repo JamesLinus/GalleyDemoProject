@@ -40,6 +40,10 @@ public class ImagePagerActivity extends AppCompatActivity {
         setCurrentItem();
     }
 
+
+    /**
+     * 初始化ViewPager
+     */
     private void init(){
         mViewPager = (ViewPager)findViewById(R.id.images_pager_view);
 
@@ -58,7 +62,6 @@ public class ImagePagerActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void setCurrentItem(){
         /**找出当前ViewPage */

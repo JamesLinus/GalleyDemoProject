@@ -13,19 +13,17 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class LoadImageUtil {
     private static ImageLoader mImageLoader;
+    private static DisplayImageOptions options;
 
     static {
         mImageLoader = ImageLoader.getInstance();
-    }
-
-
-    public static void loadImage(Context context, ImageView imageView, String uri){
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
+        options = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .build();
+    }
 
-
+    public static void loadImage(Context context, ImageView imageView, String uri){
         if (!mImageLoader.isInited()) {
             mImageLoader.init(ImageLoaderConfiguration.createDefault(context));
         }

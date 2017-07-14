@@ -5,11 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,21 +44,31 @@ public class AlbumsListActivity extends AppCompatActivity {
         init();
     }
 
+
+    /**
+     * 初始化列表数据
+     */
     private void init(){
         mRvAlbums = (RecyclerView)findViewById(R.id.rv_albums);
         mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsListActivity.this));
 
-        mMapAlbumsMessage = AlbumsMessageUtils.getGalleryNameAndCover(AlbumsListActivity.this);
+        mMapAlbumsMessage = AlbumOperatingUtils.getAlbumsMessage(AlbumsListActivity.this);
         List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
-
-        for (AlbumMessage s: albumMessages){
-            Log.d(TAG, s.getAblumName());
-        }
-
 
         mAdapterAlbums = new AlbumsAdapter(AlbumsListActivity.this, albumMessages);
         mRvAlbums.setAdapter(mAdapterAlbums);
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent){
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:{
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        }
+        return super.onKeyDown(keyCode, keyEvent);
     }
 
 

@@ -4,20 +4,21 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import com.example.meitu.gallerydemoproject.Fragment.GalleyFragment;
+
+import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.R;
 
 /**
  * Created by meitu on 2017/7/11.
  */
 
-public class GalleyActivity extends AppCompatActivity {
+public class AlbumActivity extends AppCompatActivity {
     private static final String TAG = "GalleyActivity.activity";
 
     private String mAlbumName;
 
     private FragmentManager mFragmentManager;
-    private GalleyFragment mGalleyFragment;
+    private AlbumFragment mGalleyFragment;
 
 
     @Override
@@ -27,9 +28,7 @@ public class GalleyActivity extends AppCompatActivity {
 
         String albumNameKey = getString(R.string.album_name_key);
         mAlbumName = getIntent().getStringExtra(albumNameKey);
-
-        mGalleyFragment = GalleyFragment.newInstance(mAlbumName);
-
+        mGalleyFragment = AlbumFragment.newInstance(mAlbumName);
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
@@ -45,6 +44,7 @@ public class GalleyActivity extends AppCompatActivity {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:{
                 finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             }
             default:{

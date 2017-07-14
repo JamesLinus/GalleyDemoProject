@@ -1,7 +1,6 @@
 package com.example.meitu.gallerydemoproject.Fragment;
 
 import android.support.v4.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,18 +11,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
 
 import java.util.List;
 
-public class GalleyFragment extends Fragment {
+public class AlbumFragment extends Fragment {
 
     private static final String ALBUM_NAME = "album_name";
+    private static final String TAG = "GalleyFragment.fragment";
 
     private String mAlbumName;
-
-    private AlbumsMessageUtils mAlbumsMessageUtils;
 
     private RecyclerView mRvImages;
     private ImagesAdapter mAdapterImages;
@@ -36,8 +34,8 @@ public class GalleyFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
-    public static GalleyFragment newInstance(String albumName) {
-        GalleyFragment fragment = new GalleyFragment();
+    public static AlbumFragment newInstance(String albumName) {
+        AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
         args.putString(ALBUM_NAME, albumName);
         fragment.setArguments(args);
@@ -64,6 +62,7 @@ public class GalleyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -79,24 +78,15 @@ public class GalleyFragment extends Fragment {
         init();
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
     private void init(){
-
-        mListURI = mAlbumsMessageUtils.getTargetImagePath(getActivity(), mAlbumName);
-
+        mListURI = AlbumOperatingUtils.getAlbumImagesPath(getActivity(), mAlbumName);
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);
 
-        //监听RecyclerView滚动状态
+
+
+        /** 监听RecyclerView滚动状态 */
         mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -114,7 +104,7 @@ public class GalleyFragment extends Fragment {
      */
     private void getPositionAndOffset() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) mRvImages.getLayoutManager();
-        //获取可视的第一个view
+        /** 获取可视的第一个view */
         View topView = layoutManager.getChildAt(0);
         if(topView != null) {
             //获取与该view的顶部的偏移量

@@ -4,8 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.util.LongSparseArray;
 
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
@@ -16,13 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by meitu on 2017/7/10.
+ * @author csm
+ * 用于获取相册以及图片信息
  */
 
-public class AlbumsMessageUtils {
+public class AlbumOperatingUtils {
 
 
-    public static Map<String, AlbumMessage> getGalleryNameAndCover(Context context){
+    /**
+     * @param context
+     * @return mapAlbums 存储键值对：相册名 : 相册信息
+     * AlbumMessage: 包括相册名、图片数、封面uri;
+     */
+    public static Map<String, AlbumMessage> getAlbumsMessage(Context context){
         Map<String, AlbumMessage> mapAlbums = new HashMap<>();
         AlbumMessage albumMessage;
         Cursor cursor;
@@ -41,58 +45,63 @@ public class AlbumsMessageUtils {
             if (!mapAlbums.containsKey(albumName)){
                 albumMessage = new AlbumMessage();
                 albumMessage.setAblumName(albumName);
-                albumMessage.setAblumSize(1);
+                albumMessage.setAlbumSize(1);
                 albumMessage.setCover(coverURI);
                 mapAlbums.put(albumName, albumMessage);
             }else {
                 albumMessage = mapAlbums.get(albumName);
-                int size = albumMessage.getAblumSize();
-                albumMessage.setAblumSize(size+1);
+                int size = albumMessage.getAlbumSize();
+                albumMessage.setAlbumSize(size+1);
                 mapAlbums.put(albumName, albumMessage);
             }
         }
-
         cursor.close();
-
         cursor = null;
 
         return mapAlbums;
     }
 
-    public static List<String> getTargetImagePath(Context context, String filePath){
+    /**
+     * 获取相册中所有图片的地址
+     * @param context
+     * @param  albumName 相册名
+     * @return listImages 该相册下 所有图片的地址
+     */
+    public static List<String> getAlbumImagesPath(Context context, String albumName){
         ContentResolver contentResolver = context.getContentResolver();
-        List<String> mImages = new ArrayList<>();
+        List<String> listImages = new ArrayList<>();
         Cursor cursor;
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
 
         String selection = MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME +  "=?";
-        String[] selectionArgs = {filePath};
+        String[] selectionArgs = {albumName};
 
         cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
                 selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
-            String mFile = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
-
-            String mURI = cursor.getString(
+            String imageUrl = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            mImages.add(mURI);
+            listImages.add(imageUrl);
 
         }
-
         cursor.close();
-
         cursor = null;
 
-        return mImages;
+        return listImages;
     }
+
+    /**
+     * 获取最近的100张图片
+     * @param context
+     * @return listRecentImages 存储了最近100张图片的地址
+     */
 
     public static List<String> getRecentImagePath(Context context){
         ContentResolver contentResolver = context.getContentResolver();
-        List<String> mRecentImage = new ArrayList<>();
+        List<String> listRecentImages = new ArrayList<>();
         Cursor cursor;
 
         String[] projection = { MediaStore.Images.ImageColumns.DATA };
@@ -100,18 +109,23 @@ public class AlbumsMessageUtils {
 
         int i = 100;
         while ((cursor.moveToNext())&&((i--)>0)){
-            String mPath = cursor.getString(
+            String imageUrl = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            mRecentImage.add(mPath);
+            listRecentImages.add(imageUrl);
         }
-
         cursor.close();
-
         cursor = null;
 
-        return mRecentImage;
+        return listRecentImages;
     }
+
+    /**
+     * 获取图片信息
+     * @param context
+     * @param uri 图片的地址
+     * @return iamgeMessage 图片信息
+     */
 
     public static ImageMessage getImageMessage(Context context, String uri){
         ContentResolver contentResolver = context.getContentResolver();
@@ -136,30 +150,24 @@ public class AlbumsMessageUtils {
 
             String imageName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
 
-            String mFile = cursor.getString(
+            String albumName = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
 
-            String mURI = cursor.getString(
+            String imageUri = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
             long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
 
             imageMessage.setId(id);
             imageMessage.setImageName(imageName);
-            imageMessage.setFile(mFile);
-            imageMessage.setPath(mURI);
+            imageMessage.setAlbum(albumName);
+            imageMessage.setPath(imageUri);
             imageMessage.setDate(date);
         }
-
         cursor.close();
-
         cursor = null;
-
 
         return imageMessage;
     }
-
-
-
 
 }

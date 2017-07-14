@@ -13,13 +13,12 @@ import android.view.ViewGroup;
 import com.example.meitu.gallerydemoproject.Activity.AlbumsListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumsMessageUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
 import java.util.List;
 
 public class RecentImagesFragment extends Fragment {
 
-    private AlbumsMessageUtils mAlbumsMessageUtils;
 
     private RecyclerView mRvRecentImages;
     private ImagesAdapter mAdapterImages;
@@ -40,8 +39,6 @@ public class RecentImagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -54,6 +51,7 @@ public class RecentImagesFragment extends Fragment {
             public void onClick(View v) {
                 Intent mIntentGalleryList = new Intent(getActivity(), AlbumsListActivity.class);
                 startActivity(mIntentGalleryList);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
             }
         });
 
@@ -69,25 +67,14 @@ public class RecentImagesFragment extends Fragment {
         super.onStart();
         init();
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private void init(){
 
-        mListURI = AlbumsMessageUtils.getRecentImagePath(getActivity());
+        mListURI = AlbumOperatingUtils.getRecentImagePath(getActivity());
 
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvRecentImages.setAdapter(mAdapterImages);
 
-        //监听RecyclerView滚动状态
+        /** 监听RecyclerView滚动状态 */
         mRvRecentImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -105,7 +92,7 @@ public class RecentImagesFragment extends Fragment {
      */
     private void getPositionAndOffset() {
         LinearLayoutManager layoutManager = (LinearLayoutManager) mRvRecentImages.getLayoutManager();
-        //获取可视的第一个view
+        /** 获取可视的第一个view */
         View topView = layoutManager.getChildAt(0);
         if(topView != null) {
             //获取与该view的顶部的偏移量
