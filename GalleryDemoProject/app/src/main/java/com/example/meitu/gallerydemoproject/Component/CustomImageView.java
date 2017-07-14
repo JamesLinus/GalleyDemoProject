@@ -78,6 +78,9 @@ public class CustomImageView extends ImageView {
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
 
+        float centerX = canvas.getWidth();
+        float centerY = canvas.getHeight();
+
 
 //        Rect rect = new Rect(mWidthSize/2, mHeightSize/2, mWidthSize, mHeightSize);
 
