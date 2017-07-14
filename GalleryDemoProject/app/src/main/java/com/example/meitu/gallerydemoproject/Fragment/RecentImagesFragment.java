@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.meitu.gallerydemoproject.Activity.AlbumsListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
+import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
@@ -23,7 +24,7 @@ public class RecentImagesFragment extends Fragment {
     private RecyclerView mRvRecentImages;
     private ImagesAdapter mAdapterImages;
 
-    private View mBtnOthers;
+    private CustomToolBar mCustomToolBar;
 
     private List<String> mListURI;
 
@@ -45,8 +46,9 @@ public class RecentImagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_image_fragment, container, false);
 
-        mBtnOthers = (View)view.findViewById(R.id.ll_btn);
-        mBtnOthers.setOnClickListener(new View.OnClickListener() {
+        mCustomToolBar = (CustomToolBar) view.findViewById(R.id.ctb_recent);
+
+        mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mIntentGalleryList = new Intent(getActivity(), AlbumsListActivity.class);

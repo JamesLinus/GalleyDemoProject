@@ -9,38 +9,12 @@
     android:background="@color/galley_background"
     tools:context="com.example.meitu.gallerydemoproject.Activity.RecentImagesActivity">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <com.example.meitu.gallerydemoproject.Component.CustomToolBar
+        android:id="@+id/ctb_recent"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/tool_bar_background"
-        android:elevation="8dp">
-        <LinearLayout
-            android:id="@+id/ll_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <TextView
-                android:id="@+id/tv_btn_message"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:background="@color/btn_background_black"
-                android:text="@string/tool_bar_others_btn"
-                android:textColor="@color/color_text_white"/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="4"
-            android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
-            android:gravity="center|left"
-            android:text="@string/recent_album_name"
-            android:textColor="@color/color_text_white"/>
-    </LinearLayout>
+        app:btn_name="Others"
+        app:title="Recent"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recent_images"

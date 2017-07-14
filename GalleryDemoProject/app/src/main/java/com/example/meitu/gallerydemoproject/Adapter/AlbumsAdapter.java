@@ -39,6 +39,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         return new GalleryListViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(GalleryListViewHolder holder, final int position) {
 

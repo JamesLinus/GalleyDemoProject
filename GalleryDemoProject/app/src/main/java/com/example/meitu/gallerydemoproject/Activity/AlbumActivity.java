@@ -24,7 +24,7 @@ public class AlbumActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gallery_activity);
+        setContentView(R.layout.album_activity);
 
         String albumNameKey = getString(R.string.album_name_key);
         mAlbumName = getIntent().getStringExtra(albumNameKey);

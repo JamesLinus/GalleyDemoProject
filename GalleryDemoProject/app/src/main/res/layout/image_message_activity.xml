@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <TextView
-                android:id="@+id/tv_btn_message"
+                android:id="@+id/tv_tool_bar_btn"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:layout_gravity="center"
@@ -25,7 +25,7 @@
                 android:text="@string/tool_bar_back_btn"/>
         </LinearLayout>
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_tool_bar_title"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="4"

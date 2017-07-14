@@ -50,6 +50,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     }
 
     /**
+     * 绑定视图
      * 加载图片
      * @param holder
      * @param position

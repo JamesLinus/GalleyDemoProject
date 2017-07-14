@@ -1,6 +1,5 @@
 package com.example.meitu.gallerydemoproject.Component;
 
-
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;

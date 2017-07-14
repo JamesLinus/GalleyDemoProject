@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
+import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
@@ -26,8 +27,7 @@ public class AlbumFragment extends Fragment {
     private RecyclerView mRvImages;
     private ImagesAdapter mAdapterImages;
 
-    private View mBtnBack;
-    private TextView mTvTitle;
+    private CustomToolBar mCustomToolBar;
 
     private List<String> mListURI;
 
@@ -53,12 +53,12 @@ public class AlbumFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.galley_fragment, container, false);
+        View view = inflater.inflate(R.layout.album_fragment, container, false);
 
-        mTvTitle = (TextView)view.findViewById(R.id.tv_title);
-        mTvTitle.setText(mAlbumName);
-        mBtnBack = (View)view.findViewById(R.id.ll_btn);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mCustomToolBar = (CustomToolBar)view.findViewById(R.id.ctb_album);
+        mCustomToolBar.setTitle(mAlbumName);
+
+        mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getActivity().finish();
