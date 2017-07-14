@@ -3,6 +3,7 @@ package com.example.meitu.gallerydemoproject.Component;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -64,10 +65,11 @@ public class CustomToolBar extends LinearLayout {
         mTvBtn = (TextView) mToolBar.findViewById(R.id.tv_tool_bar_btn);
         mTvTitle = (TextView)mToolBar.findViewById(R.id.tv_tool_bar_title);
 
-        if (null != mStrBtn){
+        if (!TextUtils.isEmpty(mStrBtn)){
             mTvBtn.setText(mStrBtn);
         }else {
-            mTvBtn.setText("");
+            mTvBtn.setVisibility(GONE);
+            mToolBar.removeView(mTvBtn);
         }
 
         if (null != mStrTitle){
@@ -80,6 +82,7 @@ public class CustomToolBar extends LinearLayout {
     public void setButton(String btnMessage){
         if (null != btnMessage) {
             mTvBtn.setText(btnMessage);
+            mTvBtn.setVisibility(VISIBLE);
         }
     }
     public void setTitle(String title){

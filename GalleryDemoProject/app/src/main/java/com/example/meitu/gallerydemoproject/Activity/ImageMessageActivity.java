@@ -59,7 +59,7 @@ public class ImageMessageActivity extends AppCompatActivity {
         mBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finishActivity();
             }
         });
 
@@ -69,10 +69,14 @@ public class ImageMessageActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent){
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:{
-                finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finishActivity();
             }
         }
         return super.onKeyDown(keyCode, keyEvent);
+    }
+
+    private void finishActivity(){
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

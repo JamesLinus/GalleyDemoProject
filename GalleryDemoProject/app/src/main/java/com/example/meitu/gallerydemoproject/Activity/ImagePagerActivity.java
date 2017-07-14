@@ -78,7 +78,7 @@ public class ImagePagerActivity extends AppCompatActivity {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:{
                 finish();
-                this.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             }
             default:{

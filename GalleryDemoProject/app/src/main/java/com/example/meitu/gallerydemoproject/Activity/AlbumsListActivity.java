@@ -6,9 +6,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
@@ -30,6 +32,8 @@ public class AlbumsListActivity extends AppCompatActivity {
     private RecyclerView mRvAlbums;
     private AlbumsAdapter mAdapterAlbums;
 
+    private CustomToolBar mCustomToolBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -49,6 +53,14 @@ public class AlbumsListActivity extends AppCompatActivity {
      * 初始化列表数据
      */
     private void init(){
+        mCustomToolBar = (CustomToolBar)findViewById(R.id.ctb_albums);
+        mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finishActivity();
+            }
+        });
+
         mRvAlbums = (RecyclerView)findViewById(R.id.rv_albums);
         mRvAlbums.setLayoutManager(new LinearLayoutManager(AlbumsListActivity.this));
 
@@ -64,12 +76,15 @@ public class AlbumsListActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent keyEvent){
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:{
-                finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                finishActivity();
             }
         }
         return super.onKeyDown(keyCode, keyEvent);
     }
 
 
+    private void finishActivity(){
+        finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
 }

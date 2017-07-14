@@ -9,8 +9,7 @@
         android:id="@+id/ctb_album"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        app:title="null"
-        app:btn_name="Back"
+        app:btn_name="@string/tool_bar_back_btn"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_images"
