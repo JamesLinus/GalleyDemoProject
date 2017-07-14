@@ -30,8 +30,6 @@ public class CustomToolBar extends LinearLayout {
     private TextView mTvBtn;
     private TextView mTvTitle;
 
-
-
     public CustomToolBar(Context context) {
         this(context, null);
     }
@@ -72,7 +70,7 @@ public class CustomToolBar extends LinearLayout {
             mToolBar.removeView(mTvBtn);
         }
 
-        if (null != mStrTitle){
+        if (!TextUtils.isEmpty(mStrTitle)){
             mTvTitle.setText(mStrTitle);
         }else {
             mTvTitle.setText("");
@@ -80,13 +78,14 @@ public class CustomToolBar extends LinearLayout {
     }
 
     public void setButton(String btnMessage){
-        if (null != btnMessage) {
+        if (null != btnMessage && TextUtils.isEmpty(btnMessage)) {
             mTvBtn.setText(btnMessage);
             mTvBtn.setVisibility(VISIBLE);
         }
     }
+
     public void setTitle(String title){
-        if (null != title){
+        if (null != title && TextUtils.isEmpty(title)){
             mTvTitle.setText(title);
         }
     }
