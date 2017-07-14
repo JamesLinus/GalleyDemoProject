@@ -63,29 +63,18 @@ public class CustomToolBar extends LinearLayout {
         mTvBtn = (TextView) mToolBar.findViewById(R.id.tv_tool_bar_btn);
         mTvTitle = (TextView)mToolBar.findViewById(R.id.tv_tool_bar_title);
 
-        if (!TextUtils.isEmpty(mStrBtn)){
-            mTvBtn.setText(mStrBtn);
-        }else {
-            mTvBtn.setVisibility(GONE);
-            mToolBar.removeView(mTvBtn);
-        }
-
-        if (!TextUtils.isEmpty(mStrTitle)){
-            mTvTitle.setText(mStrTitle);
-        }else {
-            mTvTitle.setText("");
-        }
+        setButton(mStrBtn);
+        setTitle(mStrTitle);
     }
 
     public void setButton(String btnMessage){
-        if (null != btnMessage && TextUtils.isEmpty(btnMessage)) {
+        if (null != btnMessage) {
             mTvBtn.setText(btnMessage);
-            mTvBtn.setVisibility(VISIBLE);
         }
     }
 
     public void setTitle(String title){
-        if (null != title && TextUtils.isEmpty(title)){
+        if (null != title){
             mTvTitle.setText(title);
         }
     }
