@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:background="@color/galley_background">
 
-    <ImageView
+    <com.example.meitu.gallerydemoproject.Component.CustomImageView
         android:id="@+id/iv_big_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="center"
+        android:scaleType="fitCenter"
         android:src="@mipmap/ic_launcher_round"/>
 
 
