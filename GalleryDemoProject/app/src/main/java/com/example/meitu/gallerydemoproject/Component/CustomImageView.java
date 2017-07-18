@@ -74,6 +74,11 @@ public class CustomImageView extends ImageView {
         mHeithtMode = MeasureSpec.getMode(heightMeasureSpec);
     }
 
+   @Override
+   public void setImageBitmap(Bitmap bitmap){
+       super.setImageBitmap(bitmap);
+   }
+
     @Override
     public void onDraw(Canvas canvas){
         super.onDraw(canvas);
