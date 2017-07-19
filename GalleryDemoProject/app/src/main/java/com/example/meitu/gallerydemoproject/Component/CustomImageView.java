@@ -1,48 +1,76 @@
 package com.example.meitu.gallerydemoproject.Component;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.annotation.UiThread;
 import android.util.AttributeSet;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.R;
+import com.nostra13.universalimageloader.utils.L;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by meitu on 2017/7/13.
  */
 
-public class CustomImageView extends ImageView {
+public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private Context mContext;
+    private Canvas mCanvas;
 
-    private int mWidthSize;
-    private int mWidthMode;
-    private int mHeightSize;
-    private int mHeithtMode;
+    private Bitmap mBitmap;
+    private RectF mBitmapRectF;
+    private Matrix mBitmapMatrix;
+    private PointF mStartPoint;
 
 
-    private float scaleCenterX;
-    private float scaleCenterY;
+    private float mViewHeight;
+    private float mViewWidth;
+    private float mBitmapHeight;
+    private float mBitmapWidth;
+    private float mInitBitmapHeight;
+    private float mInitBitmapWidth;
 
-    private float mScale;
 
-    private float oldDistance = 1;
+    private boolean once = true;
 
-    private Drawable mContentDrawable;
-    private BitmapDrawable mContentBitmap;
+
+    /**
+     *  1为拖拽
+     *  2为缩放
+     */
+    private int dragOrScale = 1;
+
+    private Paint mDeafultPaint;
+
+
+    private float mScale = 1;
+    private float mRestoreScale = 1;
+
+    private float oldDistance = 0;
+
+    private float startDistance = 0;
+
+
 
     public CustomImageView(Context context) {
         this(context, null);
@@ -59,104 +87,170 @@ public class CustomImageView extends ImageView {
     }
 
     private void initValue(){
+        mDeafultPaint = new Paint();
+
+       mBitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
+        mStartPoint = new PointF(0, 0);
+
+        mBitmapRectF = new RectF(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2,
+                getWidth()/2 + mBitmap.getWidth()/2, getHeight()/2 + mBitmap.getHeight()/2);
+        mBitmapMatrix = new Matrix();
+
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        // 注册 OnGlobalLayoutListener 的监听
+        ViewTreeObserver observer = getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(this);
+        super.onAttachedToWindow();
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        if (once){
+            mViewHeight = getMeasuredHeight();
+            mViewWidth = getMeasuredWidth();
+
+            mBitmapHeight = this.mBitmap.getHeight();
+            mBitmapWidth = this.mBitmap.getWidth();
+
+            mInitBitmapHeight = mBitmapHeight;
+            mInitBitmapWidth = mBitmapWidth;
+
+            float mDrawableWidth = this.getDrawable().getIntrinsicWidth();
+            float mDraeableHeight = this.getDrawable().getIntrinsicHeight();
+
+            Log.d("mBitmap", mBitmapWidth + " " + mBitmapHeight);
+            Log.d("mView", mViewWidth + " " + mViewHeight);
+            Log.d("mDrawable", mDrawableWidth + " " + mDraeableHeight);
+
+            if (mBitmapHeight/mBitmapWidth > mViewHeight / mViewWidth){
+                mScale = mViewHeight/mBitmapHeight;
+            }else {
+                mScale = mViewWidth/mBitmapWidth;
+            }
+            mBitmapMatrix.postScale(mScale, mScale, mBitmapWidth/2, mBitmapHeight/2);
+
+            setImageMatrix(mBitmapMatrix);
+            once = false;
+        }
+    }
+
+    @Override
+    public void onMeasure(int measureSpecWidth, int measureSpecHeight){
+        super.onMeasure(measureSpecWidth, measureSpecHeight);
 
     }
 
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
-        mWidthSize = MeasureSpec.getSize(widthMeasureSpec);
-        mWidthMode = MeasureSpec.getMode(widthMeasureSpec);
+    public void setImageBitmap(Bitmap bitmap){
+        super.setImageBitmap(bitmap);
+        mBitmap = bitmap;
+        mBitmapMatrix.mapRect(mBitmapRectF);
 
-        mHeightSize = MeasureSpec.getSize(heightMeasureSpec);
-        mHeithtMode = MeasureSpec.getMode(heightMeasureSpec);
-    }
+   }
 
    @Override
-   public void setImageBitmap(Bitmap bitmap){
-       super.setImageBitmap(bitmap);
+   public void onDraw(Canvas canvas){
+       mCanvas = canvas;
+       mDeafultPaint = new Paint();
+
+       canvas.translate(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2);
+
+       Log.d("canvas", mCanvas.getWidth() + " " + mCanvas.getHeight());
+       canvas.drawBitmap(mBitmap, mBitmapMatrix, mDeafultPaint);
+
    }
 
     @Override
-    public void onDraw(Canvas canvas){
-        super.onDraw(canvas);
-
-        float centerX = canvas.getWidth();
-        float centerY = canvas.getHeight();
-
-
-//        Rect rect = new Rect(mWidthSize/2, mHeightSize/2, mWidthSize, mHeightSize);
-
-        mContentDrawable = getDrawable();
-        mContentBitmap = (BitmapDrawable)mContentDrawable;
-
-
-        RectF rect = new RectF(mWidthSize - scaleCenterX, mHeightSize-mContentDrawable.getIntrinsicHeight()/2, mContentDrawable.getIntrinsicWidth(), mContentDrawable.getIntrinsicHeight());
-        Log.d("custom image view" , scaleCenterX + " " + scaleCenterY);
-
-        Paint paint = new Paint();
-        Matrix mMatrix = getMatrix();
-        mMatrix.mapRect(rect);
-        mMatrix.postScale(mScale, mScale);
-
-        canvas.drawBitmap(mContentBitmap.getBitmap(), mMatrix, paint);
-//        canvas.scale(mScale, mScale);
-    }
-
-
-
-    @Override
     public boolean onTouchEvent(MotionEvent event){
-        super.onTouchEvent(event);
-        float x1;
-        float y1;
-        float x2;
-        float y2;
 
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_POINTER_DOWN:{
                 if (2 == event.getPointerCount()){
-                    float oldX1 = event.getX(0);
-                    float oldY1 = event.getY(0);
-
-                    float oldX2 = event.getX(1);
-                    float oldY2 = event.getY(1);
-
-                    oldDistance = (float) Math.sqrt((oldX1 - oldX2)*(oldX1 - oldX2) + (oldY1 - oldY2)*(oldY1 - oldY2));
-
-                    scaleCenterX = (oldX1 + oldX2) / 2;
-                    scaleCenterY = (oldY1 + oldY2) / 2;
-
-//                    Log.d("CustomImageView", oldDistance + " " + scaleCenterX + " " + scaleCenterY);
+                    dragOrScale = 2;
+                    float dx = event.getX(1) - event.getX(0);
+                    float dy = event.getY(1) - event.getY(0);
+                    oldDistance = (float) Math.sqrt(dx * dx + dy * dy);
+                    startDistance = (float) Math.sqrt(dx * dx + dy * dy);
                 }
+                break;
+            }
+            case MotionEvent.ACTION_DOWN:{
+                dragOrScale = 1;
+                mStartPoint.set(event.getX(), event.getY());
                 break;
             }
             case MotionEvent.ACTION_MOVE:{
                 if (1 == event.getPointerCount()){
-//                    invalidate();
+                    if (1 == dragOrScale){
+                        mBitmapMatrix.postTranslate(event.getX() - mStartPoint.x, event.getY() - mStartPoint.y);
+                        mStartPoint.set(event.getX(), event.getY());
+                        setImageMatrix(mBitmapMatrix);
+                        break;
+                    }
                 }else if (2 == event.getPointerCount()){
-                    x1 = event.getX(0);
-                    y1 = event.getY(0);
+                    if (2 == dragOrScale){
+                        float dx = event.getX(1) - event.getX(0);
+                        float dy = event.getY(1) - event.getY(0);
 
-                    x2 = event.getX(1);
-                    y2 = event.getY(1);
+                        float newDistance;
+                        newDistance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                    float newDistance = (float) Math.sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
-                    mScale = (newDistance/oldDistance);
-                    oldDistance = newDistance;
-//                    Log.d("CustomImageView", mScale + " " + oldDistance + " " + scaleCenterX + " " + scaleCenterY);
-                    invalidate();
+                        mScale = newDistance / oldDistance;
+                        mRestoreScale = newDistance / startDistance;
+
+                        oldDistance = newDistance;
+
+                        /** 在中心点处缩放 */
+                        mBitmapMatrix.postScale(mScale, mScale, mBitmap.getWidth()/2, mBitmap.getHeight()/2);
+
+                        setImageMatrix(mBitmapMatrix);
+
+                        Log.d("drawable ", getDrawable().getIntrinsicHeight() + " " + getDrawable().getIntrinsicWidth());
+
+                        break;
+                    }
                 }
-                break;
+            }
+            case MotionEvent.ACTION_POINTER_UP :{
+                    if (mRestoreScale<1){
+                        startAnimationToInitialStatus();
+                        mRestoreScale = 1;
+                    }
+                    break;
             }
             default:{
                 break;
             }
         }
-
         return true;
     }
+
+    private void startAnimationToInitialStatus(){
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 1/mRestoreScale);
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float scale = (float)animation.getAnimatedValue();
+
+
+
+                mBitmapMatrix.postScale(scale, scale, mBitmap.getWidth()/2, mBitmap.getHeight()/2);
+
+                Log.d("test", scale + " ");
+                setImageMatrix(mBitmapMatrix);
+            }
+        });
+
+        valueAnimator.setDuration(1000);
+
+        valueAnimator.start();
+
+    }
+
 
 }
