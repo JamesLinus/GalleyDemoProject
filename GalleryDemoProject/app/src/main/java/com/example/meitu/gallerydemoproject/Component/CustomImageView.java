@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
@@ -20,6 +21,8 @@ import com.example.meitu.gallerydemoproject.R;
  */
 
 public class CustomImageView extends ImageView{
+
+    private Context mContext;
 
     private Bitmap mBitmap;
 
@@ -34,6 +37,7 @@ public class CustomImageView extends ImageView{
     private float mBitmapHeight;
     private float mBitmapWidth;
 
+    private boolean isDoubleTaped = false;
 
     private float mScale = 1;
     /**
@@ -57,6 +61,7 @@ public class CustomImageView extends ImageView{
 
     public CustomImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mContext = context;
         initValues();
     }
 
@@ -130,7 +135,7 @@ public class CustomImageView extends ImageView{
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-
+        mGestureDetector.onTouchEvent(event);
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_POINTER_DOWN:{
                 if (2 == event.getPointerCount()){
@@ -173,8 +178,11 @@ public class CustomImageView extends ImageView{
                 mBitmapMatrix.getValues(values);
 
                 float mFinalScale = values[0];
+                float startX = values[2];
+                float startY = values[5];
                 if (mFinalScale < mInitScale ){
-                    startAnimationToInitialStatus();
+                    startAnimationScale(mFinalScale, mInitScale);
+                    startAnimationToTargetPoint(startX, startY, 0, 0);
                 }
                 break;
             }
@@ -185,23 +193,37 @@ public class CustomImageView extends ImageView{
         return true;
     }
 
-    private void startAnimationToInitialStatus(){
-        float[] values = new float[9];
-        mBitmapMatrix.getValues(values);
+    GestureDetector mGestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
 
-        float oldScale = values[0];
+        @Override
+        public boolean onDoubleTap(MotionEvent event){
+            float[] values = new float[9];
+            mBitmapMatrix.getValues(values);
 
-        float oldX = values[2];
-        float oldY = values[5];
+            float mScale = values[0];
+            float startX = values[2];
+            float startY = values[5];
 
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(oldScale, mInitScale);
-        final ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(oldX, 0);
-        final ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(oldY, 0);
+            float dValueX = (mBitmapWidth * 1.5f - mBitmapWidth) / 2f;
+            float dValueY = (mBitmapHeight * 1.5f - mBitmapHeight) / 2f;
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(valueAnimator).with(valueAnimator1).with(valueAnimator2);
-        animatorSet.setDuration(800);
-        animatorSet.start();
+            if (mScale < mInitScale * 1.5f && startX == 0 && startY == 0){
+                startAnimationScale(mScale, mInitScale*1.5f);
+                startAnimationToTargetPoint(startX, startY, -dValueX, -dValueY);
+            }else {
+                startAnimationScale(mScale, mInitScale);
+                startAnimationToTargetPoint( startX, startY, 0, 0);
+            }
+
+            return super.onDoubleTap(event);
+        }
+    });
+
+    private void startAnimationScale(float startScale, float endScale){
+
+        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(startScale, endScale);
+        valueAnimator.setDuration(800);
+        valueAnimator.start();
 
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -216,6 +238,17 @@ public class CustomImageView extends ImageView{
                 setImageMatrix(mBitmapMatrix);
             }
         });
+    }
+
+    private void startAnimationToTargetPoint(float startX, float startY, float targetX, float targetY){
+
+        final ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(startX, targetX);
+        final ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(startY, targetY);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(valueAnimator1).with(valueAnimator2);
+        animatorSet.setDuration(800);
+        animatorSet.start();
 
         valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
