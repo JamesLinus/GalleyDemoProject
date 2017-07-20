@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -37,8 +38,6 @@ public class CustomImageView extends ImageView{
     private float mBitmapHeight;
     private float mBitmapWidth;
 
-    private boolean isDoubleTaped = false;
-
     private float mScale = 1;
     /**
      * 初始时的缩放倍数
@@ -50,6 +49,7 @@ public class CustomImageView extends ImageView{
      */
     private float mLastDistance = 0;
 
+    GestureDetector mGestureDetector;
 
     public CustomImageView(Context context) {
         this(context, null);
@@ -66,13 +66,14 @@ public class CustomImageView extends ImageView{
     }
 
     private void initValues(){
+        mGestureDetector = new GestureDetector(mContext, new MyGestureListener());
+
         setScaleType(ScaleType.MATRIX);
 
         mBitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
         mLastPoint = new PointF(0, 0);
 
         mBitmapMatrix = new Matrix();
-
     }
 
     /**
@@ -193,32 +194,6 @@ public class CustomImageView extends ImageView{
         return true;
     }
 
-    GestureDetector mGestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener(){
-
-        @Override
-        public boolean onDoubleTap(MotionEvent event){
-            float[] values = new float[9];
-            mBitmapMatrix.getValues(values);
-
-            float mScale = values[0];
-            float startX = values[2];
-            float startY = values[5];
-
-            float dValueX = (mBitmapWidth * 1.5f - mBitmapWidth) / 2f;
-            float dValueY = (mBitmapHeight * 1.5f - mBitmapHeight) / 2f;
-
-            if (mScale < mInitScale * 1.5f && startX == 0 && startY == 0){
-                startAnimationScale(mScale, mInitScale*1.5f);
-                startAnimationToTargetPoint(startX, startY, -dValueX, -dValueY);
-            }else {
-                startAnimationScale(mScale, mInitScale);
-                startAnimationToTargetPoint( startX, startY, 0, 0);
-            }
-
-            return super.onDoubleTap(event);
-        }
-    });
-
     private void startAnimationScale(float startScale, float endScale){
 
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(startScale, endScale);
@@ -230,51 +205,85 @@ public class CustomImageView extends ImageView{
             public void onAnimationUpdate(ValueAnimator animation) {
                 float scale = (float)animation.getAnimatedValue();
                 float[] values = new float[9];
-                mBitmapMatrix.getValues(values);
+                Matrix animatorMatrix = mBitmapMatrix;
+                animatorMatrix.getValues(values);
                 values[0] = scale;
                 values[4] = scale;
 
-                mBitmapMatrix.setValues(values);
-                setImageMatrix(mBitmapMatrix);
+                animatorMatrix.setValues(values);
+                setImageMatrix(animatorMatrix);
+                animatorMatrix = null;
             }
         });
     }
 
     private void startAnimationToTargetPoint(float startX, float startY, float targetX, float targetY){
 
-        final ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(startX, targetX);
-        final ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(startY, targetY);
+        final ValueAnimator valueAnimatorX = ValueAnimator.ofFloat(startX, targetX);
+        final ValueAnimator valueAnimatorY = ValueAnimator.ofFloat(startY, targetY);
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(valueAnimator1).with(valueAnimator2);
+        animatorSet.play(valueAnimatorX).with(valueAnimatorY);
         animatorSet.setDuration(800);
         animatorSet.start();
 
-        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        valueAnimatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float translation = (float)animation.getAnimatedValue();
                 float[] values = new float[9];
-                mBitmapMatrix.getValues(values);
+                Matrix animatorMatrix = mBitmapMatrix;
+                animatorMatrix.getValues(values);
                 values[2] = translation;
 
-                mBitmapMatrix.setValues(values);
-                setImageMatrix(mBitmapMatrix);
+                animatorMatrix.setValues(values);
+                setImageMatrix(animatorMatrix);
+                animatorMatrix = null;
             }
         });
 
-        valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        valueAnimatorY.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float translation = (float)animation.getAnimatedValue();
                 float[] values = new float[9];
-                mBitmapMatrix.getValues(values);
+                Matrix animatorMatrix = mBitmapMatrix;
+                animatorMatrix.getValues(values);
                 values[5] = translation;
 
-                mBitmapMatrix.setValues(values);
-                setImageMatrix(mBitmapMatrix);
+                animatorMatrix.setValues(values);
+                setImageMatrix(animatorMatrix);
+                animatorMatrix = null;
             }
         });
     }
 
+    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onDoubleTap(MotionEvent event){
+            float[] values = new float[9];
+            Log.d("test", "double tap");
+            Matrix doubleTapMatrix = mBitmapMatrix;
+            doubleTapMatrix.getValues(values);
+
+            float mScale = values[0];
+            float startX = values[2];
+            float startY = values[5];
+
+            float dValueX = (mBitmapWidth * 2f - mBitmapWidth) / 2f;
+            float dValueY = (mBitmapHeight * 2f - mBitmapHeight) / 2f;
+
+            if (mScale < mInitScale * 2f && startX == 0 && startY == 0){
+                startAnimationScale(mScale, mInitScale * 2f);
+                startAnimationToTargetPoint(startX, startY, -dValueX, -dValueY);
+            }else {
+                startAnimationScale(mScale, mInitScale);
+                startAnimationToTargetPoint( startX, startY, 0, 0);
+            }
+
+            doubleTapMatrix = null;
+
+            return super.onDoubleTap(event);
+        }
+    }
 }
