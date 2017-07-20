@@ -49,7 +49,10 @@ public class CustomImageView extends ImageView{
      */
     private float mLastDistance = 0;
 
-    GestureDetector mGestureDetector;
+    private GestureDetector mGestureDetector;
+
+    private ValueAnimator mAnimatorScale;
+    private AnimatorSet mAnimatorSetMove;
 
     public CustomImageView(Context context) {
         this(context, null);
@@ -74,6 +77,9 @@ public class CustomImageView extends ImageView{
         mLastPoint = new PointF(0, 0);
 
         mBitmapMatrix = new Matrix();
+
+        mAnimatorScale = new ValueAnimator();
+        mAnimatorSetMove = new AnimatorSet();
     }
 
     /**
@@ -123,13 +129,12 @@ public class CustomImageView extends ImageView{
         mBitmap = bitmap;
    }
 
-
     /** 将画布的原点移动到  getWidth()/2 - mBitmapWidth/2, getHeight()/2 - mBitmapHeight/2)；使得图片中心在View中心*/
    @Override
    public void onDraw(Canvas canvas){
        Paint mDeafultPaint = new Paint();
 
-       canvas.translate(getWidth()/2f - mBitmapWidth/2f, getHeight()/2f - mBitmapHeight/2f);
+       canvas.translate( (getWidth() - mBitmapWidth)/2f, (getHeight() - mBitmapHeight)/2f);
        canvas.drawBitmap(mBitmap, mBitmapMatrix, mDeafultPaint);
 
    }
@@ -140,6 +145,9 @@ public class CustomImageView extends ImageView{
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_POINTER_DOWN:{
                 if (2 == event.getPointerCount()){
+                    mAnimatorScale.cancel();
+                    mAnimatorSetMove.cancel();
+
                     float dx = event.getX(1) - event.getX(0);
                     float dy = event.getY(1) - event.getY(0);
                     mLastDistance = (float) Math.sqrt(dx * dx + dy * dy);
@@ -196,11 +204,11 @@ public class CustomImageView extends ImageView{
 
     private void startAnimationScale(float startScale, float endScale){
 
-        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(startScale, endScale);
-        valueAnimator.setDuration(800);
-        valueAnimator.start();
+        mAnimatorScale = ValueAnimator.ofFloat(startScale, endScale);
+        mAnimatorScale.setDuration(800);
+        mAnimatorScale.start();
 
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimatorScale.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float scale = (float)animation.getAnimatedValue();
@@ -222,10 +230,9 @@ public class CustomImageView extends ImageView{
         final ValueAnimator valueAnimatorX = ValueAnimator.ofFloat(startX, targetX);
         final ValueAnimator valueAnimatorY = ValueAnimator.ofFloat(startY, targetY);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(valueAnimatorX).with(valueAnimatorY);
-        animatorSet.setDuration(800);
-        animatorSet.start();
+        mAnimatorSetMove.play(valueAnimatorX).with(valueAnimatorY);
+        mAnimatorSetMove.setDuration(800);
+        mAnimatorSetMove.start();
 
         valueAnimatorX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
