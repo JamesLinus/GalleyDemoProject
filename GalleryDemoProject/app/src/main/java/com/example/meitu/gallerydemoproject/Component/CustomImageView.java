@@ -36,20 +36,11 @@ public class CustomImageView extends ImageView{
     private float mBitmapHeight;
     private float mBitmapWidth;
 
-    /**
-     *  1为拖拽
-     *  2为缩放
-     */
-    private int dragOrScale = 1;
-
-    private Paint mDeafultPaint;
-
     private float mScale = 1;
     private float mInitScale = 1;
-    private float mRestoreScale = 1;
 
     private float oldDistance = 0;
-    private float startDistance = 0;
+
 
     public CustomImageView(Context context) {
         this(context, null);
@@ -68,13 +59,11 @@ public class CustomImageView extends ImageView{
     private void initValue(){
         setScaleType(ScaleType.MATRIX);
 
-        mDeafultPaint = new Paint();
-
         mBitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
         mStartPoint = new PointF(0, 0);
 
-        mBitmapRectF = new RectF(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2,
-                getWidth()/2 + mBitmap.getWidth()/2, getHeight()/2 + mBitmap.getHeight()/2);
+//        mBitmapRectF = new RectF(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2,
+//                getWidth()/2 + mBitmap.getWidth()/2, getHeight()/2 + mBitmap.getHeight()/2);
         mBitmapMatrix = new Matrix();
 
     }
@@ -99,7 +88,6 @@ public class CustomImageView extends ImageView{
 
         }
         mInitScale = mScale;
-        mRestoreScale = mScale;
 
         float[] values = new float[9];
 
@@ -117,13 +105,13 @@ public class CustomImageView extends ImageView{
     public void setImageBitmap(Bitmap bitmap){
         super.setImageBitmap(bitmap);
         mBitmap = bitmap;
-        mBitmapMatrix.mapRect(mBitmapRectF);
+//        mBitmapMatrix.mapRect(mBitmapRectF);
 
    }
 
    @Override
    public void onDraw(Canvas canvas){
-       mDeafultPaint = new Paint();
+       Paint mDeafultPaint = new Paint();
 
        canvas.translate(getWidth()/2 - mBitmapWidth/2, getHeight()/2 - mBitmapHeight/2);
        canvas.drawBitmap(mBitmap, mBitmapMatrix, mDeafultPaint);
@@ -136,66 +124,47 @@ public class CustomImageView extends ImageView{
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_POINTER_DOWN:{
                 if (2 == event.getPointerCount()){
-                    dragOrScale = 2;
                     float dx = event.getX(1) - event.getX(0);
                     float dy = event.getY(1) - event.getY(0);
                     oldDistance = (float) Math.sqrt(dx * dx + dy * dy);
-                    startDistance = oldDistance;
+
+                    float centerX = (event.getX(0) + event.getX(1))/2;
+                    float centerY = (event.getY(0) + event.getY(1))/2;
+
+                    mStartPoint.set(centerX, centerY);
                 }
-                break;
-            }
-            case MotionEvent.ACTION_DOWN:{
-                dragOrScale = 1;
-                mStartPoint.set(event.getX(), event.getY());
                 break;
             }
             case MotionEvent.ACTION_MOVE:{
-                if (1 == event.getPointerCount()){
-                    if (1 == dragOrScale){
+                if (2 == event.getPointerCount()){
+                    getParent().requestDisallowInterceptTouchEvent(true);
+                    float dx = event.getX(1) - event.getX(0);
+                    float dy = event.getY(1) - event.getY(0);
+                    float newDistance;
 
-                        mBitmapMatrix.postTranslate(event.getX() - mStartPoint.x, event.getY() - mStartPoint.y);
-                        mStartPoint.set(event.getX(), event.getY());
-                        setImageMatrix(mBitmapMatrix);
+                    float centerX = (event.getX(0) + event.getX(1))/2;
+                    float centerY = (event.getY(0) + event.getY(1))/2;
 
-                        break;
-                    }
-                }else if (2 == event.getPointerCount()){
-                    if (2 == dragOrScale){
-                        getParent().requestDisallowInterceptTouchEvent(true);
+                    newDistance = (float) Math.sqrt(dx * dx + dy * dy);
 
-                        float dx = event.getX(1) - event.getX(0);
-                        float dy = event.getY(1) - event.getY(0);
+                    mScale = newDistance / oldDistance;
+                    oldDistance = newDistance;
 
-                        float newDistance;
+                    /** 在中心点处缩放 */
+                    mBitmapMatrix.postScale(mScale, mScale, mBitmap.getWidth()*mInitScale/2, mBitmap.getHeight()*mInitScale/2);
+                    mBitmapMatrix.postTranslate(centerX - mStartPoint.x, centerY - mStartPoint.y);
+                    mStartPoint.set(centerX, centerY);
 
-                        float centerX = (event.getX(0) + event.getX(1))/2;
-                        float centerY = (event.getY(0) + event.getY(1))/2;
-
-
-
-                        newDistance = (float) Math.sqrt(dx * dx + dy * dy);
-
-
-                        mScale = newDistance / oldDistance;
-                        mRestoreScale = newDistance / startDistance;
-
-                        oldDistance = newDistance;
-
-                        /** 在中心点处缩放 */
-                      mBitmapMatrix.postScale(mScale, mScale, mBitmap.getWidth()*mInitScale/2, mBitmap.getHeight()*mInitScale/2);
-//                        mBitmapMatrix.postScale(mScale, mScale);
-
-
-                        setImageMatrix(mBitmapMatrix);
-                        break;
-                    }
+                    setImageMatrix(mBitmapMatrix);
+                    break;
                 }
             }
             case MotionEvent.ACTION_POINTER_UP :{
-                mRestoreScale = mRestoreScale * mInitScale;
-                if (mRestoreScale < mInitScale ){
+                float[] values = new float[9];
+                mBitmapMatrix.getValues(values);
+                float mFinalScale = values[0];
+                if (mFinalScale < mInitScale ){
                     startAnimationToInitialStatus();
-                    mRestoreScale = 1 ;
                 }
                 break;
             }
