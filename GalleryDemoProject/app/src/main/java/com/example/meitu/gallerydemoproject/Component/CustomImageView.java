@@ -38,8 +38,12 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
     private Canvas mCanvas;
 
     private Bitmap mBitmap;
+    private Bitmap newBitmap;
+
     private RectF mBitmapRectF;
     private Matrix mBitmapMatrix;
+    private Matrix mDefaultMatrix;
+
     private PointF mStartPoint;
 
 
@@ -47,6 +51,7 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
     private float mViewWidth;
     private float mBitmapHeight;
     private float mBitmapWidth;
+
     private float mInitBitmapHeight;
     private float mInitBitmapWidth;
 
@@ -64,6 +69,8 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
 
 
     private float mScale = 1;
+    private float mInitScale = 1;
+
     private float mRestoreScale = 1;
 
     private float oldDistance = 0;
@@ -87,14 +94,17 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
     }
 
     private void initValue(){
+        setScaleType(ScaleType.MATRIX);
+
         mDeafultPaint = new Paint();
 
-       mBitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
+        mBitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
         mStartPoint = new PointF(0, 0);
 
         mBitmapRectF = new RectF(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2,
                 getWidth()/2 + mBitmap.getWidth()/2, getHeight()/2 + mBitmap.getHeight()/2);
         mBitmapMatrix = new Matrix();
+        mDefaultMatrix = new Matrix();
 
     }
 
@@ -108,39 +118,92 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
 
     @Override
     public void onGlobalLayout() {
-        if (once){
-            mViewHeight = getMeasuredHeight();
-            mViewWidth = getMeasuredWidth();
-
-            mBitmapHeight = this.mBitmap.getHeight();
-            mBitmapWidth = this.mBitmap.getWidth();
-
-            mInitBitmapHeight = mBitmapHeight;
-            mInitBitmapWidth = mBitmapWidth;
-
-            float mDrawableWidth = this.getDrawable().getIntrinsicWidth();
-            float mDraeableHeight = this.getDrawable().getIntrinsicHeight();
-
-            Log.d("mBitmap", mBitmapWidth + " " + mBitmapHeight);
-            Log.d("mView", mViewWidth + " " + mViewHeight);
-            Log.d("mDrawable", mDrawableWidth + " " + mDraeableHeight);
-
-            if (mBitmapHeight/mBitmapWidth > mViewHeight / mViewWidth){
-                mScale = mViewHeight/mBitmapHeight;
-            }else {
-                mScale = mViewWidth/mBitmapWidth;
-            }
-            mBitmapMatrix.postScale(mScale, mScale, mBitmapWidth/2, mBitmapHeight/2);
-
-            setImageMatrix(mBitmapMatrix);
-            once = false;
-        }
+//        if (once){
+//            mViewHeight = getMeasuredHeight();
+//            mViewWidth = getMeasuredWidth();
+//
+//            mBitmapHeight = this.mBitmap.getHeight();
+//            mBitmapWidth = this.mBitmap.getWidth();
+//
+//            mInitBitmapHeight = mBitmapHeight;
+//            mInitBitmapWidth = mBitmapWidth;
+//
+//            float mDrawableWidth = this.getDrawable().getIntrinsicWidth();
+//            float mDraeableHeight = this.getDrawable().getIntrinsicHeight();
+//
+//            Log.d("mBitmap", mBitmapWidth + " " + mBitmapHeight);
+//            Log.d("mView", mViewWidth + " " + mViewHeight);
+//            Log.d("mDrawable", mDrawableWidth + " " + mDraeableHeight);
+//
+//            if (mBitmapHeight/mBitmapWidth > mViewHeight / mViewWidth){
+//                mScale = mViewHeight/mBitmapHeight;
+//                mBitmapHeight = mViewHeight;
+//                mBitmapWidth = mBitmapWidth * mScale;
+//            }else {
+//                mScale = mViewWidth/mBitmapWidth;
+//                mBitmapWidth = mViewWidth;
+//                mBitmapHeight = mBitmapHeight * mScale;
+//
+//            }
+//            mInitScale = mScale;
+//            mRestoreScale = mScale;
+////            mBitmapMatrix.postTranslate(mViewWidth/2 - mBitmapWidth/2, mViewHeight/2 - mBitmapHeight/2);
+//            mBitmapMatrix.postScale(mScale, mScale);
+//            setImageMatrix(mBitmapMatrix);
+//
+//            Log.d("mBitmap changed", mBitmap.getWidth() + " " + mBitmap.getHeight());
+//
+//            once = false;
+//        }
     }
 
     @Override
     public void onMeasure(int measureSpecWidth, int measureSpecHeight){
         super.onMeasure(measureSpecWidth, measureSpecHeight);
+        mViewHeight = getMeasuredHeight();
+        mViewWidth = getMeasuredWidth();
 
+        mBitmapHeight = this.mBitmap.getHeight();
+        mBitmapWidth = this.mBitmap.getWidth();
+
+        mInitBitmapHeight = mBitmapHeight;
+        mInitBitmapWidth = mBitmapWidth;
+
+        float mDrawableWidth = this.getDrawable().getIntrinsicWidth();
+        float mDraeableHeight = this.getDrawable().getIntrinsicHeight();
+
+        Log.d("mBitmap", mBitmapWidth + " " + mBitmapHeight);
+        Log.d("mView", mViewWidth + " " + mViewHeight);
+        Log.d("mDrawable", mDrawableWidth + " " + mDraeableHeight);
+
+        if (mBitmapHeight/mBitmapWidth > mViewHeight / mViewWidth){
+            mScale = mViewHeight/mBitmapHeight;
+            mBitmapHeight = mViewHeight;
+            mBitmapWidth = mBitmapWidth * mScale;
+        }else {
+            mScale = mViewWidth/mBitmapWidth;
+            mBitmapWidth = mViewWidth;
+            mBitmapHeight = mBitmapHeight * mScale;
+
+        }
+        mInitScale = mScale;
+        mRestoreScale = mScale;
+
+        float[] values = new float[9];
+
+        mBitmapMatrix.getValues(values);
+        values[0] = mScale;
+        values[4] = mScale;
+        mBitmapMatrix.setValues(values);
+
+        setImageMatrix(mBitmapMatrix);
+
+        Log.d("mBitmap changed", mBitmap.getWidth() + " " + mBitmap.getHeight());
+
+//        if (once){
+//            startAnimationToInitialStatus();
+//            once = false;
+//        }
     }
 
 
@@ -157,9 +220,9 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
        mCanvas = canvas;
        mDeafultPaint = new Paint();
 
-       canvas.translate(getWidth()/2 - mBitmap.getWidth()/2, getHeight()/2 - mBitmap.getHeight()/2);
 
        Log.d("canvas", mCanvas.getWidth() + " " + mCanvas.getHeight());
+       canvas.translate(getWidth()/2 - mBitmapWidth/2, getHeight()/2 - mBitmapHeight/2);
        canvas.drawBitmap(mBitmap, mBitmapMatrix, mDeafultPaint);
 
    }
@@ -174,7 +237,7 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
                     float dx = event.getX(1) - event.getX(0);
                     float dy = event.getY(1) - event.getY(0);
                     oldDistance = (float) Math.sqrt(dx * dx + dy * dy);
-                    startDistance = (float) Math.sqrt(dx * dx + dy * dy);
+                    startDistance = oldDistance;
                 }
                 break;
             }
@@ -189,6 +252,7 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
                         mBitmapMatrix.postTranslate(event.getX() - mStartPoint.x, event.getY() - mStartPoint.y);
                         mStartPoint.set(event.getX(), event.getY());
                         setImageMatrix(mBitmapMatrix);
+
                         break;
                     }
                 }else if (2 == event.getPointerCount()){
@@ -200,7 +264,7 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
                         newDistance = (float) Math.sqrt(dx * dx + dy * dy);
 
                         mScale = newDistance / oldDistance;
-                        mRestoreScale = newDistance / startDistance;
+                        mRestoreScale *= newDistance / startDistance;
 
                         oldDistance = newDistance;
 
@@ -209,16 +273,16 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
 
                         setImageMatrix(mBitmapMatrix);
 
-                        Log.d("drawable ", getDrawable().getIntrinsicHeight() + " " + getDrawable().getIntrinsicWidth());
+                        Log.d("drawable scaled", getDrawable().getIntrinsicHeight() + " " + getDrawable().getIntrinsicWidth());
 
                         break;
                     }
                 }
             }
             case MotionEvent.ACTION_POINTER_UP :{
-                    if (mRestoreScale<1){
+                    if (mRestoreScale < mInitScale ){
                         startAnimationToInitialStatus();
-                        mRestoreScale = 1;
+                        mRestoreScale = 1 ;
                     }
                     break;
             }
@@ -230,27 +294,61 @@ public class CustomImageView extends ImageView implements ViewTreeObserver.OnGlo
     }
 
     private void startAnimationToInitialStatus(){
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, 1/mRestoreScale);
+        float[] values = new float[9];
+        mBitmapMatrix.getValues(values);
+
+        float oldScale = values[0];
+
+        float oldX = values[2];
+        float oldY = values[5];
+
+        final ValueAnimator valueAnimator = ValueAnimator.ofFloat(oldScale, mInitScale);
+        final ValueAnimator valueAnimator1 = ValueAnimator.ofFloat(oldX, 0);
+        final ValueAnimator valueAnimator2 = ValueAnimator.ofFloat(oldY, 0);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(valueAnimator).with(valueAnimator1).with(valueAnimator2);
+        animatorSet.start();
 
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float scale = (float)animation.getAnimatedValue();
+                float[] values = new float[9];
+                mBitmapMatrix.getValues(values);
+                values[0] = scale;
+                values[4] = scale;
 
-
-
-                mBitmapMatrix.postScale(scale, scale, mBitmap.getWidth()/2, mBitmap.getHeight()/2);
-
-                Log.d("test", scale + " ");
+                mBitmapMatrix.setValues(values);
                 setImageMatrix(mBitmapMatrix);
             }
         });
 
-        valueAnimator.setDuration(1000);
+        valueAnimator1.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float translation = (float)animation.getAnimatedValue();
+                float[] values = new float[9];
+                mBitmapMatrix.getValues(values);
+                values[2] = translation;
 
-        valueAnimator.start();
+                mBitmapMatrix.setValues(values);
+                setImageMatrix(mBitmapMatrix);
+            }
+        });
 
+        valueAnimator2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float translation = (float)animation.getAnimatedValue();
+                float[] values = new float[9];
+                mBitmapMatrix.getValues(values);
+                values[5] = translation;
+
+                mBitmapMatrix.setValues(values);
+                setImageMatrix(mBitmapMatrix);
+            }
+        });
     }
-
 
 }

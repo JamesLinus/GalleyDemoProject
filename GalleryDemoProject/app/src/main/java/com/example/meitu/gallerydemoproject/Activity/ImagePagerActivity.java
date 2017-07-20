@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -49,7 +50,7 @@ public class ImagePagerActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
 
-        mViewPager.setAdapter(new FragmentPagerAdapter(mFragmentManager) {
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(mFragmentManager) {
             @Override
             public Fragment getItem(int position) {
                 String uri = mImageUris.get(position);
