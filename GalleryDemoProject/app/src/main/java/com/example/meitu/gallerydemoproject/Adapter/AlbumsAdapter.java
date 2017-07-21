@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Activity.AlbumActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.R;

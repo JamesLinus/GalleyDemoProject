@@ -3,6 +3,8 @@ package com.example.meitu.gallerydemoproject.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.Fragment.AlbumListFragment;
@@ -142,5 +144,23 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
                     .hide(mRecentImagesFragment)
                     .commitAllowingStateLoss();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent keyEvent){
+        switch (keyCode){
+            case KeyEvent.KEYCODE_BACK:{
+                if (1 == getSupportFragmentManager().getBackStackEntryCount()){
+                    finish();
+                }else {
+                    getSupportFragmentManager().popBackStack();
+                }
+                break;
+            }default:{
+                break;
+            }
+        }
+
+        return true;
     }
 }

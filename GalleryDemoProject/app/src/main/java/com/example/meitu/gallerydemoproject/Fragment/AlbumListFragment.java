@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Activity.AlbumsListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
@@ -61,7 +60,8 @@ public class AlbumListFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((RecentImagesFragment.RecentImagesCallBack)getActivity()).showRecentImagesFragment();
+                getActivity().getSupportFragmentManager()
+                        .popBackStack();
             }
         });
 

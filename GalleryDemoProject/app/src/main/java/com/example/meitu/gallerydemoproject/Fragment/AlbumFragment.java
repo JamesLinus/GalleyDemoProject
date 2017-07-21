@@ -65,7 +65,8 @@ public class AlbumFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AlbumListFragment.AlbumListCallBack)getActivity()).showAlbumsListFragment();
+                getActivity().getSupportFragmentManager()
+                        .popBackStack();
             }
         });
 

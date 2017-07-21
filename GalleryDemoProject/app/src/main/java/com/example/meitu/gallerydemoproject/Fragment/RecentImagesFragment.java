@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.example.meitu.gallerydemoproject.Activity.AlbumsListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
