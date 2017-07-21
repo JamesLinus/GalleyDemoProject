@@ -15,8 +15,8 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
-
 import com.example.meitu.gallerydemoproject.R;
+
 /**
  * Created by meitu on 2017/7/13.
  */
@@ -38,7 +38,6 @@ public class CustomImageView extends ImageView{
     private float mBitmapHeight;
     private float mBitmapWidth;
 
-    private float mScale = 1;
     /**
      * 初始时的缩放倍数
      */
@@ -101,21 +100,20 @@ public class CustomImageView extends ImageView{
         mBitmapWidth = mBitmap.getWidth();
 
         if (mBitmapHeight/mBitmapWidth > mViewHeight / mViewWidth){
-            mScale = mViewHeight/mBitmapHeight;
+            mInitScale = mViewHeight/mBitmapHeight;
             mBitmapHeight = mViewHeight;
-            mBitmapWidth = mBitmapWidth * mScale;
+            mBitmapWidth = mBitmapWidth * mInitScale;
         }else {
-            mScale = mViewWidth/mBitmapWidth;
+            mInitScale = mViewWidth/mBitmapWidth;
             mBitmapWidth = mViewWidth;
-            mBitmapHeight = mBitmapHeight * mScale;
+            mBitmapHeight = mBitmapHeight * mInitScale;
         }
-        mInitScale = mScale;
 
         float[] values = new float[9];
 
         mBitmapMatrix.getValues(values);
-        values[0] = mScale;
-        values[4] = mScale;
+        values[0] = mInitScale;
+        values[4] = mInitScale;
         mBitmapMatrix.setValues(values);
 
         setImageMatrix(mBitmapMatrix);
@@ -161,6 +159,7 @@ public class CustomImageView extends ImageView{
             }
             case MotionEvent.ACTION_MOVE:{
                 if (2 == event.getPointerCount()){
+
                     getParent().requestDisallowInterceptTouchEvent(true);
                     float dx = event.getX(1) - event.getX(0);
                     float dy = event.getY(1) - event.getY(0);
@@ -170,13 +169,24 @@ public class CustomImageView extends ImageView{
 
                     float newDistance = (float) Math.sqrt(dx * dx + dy * dy);
 
+                    float mScale;
+
                     mScale = newDistance / mLastDistance;
                     mLastDistance = newDistance;
 
-                    /** 在中心点处缩放 */
-                    mBitmapMatrix.postScale(mScale, mScale, mBitmapWidth/2f, mBitmapHeight/2f);
-                    mBitmapMatrix.postTranslate(centerX - mLastPoint.x, centerY - mLastPoint.y);
-                    mLastPoint.set(centerX, centerY);
+                    //FIXME 可能还有些bug；放大后双击缩小后，可能会使图片消失
+                    //FIXME 也有可能只是移动的原因
+                    float[] values = new float[9];
+                    mBitmapMatrix.getValues(values);
+
+                    if ((values[0] >= mInitScale * 3f && mScale > 1f)) {
+                        return false;
+                    }
+                        /** 在中心点处缩放 */
+                        mBitmapMatrix.postScale(mScale, mScale, mBitmapWidth/2f, mBitmapHeight/2f);
+                        mBitmapMatrix.postTranslate(centerX - mLastPoint.x, centerY - mLastPoint.y);
+                        mLastPoint.set(centerX, centerY);
+
 
                     setImageMatrix(mBitmapMatrix);
                     break;
@@ -190,8 +200,8 @@ public class CustomImageView extends ImageView{
                 float startX = values[2];
                 float startY = values[5];
                 if (mFinalScale < mInitScale ){
-                    startAnimationScale(mFinalScale, mInitScale);
-                    startAnimationToTargetPoint(startX, startY, 0, 0);
+                    startAnimationScale(mFinalScale, mInitScale, mBitmapMatrix);
+                    startAnimationToTargetPoint(startX, startY, 0, 0, mBitmapMatrix);
                 }
                 break;
             }
@@ -202,7 +212,7 @@ public class CustomImageView extends ImageView{
         return true;
     }
 
-    private void startAnimationScale(float startScale, float endScale){
+    private void startAnimationScale(float startScale, float endScale, final Matrix bitmapMatrix){
 
         mAnimatorScale = ValueAnimator.ofFloat(startScale, endScale);
         mAnimatorScale.setDuration(800);
@@ -213,19 +223,17 @@ public class CustomImageView extends ImageView{
             public void onAnimationUpdate(ValueAnimator animation) {
                 float scale = (float)animation.getAnimatedValue();
                 float[] values = new float[9];
-                Matrix animatorMatrix = mBitmapMatrix;
-                animatorMatrix.getValues(values);
+                bitmapMatrix.getValues(values);
                 values[0] = scale;
                 values[4] = scale;
 
-                animatorMatrix.setValues(values);
-                setImageMatrix(animatorMatrix);
-                animatorMatrix = null;
+                bitmapMatrix.setValues(values);
+                setImageMatrix(bitmapMatrix);
             }
         });
     }
 
-    private void startAnimationToTargetPoint(float startX, float startY, float targetX, float targetY){
+    private void startAnimationToTargetPoint(float startX, float startY, float targetX, float targetY, final Matrix bitmapMatrix){
 
         final ValueAnimator valueAnimatorX = ValueAnimator.ofFloat(startX, targetX);
         final ValueAnimator valueAnimatorY = ValueAnimator.ofFloat(startY, targetY);
@@ -239,13 +247,12 @@ public class CustomImageView extends ImageView{
             public void onAnimationUpdate(ValueAnimator animation) {
                 float translation = (float)animation.getAnimatedValue();
                 float[] values = new float[9];
-                Matrix animatorMatrix = mBitmapMatrix;
-                animatorMatrix.getValues(values);
+
+                bitmapMatrix.getValues(values);
                 values[2] = translation;
 
-                animatorMatrix.setValues(values);
-                setImageMatrix(animatorMatrix);
-                animatorMatrix = null;
+                bitmapMatrix.setValues(values);
+                setImageMatrix(bitmapMatrix);
             }
         });
 
@@ -269,7 +276,7 @@ public class CustomImageView extends ImageView{
         @Override
         public boolean onDoubleTap(MotionEvent event){
             float[] values = new float[9];
-            Log.d("test", "double tap");
+
             Matrix doubleTapMatrix = mBitmapMatrix;
             doubleTapMatrix.getValues(values);
 
@@ -281,15 +288,14 @@ public class CustomImageView extends ImageView{
             float dValueY = (mBitmapHeight * 2f - mBitmapHeight) / 2f;
 
             if (mScale < mInitScale * 2f && startX == 0 && startY == 0){
-                startAnimationScale(mScale, mInitScale * 2f);
-                startAnimationToTargetPoint(startX, startY, -dValueX, -dValueY);
+                startAnimationScale(mScale, mInitScale * 2f, doubleTapMatrix);
+                startAnimationToTargetPoint(startX, startY, -dValueX, -dValueY, doubleTapMatrix);
             }else {
-                startAnimationScale(mScale, mInitScale);
-                startAnimationToTargetPoint( startX, startY, 0, 0);
+                startAnimationScale(mScale, mInitScale, doubleTapMatrix);
+                startAnimationToTargetPoint( startX, startY, 0, 0, doubleTapMatrix);
             }
 
             doubleTapMatrix = null;
-
             return super.onDoubleTap(event);
         }
     }

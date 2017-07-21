@@ -77,6 +77,10 @@ public class AlbumsListActivity extends AppCompatActivity {
         switch (keyCode){
             case KeyEvent.KEYCODE_BACK:{
                 finishActivity();
+                break;
+            }
+            default:{
+                break;
             }
         }
         return super.onKeyDown(keyCode, keyEvent);
