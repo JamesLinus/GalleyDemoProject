@@ -186,7 +186,6 @@ public class CustomImageView extends ImageView{
                         mBitmapMatrix.postTranslate(centerX - mLastPoint.x, centerY - mLastPoint.y);
                         mLastPoint.set(centerX, centerY);
 
-
                     setImageMatrix(mBitmapMatrix);
                     break;
                 }

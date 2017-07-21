@@ -64,12 +64,12 @@ public class RecentImagesFragment extends Fragment {
         return view;
     }
 
-
     @Override
-    public void onStart(){
-        super.onStart();
+    public void onResume(){
+        super.onResume();
         init();
     }
+
     private void init(){
 
         mListURI = AlbumOperatingUtils.getRecentImagePath(getActivity());

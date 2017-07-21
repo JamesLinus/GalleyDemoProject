@@ -67,12 +67,16 @@ public class AlbumListFragment extends Fragment {
 
         mRvAlbums = (RecyclerView)view.findViewById(R.id.rv_albums);
         mRvAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
         mMapAlbumsMessage = AlbumOperatingUtils.getAlbumsMessage(getActivity());
         List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
 
         mAdapterAlbums = new AlbumsAdapter(getActivity(), albumMessages);
         mRvAlbums.setAdapter(mAdapterAlbums);
-        return view;
     }
 }

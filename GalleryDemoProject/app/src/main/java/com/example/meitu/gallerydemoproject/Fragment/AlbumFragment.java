@@ -77,8 +77,8 @@ public class AlbumFragment extends Fragment {
 
 
     @Override
-    public void onStart(){
-        super.onStart();
+    public void onResume(){
+        super.onResume();
         init();
     }
 
@@ -87,8 +87,6 @@ public class AlbumFragment extends Fragment {
         mListURI = AlbumOperatingUtils.getAlbumImagesPath(getActivity(), mAlbumName);
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);
-
-
 
         /** 监听RecyclerView滚动状态 */
         mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {

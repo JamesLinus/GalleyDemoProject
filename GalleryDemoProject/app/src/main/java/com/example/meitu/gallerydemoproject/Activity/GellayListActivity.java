@@ -22,8 +22,6 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
     private static final String ALBUMS_LIST_TAG = "ALBUMS_LIST";
     private static final String RECENT_IMAGES_FRAGMENT_TAG = "RECENT_IMAGES";
 
-    private String[] tags = {ALBUM_TAG, ALBUMS_LIST_TAG, RECENT_IMAGES_FRAGMENT_TAG};
-
     private FragmentManager mFramentManager;
 
     private AlbumFragment mAlbumFragment;
