@@ -36,6 +36,10 @@ public class AlbumListFragment extends Fragment {
 
     private CustomToolBar mCustomToolBar;
 
+    public interface AlbumListCallBack{
+        void showAlbumsListFragment();
+    }
+
     public static AlbumListFragment newInstance(){
         AlbumListFragment albumListFragment = new AlbumListFragment();
         return albumListFragment;
@@ -57,7 +61,7 @@ public class AlbumListFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ((RecentImagesFragment.RecentImagesCallBack)getActivity()).showRecentImagesFragment();
             }
         });
 

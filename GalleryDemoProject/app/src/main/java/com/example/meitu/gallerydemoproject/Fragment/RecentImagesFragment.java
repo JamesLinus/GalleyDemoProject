@@ -31,6 +31,10 @@ public class RecentImagesFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
+    public interface RecentImagesCallBack{
+        void showRecentImagesFragment();
+    }
+
     public static RecentImagesFragment newInstance() {
         RecentImagesFragment fragment = new RecentImagesFragment();
         return fragment;
@@ -51,9 +55,7 @@ public class RecentImagesFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mIntentGalleryList = new Intent(getActivity(), AlbumsListActivity.class);
-                startActivity(mIntentGalleryList);
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                ((AlbumListFragment.AlbumListCallBack)getActivity()).showAlbumsListFragment();
             }
         });
 

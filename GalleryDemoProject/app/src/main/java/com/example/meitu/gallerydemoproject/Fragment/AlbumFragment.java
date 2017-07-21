@@ -34,6 +34,10 @@ public class AlbumFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
+    public interface AlbumCallBack{
+        void showAlbumFragment(String albumName);
+    }
+
     public static AlbumFragment newInstance(String albumName) {
         AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
@@ -61,8 +65,7 @@ public class AlbumFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                ((AlbumListFragment.AlbumListCallBack)getActivity()).showAlbumsListFragment();
             }
         });
 
