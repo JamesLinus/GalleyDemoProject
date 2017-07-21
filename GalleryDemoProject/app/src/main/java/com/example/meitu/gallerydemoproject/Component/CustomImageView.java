@@ -174,12 +174,11 @@ public class CustomImageView extends ImageView{
                     mScale = newDistance / mLastDistance;
                     mLastDistance = newDistance;
 
-                    //FIXME 可能还有些bug；放大后双击缩小后，可能会使图片消失
-                    //FIXME 也有可能只是移动的原因
+                    //FIXME 放大后双击缩小后，可能会使图片消失；也有可能是移动所产生的BUG
                     float[] values = new float[9];
                     mBitmapMatrix.getValues(values);
 
-                    if ((values[0] >= mInitScale * 3f && mScale > 1f)) {
+                    if ((values[0] >= mInitScale * 3f && mScale > 1f) || (values[0] <= mInitScale / 2.5f && mScale < 1f)) {
                         return false;
                     }
                         /** 在中心点处缩放 */

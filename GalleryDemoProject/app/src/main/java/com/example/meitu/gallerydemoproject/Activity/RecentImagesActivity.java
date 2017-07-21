@@ -10,6 +10,8 @@ import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
 public class RecentImagesActivity extends AppCompatActivity {
 
+    private static final String RECENT_IMAGES_FRAGMENT_TAG = "RECENT_IMAGES";
+
 
     private FragmentManager mFragmentManager;
     private RecentImagesFragment mRecentImagesFragment;
@@ -26,11 +28,17 @@ public class RecentImagesActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
-        mFragmentManager.popBackStack();
-        mFragmentManager.beginTransaction()
-                .add(R.id.frame_container, mRecentImagesFragment)
-                .addToBackStack("RecnetImages")
-                .commit();
+
+        if (null != mFragmentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
+            mFragmentManager.beginTransaction()
+                    .show(mRecentImagesFragment)
+                    .commitAllowingStateLoss();
+        }else {
+            mFragmentManager.beginTransaction()
+                    .add(R.id.frame_container, mRecentImagesFragment)
+                    .addToBackStack(RECENT_IMAGES_FRAGMENT_TAG)
+                    .commitAllowingStateLoss();
+        }
     }
 
     @Override

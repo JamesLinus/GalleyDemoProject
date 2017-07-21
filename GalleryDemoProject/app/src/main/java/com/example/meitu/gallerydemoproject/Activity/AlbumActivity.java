@@ -14,6 +14,7 @@ import com.example.meitu.gallerydemoproject.R;
 
 public class AlbumActivity extends AppCompatActivity {
     private static final String TAG = "GalleyActivity.activity";
+    private static final String FRAGMENT_TAG = "ALBUM";
 
     private String mAlbumName;
 
@@ -32,12 +33,17 @@ public class AlbumActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentManager.findFragmentById(R.id.frame_container);
-        mFragmentManager.popBackStack();
-        mFragmentManager.beginTransaction()
-                .add(R.id.frame_container, mGalleyFragment)
-                .addToBackStack("Images")
-                .commit();
 
+        if (null != mFragmentManager.findFragmentByTag(FRAGMENT_TAG)){
+            mFragmentManager.beginTransaction()
+                    .show(mGalleyFragment)
+                    .commitAllowingStateLoss();
+        }else {
+            mFragmentManager.beginTransaction()
+                    .add(R.id.frame_container, mGalleyFragment)
+                    .addToBackStack(FRAGMENT_TAG)
+                    .commitAllowingStateLoss();
+        }
 
     }
     @Override
