@@ -38,6 +38,7 @@ public class AlbumActivity extends AppCompatActivity {
             mFragmentManager.beginTransaction()
                     .show(mGalleyFragment)
                     .commitAllowingStateLoss();
+
         }else {
             mFragmentManager.beginTransaction()
                     .add(R.id.frame_container, mGalleyFragment)

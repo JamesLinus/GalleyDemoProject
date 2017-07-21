@@ -22,7 +22,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<String> mImageUris;
-    private String imageUri;
+
+    /**外部选择的图片的uri 用来与ImageUris中一一对比，找出当前的位置 */
+    private String currentImageUri;
 
     private FragmentManager mFragmentManager;
 
@@ -35,7 +37,7 @@ public class ImagePagerActivity extends AppCompatActivity {
         String mAlbumName = getString(R.string.album_name_key);
 
         mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
-        imageUri = getIntent().getStringExtra(mAlbumName);
+        currentImageUri = getIntent().getStringExtra(mAlbumName);
 
         init();
         setCurrentItem();
@@ -65,9 +67,10 @@ public class ImagePagerActivity extends AppCompatActivity {
     }
 
     private void setCurrentItem(){
-        /**找出当前ViewPage */
+
+        /**找出当前位置 */
         for (int i = 0 ; i < mImageUris.size() ; i++){
-            if (mImageUris.get(i).equals(imageUri)){
+            if (mImageUris.get(i).equals(currentImageUri)){
                 mViewPager.setCurrentItem(i);
                 break;
             }
