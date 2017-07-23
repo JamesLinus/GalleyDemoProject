@@ -7,21 +7,25 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
+import com.example.meitu.gallerydemoproject.Adapter.RecentImagesAdapter;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
+import com.nostra13.universalimageloader.utils.L;
 
 import java.util.List;
+import java.util.Map;
 
 public class RecentImagesFragment extends Fragment {
 
 
     private RecyclerView mRvRecentImages;
-    private ImagesAdapter mAdapterImages;
+    private RecentImagesAdapter mAdapterImages;
 
     private CustomToolBar mCustomToolBar;
 
@@ -59,7 +63,7 @@ public class RecentImagesFragment extends Fragment {
         });
 
         mRvRecentImages = (RecyclerView)view.findViewById(R.id.rv_recent_images);
-        mRvRecentImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        mRvRecentImages.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -72,9 +76,18 @@ public class RecentImagesFragment extends Fragment {
 
     private void init(){
 
-        mListURI = AlbumOperatingUtils.getRecentImagePath(getActivity());
+        //mListURI = AlbumOperatingUtils.getRecentImagePath(getActivity());
 
-        mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
+        Map<String, List<String>> mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(getActivity());
+
+
+
+//
+//        for (String str : mapDateToKey.keySet()){
+//            Log.d("test", str + " " + mapDateToKey.get(str).get(0));
+//        }
+
+        mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);
         mRvRecentImages.setAdapter(mAdapterImages);
 
         /** 监听RecyclerView滚动状态 */

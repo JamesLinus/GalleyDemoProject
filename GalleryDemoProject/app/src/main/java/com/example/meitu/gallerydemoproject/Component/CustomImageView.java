@@ -11,7 +11,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
@@ -178,7 +177,7 @@ public class CustomImageView extends ImageView{
                     float[] values = new float[9];
                     mBitmapMatrix.getValues(values);
 
-                    if ((values[0] >= mInitScale * 3f && mScale > 1f) || (values[0] <= mInitScale / 2.5f && mScale < 1f)) {
+                    if ((values[0] >= mInitScale * 3f && mScale > 1f) || (values[0] <= mInitScale / 3f && mScale < 1f)) {
                         return false;
                     }
                         /** 在中心点处缩放 */
