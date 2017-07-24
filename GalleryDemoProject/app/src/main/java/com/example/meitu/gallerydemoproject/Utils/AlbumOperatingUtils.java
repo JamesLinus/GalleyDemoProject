@@ -150,6 +150,8 @@ public class AlbumOperatingUtils {
 
             String dateStr = dateformat1.format(date);
 
+            Log.d("test" + i, dateStr);
+
             if (mapDateToUri.containsKey(dateStr)){
                 listUri = mapDateToUri.get(dateStr);
                 listUri.add(imageUri);

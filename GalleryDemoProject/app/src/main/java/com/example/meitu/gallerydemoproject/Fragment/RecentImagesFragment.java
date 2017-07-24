@@ -76,16 +76,7 @@ public class RecentImagesFragment extends Fragment {
 
     private void init(){
 
-        //mListURI = AlbumOperatingUtils.getRecentImagePath(getActivity());
-
         Map<String, List<String>> mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(getActivity());
-
-
-
-//
-//        for (String str : mapDateToKey.keySet()){
-//            Log.d("test", str + " " + mapDateToKey.get(str).get(0));
-//        }
 
         mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);
         mRvRecentImages.setAdapter(mAdapterImages);

@@ -2,17 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
+              android:gravity="center"
               android:layout_height="32dp">
 
     <TextView
         android:id="@+id/tv_date_title"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:gravity="center|left"
         android:text="@string/image_message_date"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_3d3d3d"/>
 </LinearLayout>

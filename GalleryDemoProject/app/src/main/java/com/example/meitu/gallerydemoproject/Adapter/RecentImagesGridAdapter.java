@@ -31,15 +31,18 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
 
     private Context mContext;
     private List<String> mListURI;
+    private List<String> mListAllURI;
 
     /**
      * 构造器
      * @param context 传入Activity的context
      * @param listURI 传入该相册图片的URI集合
+     * @param listAllURI
      */
-    public RecentImagesGridAdapter(Context context, List listURI){
+    public RecentImagesGridAdapter(Context context, List listURI, List listAllURI){
         mContext = context;
         mListURI = listURI;
+        mListAllURI = listAllURI;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
                 String imageUriKey = mContext.getString(R.string.album_name_key);
                 String imagesListKey = mContext.getString(R.string.images_list_key);
 
-                intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListURI);
+                intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListAllURI);
                 intent.putExtra(imageUriKey, imageURI);
 
                 mContext.startActivity(intent);
