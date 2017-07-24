@@ -1,18 +1,18 @@
 # AlbumsDemoProject
 
-**封装图片信息获取工具类**
+# 封装图片信息获取工具类
 
 * 使用MediaStore获取数据库中的图片信息
 * 利用Map不重复特性，保存相册名-相册信息键值对……
 * 相册信息和图片信息封装为AlbumMessage类和ImageMessage类
 
-**利用ImageLoader加载图片**
+# 利用ImageLoader加载图片
 
 * 因为ImageLoader支持缓存以及拖动列表时暂停加载等
 * 可以缓解列表有大量的图片加载的时候卡顿的现象
 * 后来为了避免多次编写重复代码，将加载的过程封装成工具类
 
-**列表的页面替换成Fragment**
+# 列表的页面替换成Fragment
 
 * 将最近图片列表、相册列表、相册改为Fragment
 * 因为发现Fragment的切换更高效
@@ -21,7 +21,7 @@
 * 为了使点击Home后，在相册中增加删除图片后，返回应用后能够同步；于是在onResume中初始化列表数据；
 * 最近图片的列表与相册图片的列表的RecyclerView使用同一个Adapter；
 
-**RecyclerView的定位**
+# RecyclerView的定位
 
 * 记录RecyclerView所滚动到的位置（一个比较常见的实现方式）
 
@@ -35,17 +35,17 @@
 
 5.在recyclerView中addOnScrollListener监听滚动事件；
 
-**自定义ToolBar**
+# 自定义ToolBar
 
 * 继承LinearLayout，编setButtonClickListener、 setTitle、 setButton；
 * 省的重复编写定制的ToolBar
 
-**使用ViewPager显示图片**
+# 使用ViewPager显示图片
 
 * 为了左右滑动可以查看上下图片；使用了VeiwPager
 * 编写了函数：setCurrentItem；遍历当前相册的所有相片的URL；获取与当前点击的图片的URL相同的选项，以确定当前ViewPager所在的位置；
 
-**自定义图片显示控件：CustomImageView**
+# 自定义图片显示控件：CustomImageView
 
 * onMeasure中获取控件的长宽和图片Bitmap的原始长宽；对比两者，将图片拉伸至与控件顶格；并记录图片此时显示的长宽及缩放比；为了便于控制缩放比例，并避免ViewPager的视图复用问题，这里的缩放直接修改Matrix的矩阵值；
 * 绘制时，将canvas移动到绘制起点的坐标为控件中心点减去图片长宽的一半；使得图片在中间显示；
@@ -63,7 +63,7 @@
 * 双击的手势使用了GestureDecetor；声明了内部类MyGestureListener，改写其onDoubleTap函数；
 * getParent().requestDisallowInterceptTouchEvent(true);请求父容器不要拦截该操作；避免在拖动以及缩放操作的时候触发ViewPager的切换操作
 
-**//TODO**
+# //TODO
 
 * 还需要做一个最近图片的列表中，按时间分类显示
 
