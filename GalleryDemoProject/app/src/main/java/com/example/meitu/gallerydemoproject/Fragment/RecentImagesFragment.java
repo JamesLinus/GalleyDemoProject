@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Adapter.RecentImagesAdapter;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
@@ -58,7 +60,7 @@ public class RecentImagesFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AlbumListFragment.AlbumListCallBack)getActivity()).showAlbumsListFragment();
+                ((GellayListActivity)getActivity()).showAlbumsListFragment();
             }
         });
 
@@ -75,7 +77,6 @@ public class RecentImagesFragment extends Fragment {
     }
 
     private void init(){
-
         Map<String, List<String>> mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(getActivity());
 
         mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);

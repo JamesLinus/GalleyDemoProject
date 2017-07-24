@@ -100,31 +100,10 @@ public class AlbumOperatingUtils {
     }
 
     /**
-     * 获取最近的100张图片
+     * 获取最近的100张图片 以及他们的日期
      * @param context
-     * @return listRecentImages 存储了最近100张图片的地址
+     * @return mapDateToUri 对应时间截点下的图片集合
      */
-
-    public static List<String> getRecentImagePath(Context context){
-        ContentResolver contentResolver = context.getContentResolver();
-        List<String> listRecentImages = new ArrayList<>();
-        Cursor cursor;
-
-        String[] projection = { MediaStore.Images.ImageColumns.DATA };
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
-
-        int i = 100;
-        while ((cursor.moveToNext())&&((i--)>0)){
-            String imageUrl = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-
-            listRecentImages.add(imageUrl);
-        }
-        cursor.close();
-        cursor = null;
-
-        return listRecentImages;
-    }
 
     public static Map<String, List<String>> getRecentImageMessage(Context context){
         ContentResolver contentResolver = context.getContentResolver();
@@ -137,20 +116,17 @@ public class AlbumOperatingUtils {
                 MediaStore.Images.ImageColumns.DATE_TAKEN};
 
         cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
 
-        int i = 100;
-        while ((cursor.moveToNext())&&((i--)>0)){
+        while ((cursor.moveToNext())){
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
             long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
 
-            SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyy MM dd");
+            SimpleDateFormat dateformat1 = new SimpleDateFormat("YYYY MM dd");
 
             String dateStr = dateformat1.format(date);
-
-            Log.d("test" + i, dateStr);
 
             if (mapDateToUri.containsKey(dateStr)){
                 listUri = mapDateToUri.get(dateStr);

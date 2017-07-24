@@ -3,13 +3,14 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:gravity="center"
-              android:layout_height="32dp">
+              android:layout_height="24dp">
 
     <TextView
         android:id="@+id/tv_date_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:gravity="center|left"
-        android:text="@string/image_message_date"/>
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="4dp"
+        android:gravity="bottom|left"
+        android:text="@string/recent_images_title"/>
 </LinearLayout>

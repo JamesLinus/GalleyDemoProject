@@ -67,7 +67,6 @@ public class ImagePagerActivity extends AppCompatActivity {
     }
 
     private void setCurrentItem(){
-
         /**找出当前位置 */
         for (int i = 0 ; i < mImageUris.size() ; i++){
             if (mImageUris.get(i).equals(currentImageUri)){

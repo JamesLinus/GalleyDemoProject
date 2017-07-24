@@ -66,7 +66,6 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
         LoadImageUtil.loadImage(mContext, holder.mImageView, imageURI);
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View v) {
 

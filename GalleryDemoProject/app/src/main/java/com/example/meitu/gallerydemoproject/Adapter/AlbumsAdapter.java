@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.R;
@@ -55,7 +56,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         holder.vContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AlbumFragment.AlbumCallBack)mContext).showAlbumFragment(albumName);
+                ((GellayListActivity)mContext).showAlbumFragment(albumName);
             }
         });
     }

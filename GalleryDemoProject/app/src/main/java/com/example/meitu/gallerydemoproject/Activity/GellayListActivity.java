@@ -1,5 +1,6 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
+import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -41,20 +42,20 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
     public void showRecentImagesFragment() {
         mFramentManager = getSupportFragmentManager();
 
-        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
-            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mAlbumFragment)
-                    .commitAllowingStateLoss();
-        }
-        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
-            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mAlbumListFragment)
-                    .commitAllowingStateLoss();
-        }
+//        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
+//            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mAlbumFragment)
+//                    .commitAllowingStateLoss();
+//        }
+//        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
+//            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mAlbumListFragment)
+//                    .commitAllowingStateLoss();
+//        }
 
         if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
             mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
@@ -91,34 +92,34 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
                     .commitAllowingStateLoss();
         }
 
-        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
-            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mAlbumListFragment)
-                    .commitAllowingStateLoss();
-        }
+//        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
+//            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mAlbumListFragment)
+//                    .commitAllowingStateLoss();
+//        }
 
-        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
-            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mRecentImagesFragment)
-                    .commitAllowingStateLoss();
-        }
+//        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
+//            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mRecentImagesFragment)
+//                    .commitAllowingStateLoss();
+//        }
     }
 
     @Override
     public void showAlbumsListFragment() {
         mFramentManager = getSupportFragmentManager();
-
-        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
-            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mAlbumFragment)
-                    .commitAllowingStateLoss();
-        }
+//
+//        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
+//            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mAlbumFragment)
+//                    .commitAllowingStateLoss();
+//        }
 
         if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
             mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
@@ -135,13 +136,13 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
                     .commitAllowingStateLoss();
         }
 
-        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
-            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
-            mFramentManager.beginTransaction()
-                    .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .hide(mRecentImagesFragment)
-                    .commitAllowingStateLoss();
-        }
+//        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
+//            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
+//            mFramentManager.beginTransaction()
+//                    .setTransition(TRANSIT_FRAGMENT_FADE)
+//                    .hide(mRecentImagesFragment)
+//                    .commitAllowingStateLoss();
+//        }
     }
 
     @Override
