@@ -63,7 +63,7 @@
 * 双击的手势使用了GestureDecetor；声明了内部类MyGestureListener，改写其onDoubleTap函数；
 * getParent().requestDisallowInterceptTouchEvent(true);请求父容器不要拦截该操作；避免在拖动以及缩放操作的时候触发ViewPager的切换操作
 
-# //TODO
+# 使用RecyclerView的getViewType写了多级列表
 
 * 还需要做一个最近图片的列表中，按时间分类显示
 
@@ -78,3 +78,7 @@
 **思路3：** 利用ExpandableListView；
 
 **最终方案：** 使用RecyclerView的getViewType方法；
+
+# //TODO
+
+多级列表的表头浮动

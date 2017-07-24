@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
@@ -20,11 +22,15 @@ import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 import com.nostra13.universalimageloader.utils.L;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class RecentImagesFragment extends Fragment {
 
+    private LinearLayout mLlTop;
+    private TextView mTvTop;
 
     private RecyclerView mRvRecentImages;
     private RecentImagesAdapter mAdapterImages;
@@ -35,6 +41,9 @@ public class RecentImagesFragment extends Fragment {
 
     private int lastOffset;
     private int lastPosition;
+
+    private int height;
+    private int currentPosition = 0;
 
     public interface RecentImagesCallBack{
         void showRecentImagesFragment();
@@ -55,6 +64,9 @@ public class RecentImagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.recent_image_fragment, container, false);
 
+        mLlTop = (LinearLayout)view.findViewById(R.id.ll_top) ;
+        mTvTop = (TextView)view.findViewById(R.id.tv_top);
+
         mCustomToolBar = (CustomToolBar) view.findViewById(R.id.ctb_recent);
 
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
@@ -65,7 +77,6 @@ public class RecentImagesFragment extends Fragment {
         });
 
         mRvRecentImages = (RecyclerView)view.findViewById(R.id.rv_recent_images);
-        mRvRecentImages.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -78,6 +89,13 @@ public class RecentImagesFragment extends Fragment {
 
     private void init(){
         Map<String, List<String>> mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(getActivity());
+        final List<String> mListTitle = new ArrayList<String>(mapDateToKey.keySet());
+        Collections.reverse(mListTitle);
+
+        mTvTop.setText(mListTitle.get(0));
+
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mRvRecentImages.setLayoutManager(linearLayoutManager);
 
         mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);
         mRvRecentImages.setAdapter(mAdapterImages);
@@ -87,11 +105,34 @@ public class RecentImagesFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                height = mLlTop.getHeight();
                 if(recyclerView.getLayoutManager() != null) {
                     getPositionAndOffset();
                 }
             }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                View view = linearLayoutManager.findViewByPosition(currentPosition + 1);
+                if (view == null)return;
+
+                if (view.getTop() <= height){
+                    mLlTop.setY(-(height-view.getTop()));
+                }else {
+                    mLlTop.setY(0);
+                }
+
+                if (currentPosition!=linearLayoutManager.findFirstVisibleItemPosition()){
+                    currentPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                    mLlTop.setY(0);
+
+                    mTvTop.setText(mListTitle.get(currentPosition));
+                }
+            }
         });
+
         scrollToPosition();
     }
 

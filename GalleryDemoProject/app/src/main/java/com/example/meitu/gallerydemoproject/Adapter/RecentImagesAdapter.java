@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TITLE = 1;
+    private static final int TYPE_TITLE = 1;
     private static final int IMAGES_GRID = 2;
 
     private Context mContext;
@@ -48,54 +48,33 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mLayoutInflater = LayoutInflater.from(mContext);
         View view;
-        if (TITLE == viewType){
-            view = mLayoutInflater.inflate(R.layout.recent_images_title_item, parent, false);
-            return new DateViewHolder(view);
-        }else if (IMAGES_GRID == viewType){
-            view = mLayoutInflater.inflate(R.layout.recent_images_grid_item, parent, false);
-            return new ImageGridViewHolder(view);
-        }
-
-        return null;
+        view = mLayoutInflater.inflate(R.layout.recent_images_grid_item, parent, false);
+        return new ImageGridViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof DateViewHolder) {
-            ((DateViewHolder) holder).tvDate.setText(mKeys.get(position/2));
-        } else if (holder instanceof ImageGridViewHolder) {
-            List<String> listImages = mMapDateToImages.get(mKeys.get(position/2));
-            RecentImagesGridAdapter recentImagesGridAdapter = new RecentImagesGridAdapter(mContext, listImages, mAllUri);
+        String key = mKeys.get(position);
+        ((ImageGridViewHolder) holder).tvDate.setText(key);
+        List<String> listImages = mMapDateToImages.get(key);
+        RecentImagesGridAdapter recentImagesGridAdapter = new RecentImagesGridAdapter(mContext, listImages, mAllUri);
 
-            ((ImageGridViewHolder)holder).mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-            ((ImageGridViewHolder)holder).mRecyclerView.setAdapter(recentImagesGridAdapter);
-        }
+        ((ImageGridViewHolder)holder).mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
+        ((ImageGridViewHolder)holder).mRecyclerView.setAdapter(recentImagesGridAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return mMapDateToImages.size() * 2;
+        return mMapDateToImages.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position % 2 == 0 ? TITLE : IMAGES_GRID;
-    }
-
-
-
-    private static class DateViewHolder extends RecyclerView.ViewHolder{
-        public TextView tvDate;
-        public DateViewHolder(View itemView) {
-            super(itemView);
-            tvDate = (TextView)itemView.findViewById(R.id.tv_date_title);
-        }
-    }
 
     private static class ImageGridViewHolder extends RecyclerView.ViewHolder{
+        public TextView tvDate;
         public RecyclerView mRecyclerView;
         public ImageGridViewHolder(View itemView) {
             super(itemView);
+            tvDate = (TextView)itemView.findViewById(R.id.tv_top);
             mRecyclerView = (RecyclerView)itemView.findViewById(R.id.rv_recent_images_grid);
         }
     }
