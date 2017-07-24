@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -92,7 +93,7 @@ public class RecentImagesFragment extends Fragment {
         final List<String> mListTitle = new ArrayList<String>(mapDateToKey.keySet());
         Collections.reverse(mListTitle);
 
-        mTvTop.setText(mListTitle.get(0));
+        mTvTop.setText(mListTitle.get(currentPosition));
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mRvRecentImages.setLayoutManager(linearLayoutManager);
@@ -106,6 +107,7 @@ public class RecentImagesFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 height = mLlTop.getHeight();
+
                 if(recyclerView.getLayoutManager() != null) {
                     getPositionAndOffset();
                 }
@@ -134,6 +136,7 @@ public class RecentImagesFragment extends Fragment {
         });
 
         scrollToPosition();
+
     }
 
     /**
