@@ -29,4 +29,6 @@ public class LoadImageUtil {
         }
         mImageLoader.displayImage("file://" + uri, imageView, options);
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -21,7 +22,9 @@ public class ImagePagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<String> mImageUris;
-    private String imageUri;
+
+    /**外部选择的图片的uri 用来与ImageUris中一一对比，找出当前的位置 */
+    private String currentImageUri;
 
     private FragmentManager mFragmentManager;
 
@@ -34,7 +37,7 @@ public class ImagePagerActivity extends AppCompatActivity {
         String mAlbumName = getString(R.string.album_name_key);
 
         mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
-        imageUri = getIntent().getStringExtra(mAlbumName);
+        currentImageUri = getIntent().getStringExtra(mAlbumName);
 
         init();
         setCurrentItem();
@@ -49,7 +52,7 @@ public class ImagePagerActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
 
-        mViewPager.setAdapter(new FragmentPagerAdapter(mFragmentManager) {
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(mFragmentManager) {
             @Override
             public Fragment getItem(int position) {
                 String uri = mImageUris.get(position);
@@ -64,9 +67,10 @@ public class ImagePagerActivity extends AppCompatActivity {
     }
 
     private void setCurrentItem(){
-        /**找出当前ViewPage */
+
+        /**找出当前位置 */
         for (int i = 0 ; i < mImageUris.size() ; i++){
-            if (mImageUris.get(i).equals(imageUri)){
+            if (mImageUris.get(i).equals(currentImageUri)){
                 mViewPager.setCurrentItem(i);
                 break;
             }

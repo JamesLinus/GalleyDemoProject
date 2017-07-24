@@ -27,7 +27,7 @@ import java.util.List;
  * 相册中图片的RecyclerView的Adapter
  */
 
-public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewHolder> {
+public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGridAdapter.ImageViewHolder> {
 
     private Context mContext;
     private List<String> mListURI;
@@ -37,7 +37,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
      * @param context 传入Activity的context
      * @param listURI 传入该相册图片的URI集合
      */
-    public ImagesAdapter(Context context, List listURI){
+    public RecentImagesGridAdapter(Context context, List listURI){
         mContext = context;
         mListURI = listURI;
     }
@@ -59,14 +59,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     public void onBindViewHolder(final ImageViewHolder holder, int position) {
         final String imageURI;
         imageURI = mListURI.get(position);
-
-        //TODO 视图复用差错的修复;
-
-//        String tag= (String) holder.mImageView.getTag();
-//        if (!imageURI.equals(tag)){
-//            holder.mImageView.setTag(imageURI);
-//            //设置图片
-//        }
 
         LoadImageUtil.loadImage(mContext, holder.mImageView, imageURI);
 

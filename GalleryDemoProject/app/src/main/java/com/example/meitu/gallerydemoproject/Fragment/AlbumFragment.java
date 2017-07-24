@@ -34,6 +34,10 @@ public class AlbumFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
+    public interface AlbumCallBack{
+        void showAlbumFragment(String albumName);
+    }
+
     public static AlbumFragment newInstance(String albumName) {
         AlbumFragment fragment = new AlbumFragment();
         Bundle args = new Bundle();
@@ -61,8 +65,8 @@ public class AlbumFragment extends Fragment {
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                getActivity().getSupportFragmentManager()
+                        .popBackStack();
             }
         });
 
@@ -73,8 +77,8 @@ public class AlbumFragment extends Fragment {
 
 
     @Override
-    public void onStart(){
-        super.onStart();
+    public void onResume(){
+        super.onResume();
         init();
     }
 
@@ -83,8 +87,6 @@ public class AlbumFragment extends Fragment {
         mListURI = AlbumOperatingUtils.getAlbumImagesPath(getActivity(), mAlbumName);
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);
-
-
 
         /** 监听RecyclerView滚动状态 */
         mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {

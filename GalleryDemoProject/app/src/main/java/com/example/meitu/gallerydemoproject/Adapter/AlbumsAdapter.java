@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Activity.AlbumActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 
@@ -55,12 +55,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
         holder.vContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String albumNameKey = mContext.getString(R.string.album_name_key);
-
-                Intent intentGalley= new Intent(mContext, AlbumActivity.class);
-                intentGalley.putExtra(albumNameKey, albumName);
-                mContext.startActivity(intentGalley);
-                ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                ((AlbumFragment.AlbumCallBack)mContext).showAlbumFragment(albumName);
             }
         });
     }

@@ -4,14 +4,21 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author csm
@@ -19,7 +26,6 @@ import java.util.Map;
  */
 
 public class AlbumOperatingUtils {
-
 
     /**
      * @param context
@@ -118,6 +124,48 @@ public class AlbumOperatingUtils {
         cursor = null;
 
         return listRecentImages;
+    }
+
+    public static Map<String, List<String>> getRecentImageMessage(Context context){
+        ContentResolver contentResolver = context.getContentResolver();
+        Map<String, List<String>> mapDateToUri = new TreeMap<>();
+        List<String> listUri;
+        Cursor cursor;
+
+        String[] projection = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.DATE_TAKEN};
+
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+
+        int i = 100;
+        while ((cursor.moveToNext())&&((i--)>0)){
+            String imageUri = cursor.getString(
+                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+
+            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+
+            SimpleDateFormat dateformat1 = new SimpleDateFormat("yyyy MM dd");
+
+            String dateStr = dateformat1.format(date);
+
+            if (mapDateToUri.containsKey(dateStr)){
+                listUri = mapDateToUri.get(dateStr);
+                listUri.add(imageUri);
+                mapDateToUri.put(dateStr, listUri);
+                listUri = null;
+            }else {
+                listUri = new ArrayList<>();
+                listUri.add(imageUri);
+                mapDateToUri.put(dateStr, listUri);
+                listUri = null;
+            }
+        }
+        cursor.close();
+        cursor = null;
+
+        return mapDateToUri;
     }
 
     /**
