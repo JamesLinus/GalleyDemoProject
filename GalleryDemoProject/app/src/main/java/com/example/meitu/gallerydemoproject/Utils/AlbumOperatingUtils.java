@@ -112,12 +112,11 @@ public class AlbumOperatingUtils {
 
     /**
      * 获取相册中所有图片的地址
-     * @param context
+     * @param contentResolver
      * @param  albumName 相册名
      * @return listImages 该相册下 所有图片的地址
      */
-    public static List<String> getAlbumImagesPath(Context context, String albumName){
-        ContentResolver contentResolver = context.getContentResolver();
+    public static List<String> getAlbumImagesPath(ContentResolver contentResolver, String albumName){
         List<String> listImages = new ArrayList<>();
         Cursor cursor;
 
@@ -143,13 +142,12 @@ public class AlbumOperatingUtils {
     }
     /**
      * 获取图片信息
-     * @param context
+     * @param contentResolver
      * @param uri 图片的地址
      * @return iamgeMessage 图片信息
      */
 
-    public static ImageMessage getImageMessage(Context context, String uri){
-        ContentResolver contentResolver = context.getContentResolver();
+    public static ImageMessage getImageMessage(ContentResolver contentResolver, String uri){
         ImageMessage imageMessage = new ImageMessage();
         Cursor cursor;
 

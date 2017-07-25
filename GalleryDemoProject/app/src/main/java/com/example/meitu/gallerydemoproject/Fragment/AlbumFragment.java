@@ -1,5 +1,10 @@
 package com.example.meitu.gallerydemoproject.Fragment;
 
+import android.content.ContentResolver;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -34,6 +39,8 @@ public class AlbumFragment extends Fragment {
     private int lastOffset;
     private int lastPosition;
 
+    private ContentResolver contentResolver;
+
     public interface AlbumCallBack{
         void showAlbumFragment(String albumName);
     }
@@ -53,6 +60,9 @@ public class AlbumFragment extends Fragment {
         if (getArguments() != null) {
             mAlbumName = getArguments().getString(ALBUM_NAME);
         }
+
+        contentResolver = getActivity().getContentResolver();
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new AlbumContentObserver(new Handler()));
     }
 
     @Override
@@ -72,22 +82,21 @@ public class AlbumFragment extends Fragment {
 
         mRvImages = (RecyclerView)view.findViewById(R.id.rv_images);
         mRvImages.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+
+        initData();
+        initView();
+
         return view;
     }
 
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        init();
-    }
-
-
-    private void init(){
-        mListURI = AlbumOperatingUtils.getAlbumImagesPath(getActivity(), mAlbumName);
+    private void initData(){
+        mListURI = AlbumOperatingUtils.getAlbumImagesPath(contentResolver, mAlbumName);
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);
 
+    }
+
+    private void initView(){
         /** 监听RecyclerView滚动状态 */
         mRvImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -122,6 +131,18 @@ public class AlbumFragment extends Fragment {
     private void scrollToPosition() {
         if(mRvImages.getLayoutManager() != null && lastPosition >= 0) {
             ((LinearLayoutManager) mRvImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
+        }
+    }
+
+    private class AlbumContentObserver extends ContentObserver{
+        public AlbumContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+            initData();
         }
     }
 }

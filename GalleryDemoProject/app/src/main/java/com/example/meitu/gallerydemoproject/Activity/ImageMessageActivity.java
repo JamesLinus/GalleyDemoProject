@@ -1,5 +1,6 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -18,6 +19,8 @@ public class ImageMessageActivity extends AppCompatActivity {
 
     private String imageUri;
 
+    private ContentResolver contentResolver;
+
     private ImageMessage mImageMessage;
 
     private TextView mTvImageMessageId;
@@ -34,12 +37,14 @@ public class ImageMessageActivity extends AppCompatActivity {
 
         String imageMessageKey = getString(R.string.image_message_key);
         imageUri = getIntent().getStringExtra(imageMessageKey);
+        contentResolver = getContentResolver();
+
         init();
     }
 
     private void init(){
 
-        mImageMessage = AlbumOperatingUtils.getImageMessage(ImageMessageActivity.this, imageUri);
+        mImageMessage = AlbumOperatingUtils.getImageMessage(contentResolver, imageUri);
 
         mTvImageMessageId = (TextView)findViewById(R.id.tv_image_id);
         mTvImageMessageName = (TextView)findViewById(R.id.tv_image_name);
