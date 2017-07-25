@@ -1,11 +1,9 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
-import android.content.ReceiverCallNotAllowedException;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 
 import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
 import com.example.meitu.gallerydemoproject.Fragment.AlbumListFragment;

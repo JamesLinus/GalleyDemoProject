@@ -1,7 +1,6 @@
 package com.example.meitu.gallerydemoproject.Fragment;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,13 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
-import com.example.meitu.gallerydemoproject.Component.CustomImageView;
+import com.example.meitu.gallerydemoproject.Component.CustomBigImageView;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * Created by meitu on 2017/7/13.
@@ -26,7 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class ImageFragment extends Fragment {
     private static final String IMAGE_URI = "image_URI";
 
-    private CustomImageView mIvImage;
+    private CustomBigImageView mIvImage;
 
     private String imageURI;
 
@@ -51,7 +47,7 @@ public class ImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.image_fragment, container, false);
-        mIvImage = (CustomImageView)view.findViewById(R.id.iv_big_image);
+        mIvImage = (CustomBigImageView)view.findViewById(R.id.iv_big_image);
         return view;
     }
 

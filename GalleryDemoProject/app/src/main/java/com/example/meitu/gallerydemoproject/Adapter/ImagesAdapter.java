@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
+import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         final String imageURI;
         imageURI = mListURI.get(position);
 
-        LoadImageUtil.loadImage(mContext, holder.mImageView, imageURI);
+        holder.mImageView.setImage(imageURI);
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +93,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
 
 
     class ImageViewHolder extends RecyclerView.ViewHolder{
-        ImageView mImageView;
+        CustomThumbnailsImageView mImageView;
         public ImageViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView)itemView.findViewById(R.id.iv_recent_image);
+            mImageView = (CustomThumbnailsImageView)itemView.findViewById(R.id.iv_recent_image);
         }
     }
 }

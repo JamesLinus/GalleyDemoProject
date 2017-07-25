@@ -8,14 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
+import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -60,7 +58,7 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
         final String imageURI;
         imageURI = mListURI.get(position);
 
-        LoadImageUtil.loadImage(mContext, holder.mImageView, imageURI);
+        holder.mImageView.setImage(imageURI);
 
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +96,10 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
 
 
     class ImageViewHolder extends RecyclerView.ViewHolder{
-        ImageView mImageView;
+        CustomThumbnailsImageView mImageView;
         public ImageViewHolder(View itemView) {
             super(itemView);
-            mImageView = (ImageView)itemView.findViewById(R.id.iv_recent_image);
+            mImageView = (CustomThumbnailsImageView)itemView.findViewById(R.id.iv_recent_image);
         }
     }
 }

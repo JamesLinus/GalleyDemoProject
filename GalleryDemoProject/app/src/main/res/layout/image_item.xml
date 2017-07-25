@@ -8,7 +8,7 @@
     android:layout_margin="2dp"
     android:gravity="center"
     android:background="@color/galley_background">
-    <ImageView
+    <com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView
         android:id="@+id/iv_recent_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

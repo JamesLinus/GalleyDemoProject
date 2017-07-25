@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  * Created by meitu on 2017/7/13.
  */
 
-public class CustomImageView extends ImageView{
+public class CustomBigImageView extends ImageView{
 
     private Context mContext;
 
@@ -55,15 +55,15 @@ public class CustomImageView extends ImageView{
     private ValueAnimator mAnimatorScale;
     private AnimatorSet mAnimatorSetMove;
 
-    public CustomImageView(Context context) {
+    public CustomBigImageView(Context context) {
         this(context, null);
     }
 
-    public CustomImageView(Context context, @Nullable AttributeSet attrs) {
+    public CustomBigImageView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CustomBigImageView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         initValues();

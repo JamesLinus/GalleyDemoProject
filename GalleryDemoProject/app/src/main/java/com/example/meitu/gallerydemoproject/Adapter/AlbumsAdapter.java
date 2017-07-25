@@ -1,8 +1,6 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,8 @@ import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
-import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
+import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 
 import java.util.List;
 
@@ -51,7 +48,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
 
         holder.tvAblumName.setText(albumName + " (" + albumSize + ")");
 
-        LoadImageUtil.loadImage(mContext, holder.ivAblumCover, coverImage);
+        holder.ivAblumCover.setImage(coverImage);
 
         holder.vContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,12 +64,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.GalleryLis
     }
 
     class GalleryListViewHolder extends RecyclerView.ViewHolder{
-        ImageView ivAblumCover;
+        CustomThumbnailsImageView ivAblumCover;
         TextView tvAblumName;
         View vContainer;
         public GalleryListViewHolder(View itemView) {
             super(itemView);
-            ivAblumCover = (ImageView) itemView.findViewById(R.id.iv_albums_first_image);
+            ivAblumCover = (CustomThumbnailsImageView) itemView.findViewById(R.id.iv_albums_first_image);
             tvAblumName = (TextView)itemView.findViewById(R.id.tv_album_name);
             vContainer = (View)itemView.findViewById(R.id.ll_album_item);
         }
