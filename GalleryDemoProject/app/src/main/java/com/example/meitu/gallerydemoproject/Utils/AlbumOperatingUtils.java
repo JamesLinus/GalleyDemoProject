@@ -30,6 +30,12 @@ import java.util.TreeMap;
 
 public class AlbumOperatingUtils {
 
+    /**
+     * 获取时间最近的100张图片的创建时间以及Uri
+     * @param contentResolver
+     * @return
+     */
+
     public static Map<String, List<String>> getRecentImageMessage(ContentResolver contentResolver){
 
         Map<String, List<String>> mapDateToUri = new TreeMap<>();
@@ -40,18 +46,21 @@ public class AlbumOperatingUtils {
                 MediaStore.Images.ImageColumns.DATA,
                 MediaStore.Images.ImageColumns.DATE_TAKEN};
 
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                null,
+                null,
+                MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
 
         while ((cursor.moveToNext())){
             String imageUri = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+            long date = cursor.getLong(
+                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
 
-            SimpleDateFormat dateformat1 = new SimpleDateFormat("YYYY MM dd");
-
-            String dateStr = dateformat1.format(date);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY MM dd");
+            String dateStr = dateFormat.format(date);
 
             if (mapDateToUri.containsKey(dateStr)){
                 listUri = mapDateToUri.get(dateStr);
@@ -81,10 +90,17 @@ public class AlbumOperatingUtils {
         AlbumMessage albumMessage;
         Cursor cursor;
 
-        String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA
-                    , "COUNT(*)"};
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                "0=0)GROUP BY (" + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, null, MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "  desc");
+        String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                    MediaStore.Images.ImageColumns.DATA,
+                    "COUNT(*)"};
+
+        String selection = "0=0)GROUP BY (" + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME;
+
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projection,
+                    selection,
+                    null,
+                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "  desc");
 
         while (cursor.moveToNext()){
             String albumName = cursor.getString(
@@ -118,13 +134,19 @@ public class AlbumOperatingUtils {
         List<String> listImages = new ArrayList<>();
         Cursor cursor;
 
-        String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
+        String[] projection = {
+                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                    MediaStore.Images.ImageColumns.DATA};
 
         String selection = MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME +  "=?";
-        String[] selectionArgs = {albumName};
 
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+        String[] selectionArgs = { albumName };
+
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
 
         while (cursor.moveToNext()){
             String imageUrl = cursor.getString(
@@ -157,30 +179,38 @@ public class AlbumOperatingUtils {
                         MediaStore.Images.ImageColumns.DATE_TAKEN};
 
         String selection = MediaStore.Images.ImageColumns.DATA +  "=?";
+
         String[] selectionArgs = {uri};
 
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                selection, selectionArgs, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null);
 
-        while (cursor.moveToNext()){
-            String id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID));
+        cursor.moveToNext();
 
-            String imageName = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+        String id = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Images.ImageColumns._ID));
 
-            String albumName = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
+        String imageName = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
 
-            String imageUri = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+        String albumName = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME));
 
-            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+        String imageUri = cursor.getString(
+                cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            imageMessage.setId(id);
-            imageMessage.setImageName(imageName);
-            imageMessage.setAlbum(albumName);
-            imageMessage.setPath(imageUri);
-            imageMessage.setDate(date);
-        }
+        long date = cursor.getLong(
+                cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+
+        imageMessage.setId(id);
+        imageMessage.setImageName(imageName);
+        imageMessage.setAlbum(albumName);
+        imageMessage.setPath(imageUri);
+        imageMessage.setDate(date);
+
         cursor.close();
         cursor = null;
 

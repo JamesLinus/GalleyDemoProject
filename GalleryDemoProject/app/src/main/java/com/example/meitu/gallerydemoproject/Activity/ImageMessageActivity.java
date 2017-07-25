@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
+import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
 
@@ -28,7 +29,8 @@ public class ImageMessageActivity extends AppCompatActivity {
     private TextView mTvImageMessageFile;
     private TextView mTvImageMessagePath;
     private TextView mTvImageMessageDate;
-    private View mBtnBack;
+
+    private CustomToolBar mCustomToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -58,14 +60,13 @@ public class ImageMessageActivity extends AppCompatActivity {
         mTvImageMessagePath.setText(mImageMessage.getPath());
         mTvImageMessageDate.setText(mImageMessage.getDate().toString());
 
-        mBtnBack = (View)findViewById(R.id.ll_btn);
-        mBtnBack.setOnClickListener(new View.OnClickListener() {
+        mCustomToolBar = (CustomToolBar) findViewById(R.id.ctb_message);
+        mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finishActivity();
             }
         });
-
     }
 
     @Override
