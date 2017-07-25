@@ -41,7 +41,7 @@ public class AlbumFragment extends Fragment {
 
     private ContentResolver contentResolver;
 
-    public interface AlbumCallBack{
+    public interface CallBack {
         void showAlbumFragment(String albumName);
     }
 

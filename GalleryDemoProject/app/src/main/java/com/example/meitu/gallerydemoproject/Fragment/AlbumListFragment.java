@@ -42,7 +42,7 @@ public class AlbumListFragment extends Fragment {
 
     private ContentResolver contentResolver;
 
-    public interface AlbumListCallBack{
+    public interface CallBack {
         void showAlbumsListFragment();
     }
 

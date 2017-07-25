@@ -46,7 +46,7 @@ public class RecentImagesFragment extends Fragment {
     private int height;
     private int currentPosition = 0;
 
-    public interface RecentImagesCallBack{
+    public interface CallBack {
         void showRecentImagesFragment();
     }
 

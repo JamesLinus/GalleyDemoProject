@@ -16,7 +16,11 @@ import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
  * Created by meitu on 2017/7/21.
  */
 
-public class GellayListActivity extends AppCompatActivity implements AlbumFragment.AlbumCallBack, AlbumListFragment.AlbumListCallBack, RecentImagesFragment.RecentImagesCallBack {
+public class GellayListActivity extends AppCompatActivity
+        implements AlbumFragment.CallBack,
+                    AlbumListFragment.CallBack,
+                    RecentImagesFragment.CallBack {
+
     private static final String ALBUM_TAG = "ALBUM";
     private static final String ALBUMS_LIST_TAG = "ALBUMS_LIST";
     private static final String RECENT_IMAGES_FRAGMENT_TAG = "RECENT_IMAGES";
