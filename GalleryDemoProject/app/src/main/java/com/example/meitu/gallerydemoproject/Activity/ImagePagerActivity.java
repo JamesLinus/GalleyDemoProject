@@ -1,5 +1,8 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.view.KeyEvent;
 import com.example.meitu.gallerydemoproject.Fragment.ImageFragment;
 import com.example.meitu.gallerydemoproject.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +22,9 @@ import java.util.List;
  */
 
 public class ImagePagerActivity extends AppCompatActivity {
+
+    private static final String IMAGE_LIST_KEY = "images_list_key";
+    private static final String ALBUM_NAME = "image_name";
 
     private ViewPager mViewPager;
     private List<String> mImageUris;
@@ -27,16 +34,20 @@ public class ImagePagerActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
 
+    public static Intent newInstance(Context context, List<String> imageListKey, String albumName){
+        Intent intentImagePagerActivity = new Intent(context, ImagePagerActivity.class);
+        intentImagePagerActivity.putStringArrayListExtra(IMAGE_LIST_KEY, (ArrayList<String>) imageListKey);
+        intentImagePagerActivity.putExtra(ALBUM_NAME, albumName);
+        return intentImagePagerActivity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_pager_activity);
 
-        String imagesListKey = getString(R.string.images_list_key);
-        String mAlbumName = getString(R.string.image_uri_key);
-
-        mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
-        currentImageUri = getIntent().getStringExtra(mAlbumName);
+        mImageUris = getIntent().getStringArrayListExtra(IMAGE_LIST_KEY);
+        currentImageUri = getIntent().getStringExtra(ALBUM_NAME);
 
         init();
         setCurrentItem();

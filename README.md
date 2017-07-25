@@ -160,12 +160,11 @@ public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
               MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "  desc");
   ```
 
-# 增加ContentResolver，绑定数据变化的观察者
+# 利用ContentResolver的registerContentObserver绑定数据变化时的观察者
 
 ```
 contentResolver = getActivity().getContentResolver();
 contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new 										RecentChangeContentObserver(new Handler()));
-
 private class RecentChangeContentObserver extends ContentObserver {
         public RecentChangeContentObserver(Handler handler) {
             super(handler);
@@ -176,6 +175,5 @@ private class RecentChangeContentObserver extends ContentObserver {
             super.onChange(selfChange, uri);
             initData();
         }
-
     }
 ```

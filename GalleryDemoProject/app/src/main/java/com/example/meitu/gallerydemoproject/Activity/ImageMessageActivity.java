@@ -1,6 +1,8 @@
 package com.example.meitu.gallerydemoproject.Activity;
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -18,6 +20,8 @@ import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 
 public class ImageMessageActivity extends AppCompatActivity {
 
+    private static final String IMAGE_MESSAGE_KEY = "image_message";
+
     private String imageUri;
 
     private ContentResolver contentResolver;
@@ -32,13 +36,19 @@ public class ImageMessageActivity extends AppCompatActivity {
 
     private CustomToolBar mCustomToolBar;
 
+    public static Intent newInstance(Context context, String imageMessageKey){
+        Intent intentImageMessageActivity = new Intent(context, ImageMessageActivity.class);
+        intentImageMessageActivity.putExtra(IMAGE_MESSAGE_KEY, imageMessageKey);
+        return intentImageMessageActivity;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.image_message_activity);
 
-        String imageMessageKey = getString(R.string.image_message_key);
-        imageUri = getIntent().getStringExtra(imageMessageKey);
+
+        imageUri = getIntent().getStringExtra(IMAGE_MESSAGE_KEY);
         contentResolver = getContentResolver();
 
         init();

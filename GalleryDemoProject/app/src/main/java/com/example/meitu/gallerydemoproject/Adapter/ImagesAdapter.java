@@ -60,14 +60,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intentImagePager = new Intent(mContext, ImagePagerActivity.class);
-                String imageUriKey = mContext.getString(R.string.image_uri_key);
-                String imagesListKey = mContext.getString(R.string.images_list_key);
-
-                intentImagePager.putExtra(imageUriKey, imageURI);
-                intentImagePager.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListURI);
-
+                Intent intentImagePager = ImagePagerActivity.newInstance(mContext, mListURI, imageURI);
                 mContext.startActivity(intentImagePager);
                 ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 

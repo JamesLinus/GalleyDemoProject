@@ -182,6 +182,7 @@ public class RecentImagesFragment extends Fragment {
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
             initData();
+            initView();
         }
 
     }

@@ -70,9 +70,7 @@ public class ImageFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem menuItem){
         switch (menuItem.getItemId()){
             case R.id.item_image_message:{
-                Intent intent = new Intent(getActivity(), ImageMessageActivity.class);
-                String imageMessageKey = getString(R.string.image_message_key);
-                intent.putExtra(imageMessageKey, imageURI);
+                Intent intent = ImageMessageActivity.newInstance(getActivity(), imageURI);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
