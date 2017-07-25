@@ -3,7 +3,7 @@
 # 封装图片信息获取工具类
 
 * 使用MediaStore获取数据库中的图片信息
-* 利用Map不重复特性，保存相册名-相册信息键值对……
+* ~~利用Map不重复特性，保存相册名-相册信息键值对……~~ （已被优化
 * 相册信息和图片信息封装为AlbumMessage类和ImageMessage类
 
 # 利用ImageLoader加载图片
@@ -15,11 +15,11 @@
 # 列表的页面替换成Fragment
 
 * 将最近图片列表、相册列表、相册改为Fragment
-* 因为发现Fragment的切换更高效
+* Fragment的切换更高效
 * 编写newInstance函数返回Fragment实例，降低Activity与Fragment间的耦合度
 * 编写CallBack接口，让Activity实现其显示隐藏逻辑，便于让Activity统一管理Fragment
-* 为了使点击Home后，在相册中增加删除图片后，返回应用后能够同步；于是在onResume中初始化列表数据；
-* 最近图片的列表与相册图片的列表的RecyclerView使用同一个Adapter；
+* ~~为了使点击Home后，在相册中增加删除图片后，返回应用后能够同步；于是在onResume中初始化列表数据；~~ 修改为使用registerContentObserver实现数据更改时的监听
+* ~~最近图片的列表与相册图片的列表的RecyclerView使用同一个Adapter；~~ 为了编写最近图片列表按时间分类，已分为两个Adapter
 
 # RecyclerView的定位
 
@@ -38,7 +38,7 @@
 # 自定义ToolBar
 
 * 继承LinearLayout，编setButtonClickListener、 setTitle、 setButton；
-* 省的重复编写定制的ToolBar
+* 避免重复编写定制的ToolBar
 
 # 使用ViewPager显示图片
 
