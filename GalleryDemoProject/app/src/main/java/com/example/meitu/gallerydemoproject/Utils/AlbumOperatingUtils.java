@@ -100,6 +100,7 @@ public class AlbumOperatingUtils {
             albumMessage.setAlbumSize(sum);
             albumMessage.setCover(coverURI);
             mapAlbums.put(albumName, albumMessage);
+
         }
         cursor.close();
         cursor = null;
