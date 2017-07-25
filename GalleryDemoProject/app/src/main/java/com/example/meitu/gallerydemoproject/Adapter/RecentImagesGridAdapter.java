@@ -14,7 +14,10 @@ import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Csm1
@@ -24,19 +27,29 @@ import java.util.List;
 public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGridAdapter.ImageViewHolder> {
 
     private Context mContext;
+    private Map<String, List<String>> mStringListMap;
+
     private List<String> mListURI;
     private List<String> mListAllURI;
 
     /**
      * 构造器
      * @param context 传入Activity的context
-     * @param listURI 传入该相册图片的URI集合
-     * @param listAllURI
+     * @param stringListMap
+     * @param key
      */
-    public RecentImagesGridAdapter(Context context, List listURI, List listAllURI){
+    public RecentImagesGridAdapter(Context context, Map<String, List<String>> stringListMap, String key){
         mContext = context;
-        mListURI = listURI;
-        mListAllURI = listAllURI;
+        mStringListMap = stringListMap;
+        mListURI = mStringListMap.get(key);
+
+        List<String> mKeys = new ArrayList<>(mStringListMap.keySet());
+        Collections.reverse(mKeys);
+        Iterator iterator = mKeys.iterator();
+        mListAllURI = new ArrayList<>();
+        while (iterator.hasNext()){
+            mListAllURI.addAll(mStringListMap.get(iterator.next()));
+        }
 
     }
 

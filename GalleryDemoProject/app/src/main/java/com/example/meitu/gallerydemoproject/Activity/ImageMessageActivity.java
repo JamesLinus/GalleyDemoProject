@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 
 /**
  * Created by meitu on 2017/7/12.
@@ -46,7 +46,7 @@ public class ImageMessageActivity extends AppCompatActivity {
 
     private void init(){
 
-        mImageMessage = AlbumOperatingUtils.getImageMessage(contentResolver, imageUri);
+        mImageMessage = AlbumMessageUtils.getImageMessage(contentResolver, imageUri);
 
         mTvImageMessageId = (TextView)findViewById(R.id.tv_image_id);
         mTvImageMessageName = (TextView)findViewById(R.id.tv_image_name);

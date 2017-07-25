@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 
 
 import java.util.List;
@@ -90,7 +90,7 @@ public class AlbumFragment extends Fragment {
     }
 
     private void initData(){
-        mListURI = AlbumOperatingUtils.getAlbumImagesPath(contentResolver, mAlbumName);
+        mListURI = AlbumMessageUtils.getAlbumImagesPath(contentResolver, mAlbumName);
         mAdapterImages = new ImagesAdapter(getActivity(), mListURI);
         mRvImages.setAdapter(mAdapterImages);
 

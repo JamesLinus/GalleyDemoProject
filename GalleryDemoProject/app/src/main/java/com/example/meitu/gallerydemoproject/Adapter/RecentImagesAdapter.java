@@ -20,8 +20,6 @@ import java.util.Map;
  * Created by meitu on 2017/7/21.
  */
 
-//TODO 按时间分类的图片显示 的一级列表
-
 public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mContext;
@@ -34,11 +32,6 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mMapDateToImages = mData;
         mKeys = new ArrayList<>(mMapDateToImages.keySet());
         Collections.reverse(mKeys);
-        Iterator iterator = mKeys.iterator();
-        mAllUri = new ArrayList<>();
-        while (iterator.hasNext()){
-            mAllUri.addAll(mMapDateToImages.get(iterator.next()));
-        }
     }
 
     @Override
@@ -53,8 +46,8 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         String key = mKeys.get(position);
         ((ImageGridViewHolder) holder).tvDate.setText(key);
-        List<String> listImages = mMapDateToImages.get(key);
-        RecentImagesGridAdapter recentImagesGridAdapter = new RecentImagesGridAdapter(mContext, listImages, mAllUri);
+
+        RecentImagesGridAdapter recentImagesGridAdapter = new RecentImagesGridAdapter(mContext, mMapDateToImages, key);
 
         ((ImageGridViewHolder)holder).mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         ((ImageGridViewHolder)holder).mRecyclerView.setAdapter(recentImagesGridAdapter);

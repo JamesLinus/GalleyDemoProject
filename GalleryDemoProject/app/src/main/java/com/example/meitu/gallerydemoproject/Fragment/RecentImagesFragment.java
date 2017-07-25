@@ -19,7 +19,7 @@ import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.RecentImagesAdapter;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,7 +88,7 @@ public class RecentImagesFragment extends Fragment {
     }
 
     private void initData(){
-        mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(contentResolver);
+        mapDateToKey = AlbumMessageUtils.getRecentImageMessage(contentResolver);
         mListTitle = new ArrayList<>(mapDateToKey.keySet());
         Collections.reverse(mListTitle);
 

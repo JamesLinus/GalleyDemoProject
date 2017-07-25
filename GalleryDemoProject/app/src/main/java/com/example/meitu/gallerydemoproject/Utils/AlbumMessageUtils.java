@@ -28,7 +28,7 @@ import java.util.TreeMap;
  * 用于获取相册以及图片信息
  */
 
-public class AlbumOperatingUtils {
+public class AlbumMessageUtils {
 
     /**
      * 获取时间最近的100张图片的创建时间以及Uri

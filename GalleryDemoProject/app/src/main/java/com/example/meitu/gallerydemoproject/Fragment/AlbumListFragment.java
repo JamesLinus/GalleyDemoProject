@@ -18,7 +18,7 @@ import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
 import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumOperatingUtils;
+import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +81,7 @@ public class AlbumListFragment extends Fragment {
     }
 
     private void initData(){
-        mMapAlbumsMessage = AlbumOperatingUtils.getAlbumsMessage(contentResolver);
+        mMapAlbumsMessage = AlbumMessageUtils.getAlbumsMessage(contentResolver);
         List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
 
         mAdapterAlbums = new AlbumsAdapter(getActivity(), albumMessages);
