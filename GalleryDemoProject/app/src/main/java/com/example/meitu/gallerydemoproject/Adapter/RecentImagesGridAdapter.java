@@ -3,8 +3,6 @@ package com.example.meitu.gallerydemoproject.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +13,9 @@ import android.widget.ImageView;
 import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,6 +39,7 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
         mContext = context;
         mListURI = listURI;
         mListAllURI = listAllURI;
+
     }
 
     @Override
@@ -69,14 +66,14 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(mContext, ImagePagerActivity.class);
-                String imageUriKey = mContext.getString(R.string.album_name_key);
+                Intent intentImagePager = new Intent(mContext, ImagePagerActivity.class);
+                String imageUriKey = mContext.getString(R.string.image_uri_key);
                 String imagesListKey = mContext.getString(R.string.images_list_key);
 
-                intent.putStringArrayListExtra(imagesListKey, (ArrayList<String>) mListAllURI);
-                intent.putExtra(imageUriKey, imageURI);
+                intentImagePager.putExtra(imageUriKey, imageURI);
+                intentImagePager.putStringArrayListExtra(imagesListKey, (ArrayList<String>)mListAllURI);
 
-                mContext.startActivity(intent);
+                mContext.startActivity(intentImagePager);
                 ((Activity) mContext).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
             }
@@ -87,8 +84,6 @@ public class RecentImagesGridAdapter extends RecyclerView.Adapter<RecentImagesGr
     public int getItemCount() {
         return mListURI.size();
     }
-
-
 
     /**
      * 若视图被复用 调用该函数时

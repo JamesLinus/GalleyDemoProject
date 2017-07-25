@@ -25,7 +25,6 @@ public class ImageMessageActivity extends AppCompatActivity {
     private TextView mTvImageMessageFile;
     private TextView mTvImageMessagePath;
     private TextView mTvImageMessageDate;
-
     private View mBtnBack;
 
     @Override
@@ -37,7 +36,6 @@ public class ImageMessageActivity extends AppCompatActivity {
         imageUri = getIntent().getStringExtra(imageMessageKey);
         init();
     }
-
 
     private void init(){
 

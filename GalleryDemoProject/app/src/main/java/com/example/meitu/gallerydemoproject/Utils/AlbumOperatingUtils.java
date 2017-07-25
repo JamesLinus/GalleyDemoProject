@@ -2,7 +2,10 @@ package com.example.meitu.gallerydemoproject.Utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.database.ContentObserver;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -117,6 +120,14 @@ public class AlbumOperatingUtils {
 
         cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
                 null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
+
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                super.onChange(selfChange, uri);
+                Log.d("test", "data changes");
+            }
+        });
 
         while ((cursor.moveToNext())){
             String imageUri = cursor.getString(

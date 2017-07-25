@@ -9,7 +9,7 @@
     <string name="image_message_title">Message</string>
 
 
-    <string name="album_name_key">album_name</string>
+    <string name="image_uri_key">image_name</string>
     <string name="image_message_key">image_message</string>
     <string name="images_list_key">images_list</string>
 

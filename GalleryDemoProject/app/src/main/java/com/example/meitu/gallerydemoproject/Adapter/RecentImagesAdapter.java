@@ -24,9 +24,6 @@ import java.util.Map;
 
 public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_TITLE = 1;
-    private static final int IMAGES_GRID = 2;
-
     private Context mContext;
     private Map<String, List<String>> mMapDateToImages;
     private List<String> mKeys;

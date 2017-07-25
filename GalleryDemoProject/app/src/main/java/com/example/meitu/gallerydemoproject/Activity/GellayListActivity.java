@@ -42,21 +42,6 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
     public void showRecentImagesFragment() {
         mFramentManager = getSupportFragmentManager();
 
-//        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
-//            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mAlbumFragment)
-//                    .commitAllowingStateLoss();
-//        }
-//        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
-//            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mAlbumListFragment)
-//                    .commitAllowingStateLoss();
-//        }
-
         if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
             mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
             mFramentManager.beginTransaction()
@@ -67,8 +52,8 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
             mRecentImagesFragment = RecentImagesFragment.newInstance();
             mFramentManager.beginTransaction()
                     .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .add(R.id.fragment_list_container,mRecentImagesFragment)
-                    .addToBackStack(RECENT_IMAGES_FRAGMENT_TAG)
+                    .add(R.id.fragment_list_container, mRecentImagesFragment, RECENT_IMAGES_FRAGMENT_TAG)
+                    .addToBackStack(null)
                     .commitAllowingStateLoss();
         }
     }
@@ -87,39 +72,16 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
             mAlbumFragment = AlbumFragment.newInstance(albumName);
             mFramentManager.beginTransaction()
                     .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .add(R.id.fragment_list_container,mAlbumFragment)
-                    .addToBackStack(ALBUM_TAG)
+                    .add(R.id.fragment_list_container, mAlbumFragment, ALBUM_TAG)
+                    .addToBackStack(null)
                     .commitAllowingStateLoss();
         }
 
-//        if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
-//            mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mAlbumListFragment)
-//                    .commitAllowingStateLoss();
-//        }
-
-//        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
-//            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mRecentImagesFragment)
-//                    .commitAllowingStateLoss();
-//        }
     }
 
     @Override
     public void showAlbumsListFragment() {
         mFramentManager = getSupportFragmentManager();
-//
-//        if (null != mFramentManager.findFragmentByTag(ALBUM_TAG)){
-//            mAlbumFragment = (AlbumFragment) mFramentManager.findFragmentByTag(ALBUM_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mAlbumFragment)
-//                    .commitAllowingStateLoss();
-//        }
 
         if (null != mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG)){
             mAlbumListFragment = (AlbumListFragment) mFramentManager.findFragmentByTag(ALBUMS_LIST_TAG);
@@ -131,18 +93,10 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
             mAlbumListFragment = AlbumListFragment.newInstance();
             mFramentManager.beginTransaction()
                     .setTransition(TRANSIT_FRAGMENT_FADE)
-                    .add(R.id.fragment_list_container,mAlbumListFragment)
-                    .addToBackStack(ALBUMS_LIST_TAG)
+                    .add(R.id.fragment_list_container, mAlbumListFragment, ALBUMS_LIST_TAG)
+                    .addToBackStack(null)
                     .commitAllowingStateLoss();
         }
-
-//        if (null != mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG)){
-//            mRecentImagesFragment = (RecentImagesFragment) mFramentManager.findFragmentByTag(RECENT_IMAGES_FRAGMENT_TAG);
-//            mFramentManager.beginTransaction()
-//                    .setTransition(TRANSIT_FRAGMENT_FADE)
-//                    .hide(mRecentImagesFragment)
-//                    .commitAllowingStateLoss();
-//        }
     }
 
     @Override
@@ -159,7 +113,6 @@ public class GellayListActivity extends AppCompatActivity implements AlbumFragme
                 break;
             }
         }
-
         return true;
     }
 }

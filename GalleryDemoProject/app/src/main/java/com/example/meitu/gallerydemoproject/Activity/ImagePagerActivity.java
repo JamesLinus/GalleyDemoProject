@@ -3,7 +3,6 @@ package com.example.meitu.gallerydemoproject.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +33,7 @@ public class ImagePagerActivity extends AppCompatActivity {
         setContentView(R.layout.image_pager_activity);
 
         String imagesListKey = getString(R.string.images_list_key);
-        String mAlbumName = getString(R.string.album_name_key);
+        String mAlbumName = getString(R.string.image_uri_key);
 
         mImageUris = getIntent().getStringArrayListExtra(imagesListKey);
         currentImageUri = getIntent().getStringExtra(mAlbumName);

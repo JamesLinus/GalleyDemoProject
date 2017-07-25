@@ -27,7 +27,8 @@
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         
-        <activity android:name=".Activity.ImagePagerActivity">
+        <activity android:name=".Activity.ImagePagerActivity"
+            android:theme="@style/AppTheme">
 
         </activity>
     </application>
