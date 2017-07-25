@@ -30,16 +30,56 @@ import java.util.TreeMap;
 
 public class AlbumOperatingUtils {
 
+    public static Map<String, List<String>> getRecentImageMessage(ContentResolver contentResolver){
+
+        Map<String, List<String>> mapDateToUri = new TreeMap<>();
+        List<String> listUri;
+        Cursor cursor;
+
+        String[] projection = {
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.DATE_TAKEN};
+
+        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
+                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
+
+        while ((cursor.moveToNext())){
+            String imageUri = cursor.getString(
+                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+
+            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
+
+            SimpleDateFormat dateformat1 = new SimpleDateFormat("YYYY MM dd");
+
+            String dateStr = dateformat1.format(date);
+
+            if (mapDateToUri.containsKey(dateStr)){
+                listUri = mapDateToUri.get(dateStr);
+                listUri.add(imageUri);
+                mapDateToUri.put(dateStr, listUri);
+                listUri = null;
+            }else {
+                listUri = new ArrayList<>();
+                listUri.add(imageUri);
+                mapDateToUri.put(dateStr, listUri);
+                listUri = null;
+            }
+        }
+        cursor.close();
+        cursor = null;
+
+        return mapDateToUri;
+    }
+
     /**
-     * @param context
+     * @param contentResolver
      * @return mapAlbums 存储键值对：相册名 : 相册信息
      * AlbumMessage: 包括相册名、图片数、封面uri;
      */
-    public static Map<String, AlbumMessage> getAlbumsMessage(Context context){
+    public static Map<String, AlbumMessage> getAlbumsMessage(ContentResolver contentResolver){
         Map<String, AlbumMessage> mapAlbums = new HashMap<>();
         AlbumMessage albumMessage;
         Cursor cursor;
-        ContentResolver contentResolver = context.getContentResolver();
 
         String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
         cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
@@ -101,62 +141,6 @@ public class AlbumOperatingUtils {
 
         return listImages;
     }
-
-    /**
-     * 获取最近的100张图片 以及他们的日期
-     * @param context
-     * @return mapDateToUri 对应时间截点下的图片集合
-     */
-
-    public static Map<String, List<String>> getRecentImageMessage(Context context){
-        ContentResolver contentResolver = context.getContentResolver();
-        Map<String, List<String>> mapDateToUri = new TreeMap<>();
-        List<String> listUri;
-        Cursor cursor;
-
-        String[] projection = {
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.DATE_TAKEN};
-
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
-
-        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new ContentObserver(new Handler()) {
-            @Override
-            public void onChange(boolean selfChange, Uri uri) {
-                super.onChange(selfChange, uri);
-                Log.d("test", "data changes");
-            }
-        });
-
-        while ((cursor.moveToNext())){
-            String imageUri = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-
-            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
-
-            SimpleDateFormat dateformat1 = new SimpleDateFormat("YYYY MM dd");
-
-            String dateStr = dateformat1.format(date);
-
-            if (mapDateToUri.containsKey(dateStr)){
-                listUri = mapDateToUri.get(dateStr);
-                listUri.add(imageUri);
-                mapDateToUri.put(dateStr, listUri);
-                listUri = null;
-            }else {
-                listUri = new ArrayList<>();
-                listUri.add(imageUri);
-                mapDateToUri.put(dateStr, listUri);
-                listUri = null;
-            }
-        }
-        cursor.close();
-        cursor = null;
-
-        return mapDateToUri;
-    }
-
     /**
      * 获取图片信息
      * @param context

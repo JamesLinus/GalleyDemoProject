@@ -1,7 +1,12 @@
 package com.example.meitu.gallerydemoproject.Fragment;
 
 
+import android.content.ContentResolver;
+import android.database.ContentObserver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +40,8 @@ public class AlbumListFragment extends Fragment {
 
     private CustomToolBar mCustomToolBar;
 
+    private ContentResolver contentResolver;
+
     public interface AlbumListCallBack{
         void showAlbumsListFragment();
     }
@@ -48,8 +55,10 @@ public class AlbumListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         if (null != getArguments()){
-
         }
+        contentResolver = getActivity().getContentResolver();
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new AlbumListContentObserver(new Handler()));
+
     }
 
     @Override
@@ -67,16 +76,29 @@ public class AlbumListFragment extends Fragment {
 
         mRvAlbums = (RecyclerView)view.findViewById(R.id.rv_albums);
         mRvAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        initData();
         return view;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        mMapAlbumsMessage = AlbumOperatingUtils.getAlbumsMessage(getActivity());
+    private void initData(){
+        mMapAlbumsMessage = AlbumOperatingUtils.getAlbumsMessage(contentResolver);
         List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
 
         mAdapterAlbums = new AlbumsAdapter(getActivity(), albumMessages);
         mRvAlbums.setAdapter(mAdapterAlbums);
     }
+
+    private class AlbumListContentObserver extends ContentObserver{
+        public AlbumListContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+            initData();
+        }
+    }
+
 }

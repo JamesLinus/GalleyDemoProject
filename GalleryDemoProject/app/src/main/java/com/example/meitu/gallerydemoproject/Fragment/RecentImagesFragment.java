@@ -46,7 +46,9 @@ public class RecentImagesFragment extends Fragment {
 
     private ContentResolver contentResolver;
 
-    Map<String, List<String>> mapDateToKey;
+    private Map<String, List<String>> mapDateToKey;
+    private List<String> mListTitle;
+    private LinearLayoutManager linearLayoutManager;
 
     private int lastOffset;
     private int lastPosition;
@@ -90,28 +92,25 @@ public class RecentImagesFragment extends Fragment {
 
         mRvRecentImages = (RecyclerView)view.findViewById(R.id.rv_recent_images);
 
-        init();
-
+        initData();
+        initView();
         return view;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-    }
-
-    private void init(){
-        mapDateToKey = getRecentImageMessage();
-        final List<String> mListTitle = new ArrayList<>(mapDateToKey.keySet());
+    private void initData(){
+        mapDateToKey = AlbumOperatingUtils.getRecentImageMessage(contentResolver);
+        mListTitle = new ArrayList<>(mapDateToKey.keySet());
         Collections.reverse(mListTitle);
-
-        mTvTop.setText(mListTitle.get(currentPosition));
-
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        mRvRecentImages.setLayoutManager(linearLayoutManager);
 
         mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);
         mRvRecentImages.setAdapter(mAdapterImages);
+    }
+
+    private void initView(){
+        mTvTop.setText(mListTitle.get(currentPosition));
+
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        mRvRecentImages.setLayoutManager(linearLayoutManager);
 
         /** 监听RecyclerView滚动状态 */
         mRvRecentImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -183,46 +182,6 @@ public class RecentImagesFragment extends Fragment {
         }
     }
 
-    private Map<String, List<String>> getRecentImageMessage(){
-
-        Map<String, List<String>> mapDateToUri = new TreeMap<>();
-        List<String> listUri;
-        Cursor cursor;
-
-        String[] projection = {
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.DATE_TAKEN};
-
-        cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
-
-        while ((cursor.moveToNext())){
-            String imageUri = cursor.getString(
-                    cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-
-            long date = cursor.getLong(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
-
-            SimpleDateFormat dateformat1 = new SimpleDateFormat("YYYY MM dd");
-
-            String dateStr = dateformat1.format(date);
-
-            if (mapDateToUri.containsKey(dateStr)){
-                listUri = mapDateToUri.get(dateStr);
-                listUri.add(imageUri);
-                mapDateToUri.put(dateStr, listUri);
-                listUri = null;
-            }else {
-                listUri = new ArrayList<>();
-                listUri.add(imageUri);
-                mapDateToUri.put(dateStr, listUri);
-                listUri = null;
-            }
-        }
-        cursor.close();
-        cursor = null;
-
-        return mapDateToUri;
-    }
 
     private class RecentChangeContentObserver extends ContentObserver {
         public RecentChangeContentObserver(Handler handler) {
@@ -232,7 +191,7 @@ public class RecentImagesFragment extends Fragment {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
-            init();
+            initData();
         }
 
     }
