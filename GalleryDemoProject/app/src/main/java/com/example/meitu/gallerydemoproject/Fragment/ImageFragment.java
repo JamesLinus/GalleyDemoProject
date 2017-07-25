@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
+import com.example.meitu.gallerydemoproject.Component.CustomImageView;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.LoadImageUtil;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -25,7 +26,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 public class ImageFragment extends Fragment {
     private static final String IMAGE_URI = "image_URI";
 
-    private ImageView mIvImage;
+    private CustomImageView mIvImage;
 
     private String imageURI;
 
@@ -50,7 +51,7 @@ public class ImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.image_fragment, container, false);
-        mIvImage = (ImageView)view.findViewById(R.id.iv_big_image);
+        mIvImage = (CustomImageView)view.findViewById(R.id.iv_big_image);
         return view;
     }
 
@@ -61,7 +62,7 @@ public class ImageFragment extends Fragment {
     }
 
     private void init(){
-        LoadImageUtil.loadImage(getActivity(), mIvImage, imageURI);
+        mIvImage.setImage(imageURI);
     }
 
     @Override

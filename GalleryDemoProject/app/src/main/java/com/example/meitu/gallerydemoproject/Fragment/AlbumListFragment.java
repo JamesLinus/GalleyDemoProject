@@ -54,8 +54,7 @@ public class AlbumListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        if (null != getArguments()){
-        }
+
         contentResolver = getActivity().getContentResolver();
         contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new AlbumListContentObserver(new Handler()));
 

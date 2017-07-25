@@ -77,13 +77,14 @@ public class AlbumOperatingUtils {
      * AlbumMessage: 包括相册名、图片数、封面uri;
      */
     public static Map<String, AlbumMessage> getAlbumsMessage(ContentResolver contentResolver){
-        Map<String, AlbumMessage> mapAlbums = new HashMap<>();
+        Map<String, AlbumMessage> mapAlbums = new TreeMap<>();
         AlbumMessage albumMessage;
         Cursor cursor;
 
-        String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA};
+        String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATA
+                    , "COUNT(*)"};
         cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                null, null, MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc");
+                "0=0)GROUP BY (" + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, null, MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "  desc");
 
         while (cursor.moveToNext()){
             String albumName = cursor.getString(
@@ -91,18 +92,14 @@ public class AlbumOperatingUtils {
             String coverURI = cursor.getString(
                     cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
 
-            if (!mapAlbums.containsKey(albumName)){
-                albumMessage = new AlbumMessage();
-                albumMessage.setAblumName(albumName);
-                albumMessage.setAlbumSize(1);
-                albumMessage.setCover(coverURI);
-                mapAlbums.put(albumName, albumMessage);
-            }else {
-                albumMessage = mapAlbums.get(albumName);
-                int size = albumMessage.getAlbumSize();
-                albumMessage.setAlbumSize(size+1);
-                mapAlbums.put(albumName, albumMessage);
-            }
+            int sum = cursor.getInt(cursor.getColumnIndex("COUNT(*)"));
+            Log.d(albumName, sum + " ");
+
+            albumMessage = new AlbumMessage();
+            albumMessage.setAblumName(albumName);
+            albumMessage.setAlbumSize(sum);
+            albumMessage.setCover(coverURI);
+            mapAlbums.put(albumName, albumMessage);
         }
         cursor.close();
         cursor = null;

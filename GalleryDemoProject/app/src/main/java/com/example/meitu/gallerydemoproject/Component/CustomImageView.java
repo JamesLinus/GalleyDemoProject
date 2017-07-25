@@ -15,6 +15,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import com.example.meitu.gallerydemoproject.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * Created by meitu on 2017/7/13.
@@ -64,6 +67,21 @@ public class CustomImageView extends ImageView{
         super(context, attrs, defStyleAttr);
         mContext = context;
         initValues();
+    }
+
+    public void setImage(String uri){
+        ImageLoader mImageLoader;
+        DisplayImageOptions options;
+        mImageLoader = ImageLoader.getInstance();
+        options = new DisplayImageOptions.Builder()
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                .build();
+
+        if (!mImageLoader.isInited()) {
+            mImageLoader.init(ImageLoaderConfiguration.createDefault(mContext));
+        }
+        mImageLoader.displayImage("file://" + uri, this, options);
     }
 
     private void initValues(){
