@@ -63,7 +63,7 @@
 * 双击的手势使用了GestureDecetor；声明了内部类MyGestureListener，改写其onDoubleTap函数；
 * getParent().requestDisallowInterceptTouchEvent(true);请求父容器不要拦截该操作；避免在拖动以及缩放操作的时候触发ViewPager的切换操作
 
-# 使用RecyclerView的getViewType写了多级列表
+# 使用RecyclerView的getViewType写了多级列表17.07.23
 
 * 还需要做一个最近图片的列表中，按时间分类显示
 
@@ -79,6 +79,103 @@
 
 **最终方案：** 使用RecyclerView的getViewType方法；
 
-# //TODO
+# 多级列表的表头浮动17.07.24
 
-多级列表的表头浮动
+外部布局使用FrameLayout，FrameLayout中有两个布局，一个为LinearLayout（作为title），一个为recyclerView；
+
+title初始化为i第一个item的title；
+
+
+
+RecyclerView addOnScrollListener，添加OnScrollListener监听RecyclerView的滚动；
+
+“onScrollStateChanged”，当滚动状态改变时，获取title的高度；
+
+“onScroll”，当列表滚动时，做两件事情：
+
+```
+public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        super.onScrolled(recyclerView, dx, dy);
+        /**
+         * 获取下一个显示的View / 即，当前topView所覆盖的item的下一个item
+         * 如过下一个item的顶部坐标小于height（因为屏幕坐标系的原点是左上角；
+         * 此时证明该item已经开始顶掉当前item了；
+         * 那么，此时，滚动过程中设置mLlTop的Y值，即让他向上移动
+         * 下一个item完全顶替当前item后，它就是当前item了；
+         * 于是进行下一轮检测；
+         */
+        View view = linearLayoutManager.findViewByPosition(currentPosition + 1);
+        if (null == view)return;
+        if (view.getTop() <= height){
+            mLlTop.setY(view.getTop()-height);
+        }else {
+            mLlTop.setY(0);
+        }
+
+        /**
+         * 获取当前第一个可见item的位置；
+         * 获取后设置其文字
+         */
+        if (currentPosition != linearLayoutManager.findFirstVisibleItemPosition()){
+            currentPosition = linearLayoutManager.findFirstVisibleItemPosition();
+            mLlTop.setY(0);
+
+            mTvTop.setText(mListTitle.get(currentPosition));
+        }
+    }
+});
+```
+
+以此来控制列表标题的浮动；
+
+# 修改部分数据库查询语句17.07.25
+
+
+
+* 将查询最近图片的语句增加了 limit 100限制；
+
+* ```
+  cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+          projection,
+          null,
+          null,
+          MediaStore.Images.ImageColumns.DATE_MODIFIED + "  desc" + " limit 100");
+  ```
+
+极大的提高了性能；
+
+* 将查询各相册图片数进行了优化：
+
+  ```
+  String[] projection = {MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+              MediaStore.Images.ImageColumns.DATA,
+              "COUNT(*)"};
+
+  String selection = "0=0)GROUP BY (" + MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME;
+
+  cursor = contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+              projection,
+              selection,
+              null,
+              MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME + "  desc");
+  ```
+
+# 增加ContentResolver，绑定数据变化的观察者
+
+```
+contentResolver = getActivity().getContentResolver();
+contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new 										RecentChangeContentObserver(new Handler()));
+
+private class RecentChangeContentObserver extends ContentObserver {
+        public RecentChangeContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+            initData();
+        }
+
+    }
+```
