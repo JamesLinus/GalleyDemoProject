@@ -7,7 +7,6 @@ import com.example.meitu.gallerydemoproject.Model.bean.ImageMessage;
 /**
  * Created by csm on 2017/7/26.
  */
-
 public interface IImageMessageModel {
     ImageMessage getImageMessage(ContentResolver contentResolver, String uri);
 }

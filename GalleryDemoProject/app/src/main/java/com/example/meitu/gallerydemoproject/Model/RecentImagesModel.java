@@ -15,7 +15,6 @@ import java.util.TreeMap;
 /**
  * Created by meitu on 2017/7/25.
  */
-
 public class RecentImagesModel implements IRecentImagesModel {
 
     public static RecentImagesModel getInstance(){

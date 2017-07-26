@@ -10,7 +10,6 @@ import com.example.meitu.gallerydemoproject.View.View.IImageMessageView;
 /**
  * Created by meitu on 2017/7/26.
  */
-
 public class ImageMessagePresenter {
     private IImageMessageView mIImageMessageView;
     private ImageMessageModel mImageMessageModel;

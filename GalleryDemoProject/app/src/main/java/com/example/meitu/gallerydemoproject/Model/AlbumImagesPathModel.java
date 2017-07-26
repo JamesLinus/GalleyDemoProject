@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * Created by meitu on 2017/7/26.
  */
-
 public class AlbumImagesPathModel implements IAlbumImagesPathModel {
 
     public static AlbumImagesPathModel getInstance(){

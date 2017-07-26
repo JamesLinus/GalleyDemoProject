@@ -10,7 +10,6 @@ import com.example.meitu.gallerydemoproject.Model.bean.ImageMessage;
 /**
  * Created by meitu on 2017/7/26.
  */
-
 public class ImageMessageModel implements IImageMessageModel {
 
     public static ImageMessageModel getInstance(){

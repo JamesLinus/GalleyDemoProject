@@ -14,7 +14,6 @@ import java.util.TreeMap;
 /**
  * Created by meitu on 2017/7/26.
  */
-
 public class AlbumsMessageModel implements IAlbumsMessageModel{
 
     public static AlbumsMessageModel getInstance(){

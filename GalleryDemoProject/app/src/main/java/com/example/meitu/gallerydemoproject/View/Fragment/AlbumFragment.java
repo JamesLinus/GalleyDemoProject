@@ -73,6 +73,7 @@ public class AlbumFragment extends Fragment implements IAlbumView{
 
         findWidget();
 
+
         mAlbumPresenter.loadData(getActivity(), mAlbumName, contentResolver);
         mAlbumPresenter.setTitle(mAlbumName);
 

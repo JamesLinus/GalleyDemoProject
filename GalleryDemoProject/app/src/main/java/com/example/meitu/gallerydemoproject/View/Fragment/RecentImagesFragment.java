@@ -109,6 +109,7 @@ public class RecentImagesFragment extends Fragment implements IRecentImagesView{
                 height = mLlTop.getHeight();
             }
 
+
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);

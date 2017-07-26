@@ -23,6 +23,7 @@ import com.example.meitu.gallerydemoproject.View.View.IAlbumListView;
  * Created by meitu on 2017/7/21.
  */
 
+
 public class AlbumListFragment extends Fragment implements IAlbumListView{
 
     private static final String TAG = "AlbumsActivity.activity";

@@ -16,7 +16,6 @@ import java.util.Map;
 /**
  * Created by meitu on 2017/7/26.
  */
-
 public class RecentImagesPresenter {
     private IRecentImagesView mRecentImagesView;
     private IRecentImagesModel mRecentImagesModel;
