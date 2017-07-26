@@ -107,10 +107,6 @@ public class RecentImagesFragment extends Fragment implements IRecentImagesView{
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 height = mLlTop.getHeight();
-
-                if(recyclerView.getLayoutManager() != null) {
-                    getPositionAndOffset();
-                }
             }
 
             @Override
@@ -143,31 +139,8 @@ public class RecentImagesFragment extends Fragment implements IRecentImagesView{
                 }
             }
         });
-        scrollToPosition();
     }
 
-    /**
-     * 记录RecyclerView当前位置
-     */
-    private void getPositionAndOffset() {
-        /** 获取可视的第一个view */
-        View topView = linearLayoutManager.getChildAt(0);
-        if(topView != null) {
-            //获取与该view的顶部的偏移量
-            lastOffset = topView.getTop();
-            //得到该View的数组位置
-            lastPosition = linearLayoutManager.getPosition(topView);
-        }
-    }
-
-    /**
-     * 让RecyclerView滚动到指定位置
-     */
-    private void scrollToPosition() {
-        if(mRvRecentImages.getLayoutManager() != null && lastPosition >= 0) {
-            linearLayoutManager.scrollToPositionWithOffset(lastPosition, lastOffset);
-        }
-    }
 
     private class RecentChangeContentObserver extends ContentObserver {
         public RecentChangeContentObserver(Handler handler) {
