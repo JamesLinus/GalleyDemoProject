@@ -14,17 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
-import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
 import com.example.meitu.gallerydemoproject.Presenter.AlbumListPresenter;
 import com.example.meitu.gallerydemoproject.View.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IAlbumListView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by meitu on 2017/7/21.

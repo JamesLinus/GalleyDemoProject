@@ -33,6 +33,7 @@ public class ImagePagerActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
 
+
     public static Intent newInstance(Context context, List<String> imageListKey, String albumName){
         Intent intentImagePagerActivity = new Intent(context, ImagePagerActivity.class);
         intentImagePagerActivity.putStringArrayListExtra(IMAGE_LIST_KEY, (ArrayList<String>) imageListKey);
@@ -48,16 +49,15 @@ public class ImagePagerActivity extends AppCompatActivity {
         mImageUris = getIntent().getStringArrayListExtra(IMAGE_LIST_KEY);
         currentImageUri = getIntent().getStringExtra(ALBUM_NAME);
 
-        init();
+        findWidget();
+        initViewPager();
         setCurrentItem();
     }
-
 
     /**
      * 初始化ViewPager
      */
-    private void init(){
-        mViewPager = (ViewPager)findViewById(R.id.images_pager_view);
+    private void initViewPager(){
 
         mFragmentManager = getSupportFragmentManager();
 
@@ -99,5 +99,9 @@ public class ImagePagerActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void findWidget(){
+        mViewPager = (ViewPager)findViewById(R.id.images_pager_view);
     }
 }

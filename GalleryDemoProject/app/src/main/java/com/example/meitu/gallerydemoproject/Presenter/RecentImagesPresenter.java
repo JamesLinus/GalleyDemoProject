@@ -2,12 +2,10 @@ package com.example.meitu.gallerydemoproject.Presenter;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.view.View;
 
 import com.example.meitu.gallerydemoproject.Adapter.RecentImagesAdapter;
 import com.example.meitu.gallerydemoproject.Model.Impl.IRecentImagesModel;
 import com.example.meitu.gallerydemoproject.Model.RecentImagesModel;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IRecentImagesView;
 
 import java.util.ArrayList;

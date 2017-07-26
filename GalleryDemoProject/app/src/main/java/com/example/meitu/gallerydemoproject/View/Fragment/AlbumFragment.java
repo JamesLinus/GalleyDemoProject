@@ -14,15 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Presenter.AlbumPresenter;
 import com.example.meitu.gallerydemoproject.View.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IAlbumView;
-
-
-import java.util.List;
 
 public class AlbumFragment extends Fragment implements IAlbumView{
 

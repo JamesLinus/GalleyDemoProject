@@ -5,8 +5,6 @@ import android.content.Context;
 
 import com.example.meitu.gallerydemoproject.Adapter.ImagesAdapter;
 import com.example.meitu.gallerydemoproject.Model.AlbumImagesPathModel;
-import com.example.meitu.gallerydemoproject.Model.AlbumsMessageModel;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IAlbumView;
 
 import java.util.List;

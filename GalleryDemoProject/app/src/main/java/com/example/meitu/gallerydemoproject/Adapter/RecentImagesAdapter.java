@@ -1,19 +1,16 @@
 package com.example.meitu.gallerydemoproject.Adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.meitu.gallerydemoproject.Adapter.ViewHolder.GridImageItemViewHolder;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

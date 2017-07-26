@@ -9,11 +9,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Model.bean.ImageMessage;
 import com.example.meitu.gallerydemoproject.Presenter.ImageMessagePresenter;
 import com.example.meitu.gallerydemoproject.View.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IImageMessageView;
 
 /**

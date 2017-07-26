@@ -5,11 +5,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
-import com.example.meitu.gallerydemoproject.Model.AlbumImagesPathModel;
 import com.example.meitu.gallerydemoproject.Model.AlbumsMessageModel;
 import com.example.meitu.gallerydemoproject.Model.Impl.IAlbumsMessageModel;
 import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
 import com.example.meitu.gallerydemoproject.View.View.IAlbumListView;
 
 import java.util.ArrayList;
