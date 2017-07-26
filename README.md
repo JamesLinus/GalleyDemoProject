@@ -2,7 +2,7 @@
 
 # 展示
 
-![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/1.png =100x100)
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/1.png)
 
 ![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/2.png)
 
