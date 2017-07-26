@@ -1,12 +1,10 @@
 package com.example.meitu.gallerydemoproject.Adapter.ViewHolder;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
-import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
+import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
+import com.example.meitu.gallerydemoproject.View.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
 
 /**

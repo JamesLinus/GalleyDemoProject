@@ -3,15 +3,13 @@ package com.example.meitu.gallerydemoproject.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
+import com.example.meitu.gallerydemoproject.View.Activity.ImagePagerActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ViewHolder.ImagesViewHolder;
-import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.ArrayList;

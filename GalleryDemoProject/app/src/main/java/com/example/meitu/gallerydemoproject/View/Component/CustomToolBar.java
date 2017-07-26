@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Component;
+package com.example.meitu.gallerydemoproject.View.Component;
 
 import android.content.Context;
 import android.content.res.TypedArray;

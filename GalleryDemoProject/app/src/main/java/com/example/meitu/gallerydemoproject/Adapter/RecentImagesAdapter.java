@@ -26,7 +26,6 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context mContext;
     private Map<String, List<String>> mMapDateToImages;
     private List<String> mKeys;
-    private List<String> mAllUri;
 
     public RecentImagesAdapter(Context context, Map<String, List<String>> mData){
         mContext = context;

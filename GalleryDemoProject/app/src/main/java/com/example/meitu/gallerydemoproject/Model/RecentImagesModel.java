@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
+import com.example.meitu.gallerydemoproject.Model.Impl.IRecentImagesModel;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.TreeMap;
  * Created by meitu on 2017/7/25.
  */
 
-public class RecentImagesModel implements IRecentImagesModel{
+public class RecentImagesModel implements IRecentImagesModel {
 
     public static RecentImagesModel getInstance(){
         return new RecentImagesModel();

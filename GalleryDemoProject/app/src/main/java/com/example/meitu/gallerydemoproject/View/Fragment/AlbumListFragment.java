@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Fragment;
+package com.example.meitu.gallerydemoproject.View.Fragment;
 
 
 import android.content.ContentResolver;
@@ -15,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.meitu.gallerydemoproject.Adapter.AlbumsAdapter;
-import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
-import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
+import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Presenter.AlbumListPresenter;
+import com.example.meitu.gallerydemoproject.View.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
 import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
+import com.example.meitu.gallerydemoproject.View.View.IAlbumListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +30,21 @@ import java.util.Map;
  * Created by meitu on 2017/7/21.
  */
 
-public class AlbumListFragment extends Fragment {
+public class AlbumListFragment extends Fragment implements IAlbumListView{
 
     private static final String TAG = "AlbumsActivity.activity";
 
-    /**键值对保存 相册名和相册信息 */
-    private Map<String, AlbumMessage> mMapAlbumsMessage;
+
+    private View mView;
 
     private RecyclerView mRvAlbums;
-    private AlbumsAdapter mAdapterAlbums;
 
     private CustomToolBar mCustomToolBar;
 
     private ContentResolver contentResolver;
     private AlbumListContentObserver mAlbumListContentObserver;
+
+    private AlbumListPresenter mAlbumListPresenter;
 
     public interface CallBack {
         void showAlbumsListFragment();
@@ -61,13 +64,17 @@ public class AlbumListFragment extends Fragment {
 
         contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mAlbumListContentObserver);
 
+        mAlbumListPresenter = new AlbumListPresenter(this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState){
-        View view = layoutInflater.inflate(R.layout.albums_list_fragment, container, false);
+        mView = layoutInflater.inflate(R.layout.albums_list_fragment, container, false);
 
-        mCustomToolBar = (CustomToolBar)view.findViewById(R.id.ctb_albums);
+        findWidget();
+        initRecyclerView();
+
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,11 +83,8 @@ public class AlbumListFragment extends Fragment {
             }
         });
 
-        mRvAlbums = (RecyclerView)view.findViewById(R.id.rv_albums);
-        mRvAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        initData();
-        return view;
+        mAlbumListPresenter.loadData(getActivity(), contentResolver);
+        return mView;
     }
 
     @Override
@@ -89,12 +93,13 @@ public class AlbumListFragment extends Fragment {
         contentResolver.unregisterContentObserver(mAlbumListContentObserver);
     }
 
-    private void initData(){
-        mMapAlbumsMessage = AlbumMessageUtils.getAlbumsMessage(contentResolver);
-        List<AlbumMessage> albumMessages = new ArrayList<>(mMapAlbumsMessage.values());
+    @Override
+    public void setRecyclerViewData(RecyclerView.Adapter adapter) {
+        mRvAlbums.setAdapter(adapter);
+    }
 
-        mAdapterAlbums = new AlbumsAdapter(getActivity(), albumMessages);
-        mRvAlbums.setAdapter(mAdapterAlbums);
+    private void initRecyclerView(){
+        mRvAlbums.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private class AlbumListContentObserver extends ContentObserver{
@@ -105,8 +110,13 @@ public class AlbumListFragment extends Fragment {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
-            initData();
+            mAlbumListPresenter.loadData(getActivity(), contentResolver);
         }
+    }
+
+    private void findWidget(){
+        mCustomToolBar = (CustomToolBar)mView.findViewById(R.id.ctb_albums);
+        mRvAlbums = (RecyclerView)mView.findViewById(R.id.rv_albums);
     }
 
 }

@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
+import com.example.meitu.gallerydemoproject.View.Activity.GellayListActivity;
 import com.example.meitu.gallerydemoproject.Adapter.ViewHolder.AlbumsViewHolder;
-import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.List;

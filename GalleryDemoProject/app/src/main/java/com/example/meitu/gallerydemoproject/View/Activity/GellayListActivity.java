@@ -1,13 +1,13 @@
-package com.example.meitu.gallerydemoproject.Activity;
+package com.example.meitu.gallerydemoproject.View.Activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import com.example.meitu.gallerydemoproject.Fragment.AlbumFragment;
-import com.example.meitu.gallerydemoproject.Fragment.AlbumListFragment;
-import com.example.meitu.gallerydemoproject.Fragment.RecentImagesFragment;
+import com.example.meitu.gallerydemoproject.View.Fragment.AlbumFragment;
+import com.example.meitu.gallerydemoproject.View.Fragment.AlbumListFragment;
+import com.example.meitu.gallerydemoproject.View.Fragment.RecentImagesFragment;
 import com.example.meitu.gallerydemoproject.R;
 
 import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;

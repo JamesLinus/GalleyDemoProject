@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Model;
+package com.example.meitu.gallerydemoproject.Model.Impl;
 
 import android.content.ContentResolver;
 

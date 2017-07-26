@@ -7,9 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/galley_background"
-    tools:context="com.example.meitu.gallerydemoproject.Fragment.RecentImagesFragment">
+    tools:context=".View.Fragment.RecentImagesFragment">
 
-    <com.example.meitu.gallerydemoproject.Component.CustomToolBar
+    <com.example.meitu.gallerydemoproject.View.Component.CustomToolBar
         android:id="@+id/ctb_recent"
         android:layout_width="match_parent"
         android:layout_height="48dp"

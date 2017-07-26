@@ -1,24 +1,15 @@
 package com.example.meitu.gallerydemoproject.Utils;
 
 import android.content.ContentResolver;
-import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.example.meitu.gallerydemoproject.Beans.AlbumMessage;
-import com.example.meitu.gallerydemoproject.Beans.ImageMessage;
+import com.example.meitu.gallerydemoproject.Model.bean.AlbumMessage;
+import com.example.meitu.gallerydemoproject.Model.bean.ImageMessage;
 
-import java.text.DateFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;

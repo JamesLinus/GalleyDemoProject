@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Beans;
+package com.example.meitu.gallerydemoproject.Model.bean;
 
 /**
  * 相册信息

@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Fragment;
+package com.example.meitu.gallerydemoproject.View.Fragment;
 
 
 import android.content.Intent;
@@ -11,20 +11,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.meitu.gallerydemoproject.Activity.ImageMessageActivity;
-import com.example.meitu.gallerydemoproject.Component.CustomBigImageView;
+import com.example.meitu.gallerydemoproject.Presenter.ImagePresenter;
+import com.example.meitu.gallerydemoproject.View.Activity.ImageMessageActivity;
+import com.example.meitu.gallerydemoproject.View.Component.CustomBigImageView;
 import com.example.meitu.gallerydemoproject.R;
+import com.example.meitu.gallerydemoproject.View.View.IImageView;
 
 /**
  * Created by meitu on 2017/7/13.
  */
 
-public class ImageFragment extends Fragment {
+public class ImageFragment extends Fragment implements IImageView{
     private static final String IMAGE_URI = "image_URI";
+
+    private View mView;
 
     private CustomBigImageView mIvImage;
 
     private String imageURI;
+
+    private ImagePresenter mImagePresenter;
 
     public static ImageFragment newInstance(String imageURI) {
         ImageFragment fragment = new ImageFragment();
@@ -34,7 +40,6 @@ public class ImageFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,23 +47,20 @@ public class ImageFragment extends Fragment {
         if (getArguments() != null) {
             imageURI = getArguments().getString(IMAGE_URI);
         }
+        mImagePresenter = new ImagePresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.image_fragment, container, false);
-        mIvImage = (CustomBigImageView)view.findViewById(R.id.iv_big_image);
-        return view;
+        mView = inflater.inflate(R.layout.image_fragment, container, false);
+        findWidget();
+        mImagePresenter.setImage(imageURI);
+        return mView;
     }
 
     @Override
     public void onStart(){
         super.onStart();
-        init();
-    }
-
-    private void init(){
-        mIvImage.setImage(imageURI);
     }
 
     @Override
@@ -80,5 +82,14 @@ public class ImageFragment extends Fragment {
             }
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    @Override
+    public void setImage(String uri) {
+        mIvImage.setImage(uri);
+    }
+
+    private void findWidget(){
+        mIvImage = (CustomBigImageView)mView.findViewById(R.id.iv_big_image);
     }
 }

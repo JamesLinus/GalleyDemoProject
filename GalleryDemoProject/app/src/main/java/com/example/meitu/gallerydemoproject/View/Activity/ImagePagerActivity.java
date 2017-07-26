@@ -1,6 +1,5 @@
-package com.example.meitu.gallerydemoproject.Activity;
+package com.example.meitu.gallerydemoproject.View.Activity;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 
-import com.example.meitu.gallerydemoproject.Fragment.ImageFragment;
+import com.example.meitu.gallerydemoproject.View.Fragment.ImageFragment;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.ArrayList;

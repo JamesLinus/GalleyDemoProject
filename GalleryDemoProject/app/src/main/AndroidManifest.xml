@@ -14,7 +14,7 @@
         android:largeHeap="true"
         android:supportsRtl="true">
 
-        <activity android:name=".Activity.GellayListActivity"
+        <activity android:name=".View.Activity.GellayListActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.ImageMessageActivity"
+        <activity android:name=".View.Activity.ImageMessageActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
         
-        <activity android:name=".Activity.ImagePagerActivity"
+        <activity android:name=".View.Activity.ImagePagerActivity"
             android:theme="@style/AppTheme">
 
         </activity>

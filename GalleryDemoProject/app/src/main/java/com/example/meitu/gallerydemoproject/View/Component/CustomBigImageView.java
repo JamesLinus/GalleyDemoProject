@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Component;
+package com.example.meitu.gallerydemoproject.View.Component;
 
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;

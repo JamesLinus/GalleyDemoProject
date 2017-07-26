@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Fragment;
+package com.example.meitu.gallerydemoproject.View.Fragment;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
@@ -15,31 +15,25 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.meitu.gallerydemoproject.Activity.GellayListActivity;
-import com.example.meitu.gallerydemoproject.Adapter.RecentImagesAdapter;
-import com.example.meitu.gallerydemoproject.Component.CustomToolBar;
+import com.example.meitu.gallerydemoproject.Presenter.RecentImagesPresenter;
+import com.example.meitu.gallerydemoproject.View.Activity.GellayListActivity;
+import com.example.meitu.gallerydemoproject.View.Component.CustomToolBar;
 import com.example.meitu.gallerydemoproject.R;
-import com.example.meitu.gallerydemoproject.Utils.AlbumMessageUtils;
+import com.example.meitu.gallerydemoproject.View.View.IRecentImagesView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+public class RecentImagesFragment extends Fragment implements IRecentImagesView{
 
-public class RecentImagesFragment extends Fragment {
-
+    private View mView;
     private LinearLayout mLlTop;
     private TextView mTvTop;
     private RecyclerView mRvRecentImages;
-    private RecentImagesAdapter mAdapterImages;
     private CustomToolBar mCustomToolBar;
 
     private ContentResolver contentResolver;
     private RecentChangeContentObserver mRecentChangeContentObserver;
-
-    private Map<String, List<String>> mapDateToKey;
-    private List<String> mListTitle;
     private LinearLayoutManager linearLayoutManager;
+
+    private RecentImagesPresenter mRecentImagesPresenter;
 
     private int lastOffset;
     private int lastPosition;
@@ -56,25 +50,21 @@ public class RecentImagesFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         contentResolver = getActivity().getContentResolver();
         mRecentChangeContentObserver = new RecentChangeContentObserver(new Handler());
-
         contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mRecentChangeContentObserver);
+
+        mRecentImagesPresenter = new RecentImagesPresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recent_image_fragment, container, false);
-
-        mLlTop = (LinearLayout)view.findViewById(R.id.ll_top) ;
-        mTvTop = (TextView)view.findViewById(R.id.tv_top);
-
-        mCustomToolBar = (CustomToolBar) view.findViewById(R.id.ctb_recent);
+        mView = inflater.inflate(R.layout.recent_image_fragment, container, false);
+        findWidgets();
 
         mCustomToolBar.setButtonClickListener(new View.OnClickListener() {
             @Override
@@ -82,12 +72,11 @@ public class RecentImagesFragment extends Fragment {
                 ((GellayListActivity)getActivity()).showAlbumsListFragment();
             }
         });
-
-        mRvRecentImages = (RecyclerView)view.findViewById(R.id.rv_recent_images);
-
-        initData();
+        initRecyclerView();
+        mRecentImagesPresenter.loadData(getActivity(), contentResolver);
+        mRecentImagesPresenter.setTop(currentPosition);
         initView();
-        return view;
+        return mView;
     }
 
     @Override
@@ -96,21 +85,22 @@ public class RecentImagesFragment extends Fragment {
         contentResolver.unregisterContentObserver(mRecentChangeContentObserver);
     }
 
-    private void initData(){
-        mapDateToKey = AlbumMessageUtils.getRecentImageMessage(contentResolver);
-        mListTitle = new ArrayList<>(mapDateToKey.keySet());
-        Collections.reverse(mListTitle);
+    @Override
+    public void setRecyclerViewData(RecyclerView.Adapter adapter) {
+        mRvRecentImages.setAdapter(adapter);
+    }
 
-        mAdapterImages = new RecentImagesAdapter(getActivity(), mapDateToKey);
-        mRvRecentImages.setAdapter(mAdapterImages);
+    @Override
+    public void setTopData(String topData) {
+        mTvTop.setText(topData);
+    }
+
+    private void initRecyclerView(){
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        mRvRecentImages.setLayoutManager(linearLayoutManager);
     }
 
     private void initView(){
-        mTvTop.setText(mListTitle.get(currentPosition));
-
-        linearLayoutManager = new LinearLayoutManager(getActivity());
-        mRvRecentImages.setLayoutManager(linearLayoutManager);
-
         /** 监听RecyclerView滚动状态 */
         mRvRecentImages.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -141,7 +131,6 @@ public class RecentImagesFragment extends Fragment {
                 }else {
                     mLlTop.setY(0);
                 }
-
                 /**
                  * 获取当前第一个可见item的位置；
                  * 获取后设置其文字
@@ -150,7 +139,7 @@ public class RecentImagesFragment extends Fragment {
                     currentPosition = linearLayoutManager.findFirstVisibleItemPosition();
                     mLlTop.setY(0);
 
-                    mTvTop.setText(mListTitle.get(currentPosition));
+                    mRecentImagesPresenter.setTop(currentPosition);
                 }
             }
         });
@@ -161,14 +150,13 @@ public class RecentImagesFragment extends Fragment {
      * 记录RecyclerView当前位置
      */
     private void getPositionAndOffset() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) mRvRecentImages.getLayoutManager();
         /** 获取可视的第一个view */
-        View topView = layoutManager.getChildAt(0);
+        View topView = linearLayoutManager.getChildAt(0);
         if(topView != null) {
             //获取与该view的顶部的偏移量
             lastOffset = topView.getTop();
             //得到该View的数组位置
-            lastPosition = layoutManager.getPosition(topView);
+            lastPosition = linearLayoutManager.getPosition(topView);
         }
     }
 
@@ -177,10 +165,9 @@ public class RecentImagesFragment extends Fragment {
      */
     private void scrollToPosition() {
         if(mRvRecentImages.getLayoutManager() != null && lastPosition >= 0) {
-            ((LinearLayoutManager) mRvRecentImages.getLayoutManager()).scrollToPositionWithOffset(lastPosition, lastOffset);
+            linearLayoutManager.scrollToPositionWithOffset(lastPosition, lastOffset);
         }
     }
-
 
     private class RecentChangeContentObserver extends ContentObserver {
         public RecentChangeContentObserver(Handler handler) {
@@ -190,9 +177,15 @@ public class RecentImagesFragment extends Fragment {
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
-            initData();
+            mRecentImagesPresenter.loadData(getActivity(), contentResolver);
             initView();
         }
+    }
 
+    private void findWidgets(){
+        mLlTop = (LinearLayout)mView.findViewById(R.id.ll_top) ;
+        mTvTop = (TextView)mView.findViewById(R.id.tv_top);
+        mCustomToolBar = (CustomToolBar) mView.findViewById(R.id.ctb_recent);
+        mRvRecentImages = (RecyclerView)mView.findViewById(R.id.rv_recent_images);
     }
 }

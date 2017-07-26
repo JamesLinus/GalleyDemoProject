@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
+import com.example.meitu.gallerydemoproject.View.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.meitu.gallerydemoproject.Beans;
+package com.example.meitu.gallerydemoproject.Model.bean;
 
 import java.io.Serializable;
 import java.util.Date;
