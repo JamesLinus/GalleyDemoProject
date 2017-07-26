@@ -11,7 +11,7 @@ import com.example.meitu.gallerydemoproject.R;
  * Created by meitu on 2017/7/26.
  */
 
-public class AlbumsViewHolder<A> extends BaseViewHolder<AlbumMessage>{
+public class AlbumsViewHolder extends BaseViewHolder<AlbumMessage>{
     private CustomThumbnailsImageView ivAblumCover;
     private TextView tvAblumName;
     private View vContainer;
