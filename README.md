@@ -1,5 +1,19 @@
 # AlbumsDemoProject
 
+# 展示
+
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/1.png)
+
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/2.png)
+
+![zs](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/3.png)
+
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/4.png)
+
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/5.png)
+
+![](https://raw.githubusercontent.com/csming1995/GalleyDemoProject/master/GalleyDemo/6.png)
+
 # 封装图片信息获取工具类
 
 * **首先需要获取图片信息：** 于是，使用了MediaStore获取数据库中的图片信息
