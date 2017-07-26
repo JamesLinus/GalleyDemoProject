@@ -8,13 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.meitu.gallerydemoproject.Activity.ImagePagerActivity;
+import com.example.meitu.gallerydemoproject.Adapter.ViewHolder.ImagesViewHolder;
 import com.example.meitu.gallerydemoproject.Component.CustomThumbnailsImageView;
 import com.example.meitu.gallerydemoproject.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +21,7 @@ import java.util.List;
  * 相册中图片的RecyclerView的Adapter
  */
 
-public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewHolder> {
+public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private Context mContext;
     private List<String> mListURI;
@@ -38,10 +37,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
     }
 
     @Override
-    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater mLayoutInflater = LayoutInflater.from(mContext);
         View view = mLayoutInflater.inflate(R.layout.image_item, parent, false);
-        return new ImageViewHolder(view);
+        return new ImagesViewHolder(mContext, view);
     }
 
     /**
@@ -51,13 +50,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
      * @param position
      */
     @Override
-    public void onBindViewHolder(final ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImagesViewHolder holder, int position) {
         final String imageURI;
         imageURI = mListURI.get(position);
 
-        holder.mImageView.setImage(imageURI);
+        holder.setData(imageURI);
 
-        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+        holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentImagePager = ImagePagerActivity.newInstance(mContext, mListURI, imageURI);
@@ -79,17 +78,9 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageViewH
      * @param holder
      */
     @Override
-    public void onViewRecycled(ImageViewHolder holder){
+    public void onViewRecycled(ImagesViewHolder holder){
         super.onViewRecycled(holder);
-        holder.mImageView.setImageDrawable(ContextCompat.getDrawable(mContext, R.mipmap.ic_launcher));
+        holder.setData(R.mipmap.ic_launcher);
     }
 
-
-    class ImageViewHolder extends RecyclerView.ViewHolder{
-        CustomThumbnailsImageView mImageView;
-        public ImageViewHolder(View itemView) {
-            super(itemView);
-            mImageView = (CustomThumbnailsImageView)itemView.findViewById(R.id.iv_recent_image);
-        }
-    }
 }

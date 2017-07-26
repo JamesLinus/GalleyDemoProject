@@ -17,9 +17,9 @@ import static android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE;
  */
 
 public class GellayListActivity extends AppCompatActivity
-        implements AlbumFragment.CallBack,
-                    AlbumListFragment.CallBack,
-                    RecentImagesFragment.CallBack {
+                                implements AlbumFragment.CallBack,
+                                            AlbumListFragment.CallBack,
+                                            RecentImagesFragment.CallBack {
 
     private static final String ALBUM_TAG = "ALBUM";
     private static final String ALBUMS_LIST_TAG = "ALBUMS_LIST";
@@ -37,7 +37,6 @@ public class GellayListActivity extends AppCompatActivity
         setContentView(R.layout.list_activity);
 
         showRecentImagesFragment();
-
     }
 
     @Override

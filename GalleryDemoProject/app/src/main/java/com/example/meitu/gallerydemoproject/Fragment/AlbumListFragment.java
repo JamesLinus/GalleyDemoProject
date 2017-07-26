@@ -41,6 +41,7 @@ public class AlbumListFragment extends Fragment {
     private CustomToolBar mCustomToolBar;
 
     private ContentResolver contentResolver;
+    private AlbumListContentObserver mAlbumListContentObserver;
 
     public interface CallBack {
         void showAlbumsListFragment();
@@ -56,7 +57,9 @@ public class AlbumListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         contentResolver = getActivity().getContentResolver();
-        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new AlbumListContentObserver(new Handler()));
+        mAlbumListContentObserver = new AlbumListContentObserver(new Handler());
+
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mAlbumListContentObserver);
 
     }
 
@@ -78,6 +81,12 @@ public class AlbumListFragment extends Fragment {
 
         initData();
         return view;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        contentResolver.unregisterContentObserver(mAlbumListContentObserver);
     }
 
     private void initData(){

@@ -177,6 +177,8 @@ public class CustomBigImageView extends ImageView{
             case MotionEvent.ACTION_MOVE:{
                 if (2 == event.getPointerCount()){
 
+
+
                     getParent().requestDisallowInterceptTouchEvent(true);
                     float dx = event.getX(1) - event.getX(0);
                     float dy = event.getY(1) - event.getY(0);

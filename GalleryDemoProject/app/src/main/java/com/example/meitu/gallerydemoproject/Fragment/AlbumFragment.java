@@ -40,6 +40,7 @@ public class AlbumFragment extends Fragment {
     private int lastPosition;
 
     private ContentResolver contentResolver;
+    private AlbumContentObserver mAlbumContentObserver;
 
     public interface CallBack {
         void showAlbumFragment(String albumName);
@@ -62,7 +63,9 @@ public class AlbumFragment extends Fragment {
         }
 
         contentResolver = getActivity().getContentResolver();
-        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new AlbumContentObserver(new Handler()));
+        mAlbumContentObserver = new AlbumContentObserver(new Handler());
+
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mAlbumContentObserver);
     }
 
     @Override
@@ -87,6 +90,12 @@ public class AlbumFragment extends Fragment {
         initView();
 
         return view;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        contentResolver.unregisterContentObserver(mAlbumContentObserver);
     }
 
     private void initData(){

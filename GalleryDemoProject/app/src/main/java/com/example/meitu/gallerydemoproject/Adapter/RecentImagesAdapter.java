@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.meitu.gallerydemoproject.Adapter.ViewHolder.GridImageItemViewHolder;
 import com.example.meitu.gallerydemoproject.R;
 
 import java.util.ArrayList;
@@ -39,18 +40,17 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         LayoutInflater mLayoutInflater = LayoutInflater.from(mContext);
         View view;
         view = mLayoutInflater.inflate(R.layout.recent_images_grid_item, parent, false);
-        return new ImageGridViewHolder(view);
+        return new GridImageItemViewHolder(mContext, view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         String key = mKeys.get(position);
-        ((ImageGridViewHolder) holder).tvDate.setText(key);
 
         RecentImagesGridAdapter recentImagesGridAdapter = new RecentImagesGridAdapter(mContext, mMapDateToImages, key);
 
-        ((ImageGridViewHolder)holder).mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
-        ((ImageGridViewHolder)holder).mRecyclerView.setAdapter(recentImagesGridAdapter);
+        ((GridImageItemViewHolder) holder).setData(key, recentImagesGridAdapter);
+
     }
 
     @Override
@@ -59,13 +59,4 @@ public class RecentImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    private static class ImageGridViewHolder extends RecyclerView.ViewHolder{
-        public TextView tvDate;
-        public RecyclerView mRecyclerView;
-        public ImageGridViewHolder(View itemView) {
-            super(itemView);
-            tvDate = (TextView)itemView.findViewById(R.id.tv_top);
-            mRecyclerView = (RecyclerView)itemView.findViewById(R.id.rv_recent_images_grid);
-        }
-    }
 }

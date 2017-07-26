@@ -35,6 +35,7 @@ public class RecentImagesFragment extends Fragment {
     private CustomToolBar mCustomToolBar;
 
     private ContentResolver contentResolver;
+    private RecentChangeContentObserver mRecentChangeContentObserver;
 
     private Map<String, List<String>> mapDateToKey;
     private List<String> mListTitle;
@@ -61,7 +62,9 @@ public class RecentImagesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         contentResolver = getActivity().getContentResolver();
-        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, new RecentChangeContentObserver(new Handler()));
+        mRecentChangeContentObserver = new RecentChangeContentObserver(new Handler());
+
+        contentResolver.registerContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, false, mRecentChangeContentObserver);
     }
 
     @Override
@@ -85,6 +88,12 @@ public class RecentImagesFragment extends Fragment {
         initData();
         initView();
         return view;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        contentResolver.unregisterContentObserver(mRecentChangeContentObserver);
     }
 
     private void initData(){
